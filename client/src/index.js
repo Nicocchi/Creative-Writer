@@ -4,7 +4,11 @@ import App from "./App";
 import "./index.css";
 
 // Bootstrap, MU, fonts, other style libraries
-
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import "./assets/css/blk-design-system-react.css";
+import "./assets/css/nucleo-icons.css";
+import "./assets/scss/blk-design-system-react.scss?v=1.0.0";
+import "./assets/demo/demo.css";
 
 // Router
 import { BrowserRouter as Router } from "react-router-dom";

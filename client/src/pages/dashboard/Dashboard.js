@@ -1,29 +1,12 @@
-import React, { Component } from 'react';
-import classnames from "classnames";
-import { Link } from "react-router-dom";
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import React, {Component} from 'react';
 import "./Dashboard.css";
 import {
     Button,
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    CardImg,
-    CardTitle,
     Label,
     FormGroup,
-    Form,
     Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
-    Container,
-    Row,
-    Col,
-    Modal, ModalHeader, ModalBody, ModalFooter, FormText
+    Modal, ModalBody, FormText
 } from "reactstrap";
-import List from "../../components/List/List";
 import Gallery from "../../components/Gallery/Gallery";
 
 class Dashboard extends Component {
@@ -50,6 +33,9 @@ class Dashboard extends Component {
                 <div>
                     <Button color="primary" onClick={this.toggleModalDemo}>
                         Start Writing!
+                    </Button>
+                    <Button color="primary" onClick={() => this.props.history.push('/editor')}>
+                        Skip to editor
                     </Button>
                     <Modal isOpen={this.state.modalDemo} toggle={this.toggleModalDemo}>
                         <div className="modal-header"  style={{border: 0, backgroundColor: "#1f2251", display: "flex", justifyContent: "center"}}>

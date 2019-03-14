@@ -11,8 +11,6 @@ import {
     NavLink,
     Nav,
     Container,
-    Row,
-    Col
 } from "reactstrap";
 
 class NavBar extends Component {
@@ -27,11 +25,12 @@ class NavBar extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div>
-                <Navbar  className="bg-transparent" expand="lg">
+                <Navbar className="bg-transparent" expand="lg">
                     <Container>
-                        <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
+                        <NavbarBrand href="#pablo">
                             Creative Writer
                         </NavbarBrand>
                         <button className="navbar-toggler" aria-expanded={false}>
@@ -43,8 +42,8 @@ class NavBar extends Component {
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     <NavLink
-                                        href="#pablo"
-                                        onClick={e => e.preventDefault()}
+                                        href="#"
+                                        onClick={() => this.props.history.push('/')}
                                     >
                                         <i
                                             aria-hidden={true}

@@ -12,6 +12,8 @@ import {
     Nav,
     Container,
 } from "reactstrap";
+import SideNav, { Toggle, Nav as Nav1, NavItem as NavItem2, NavIcon, NavText, ClickOutside } from '@trendmicro/react-sidenav';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 class NavBar extends Component {
     state = {
@@ -25,12 +27,12 @@ class NavBar extends Component {
     }
 
     render() {
-        console.log(this.props)
+        // console.log(this.props.history.location.pathname)
         return (
             <div>
-                <Navbar className="bg-transparent" expand="lg">
-                    <Container>
-                        <NavbarBrand href="#pablo">
+                <Navbar className="bg-transparent" expand="lg" role="navigation">
+                    <Container style={{marginLeft: "0", width: "100%", marginRight: "0"}}>
+                        <NavbarBrand href="#pablo" style={{fontSize: "24px"}}>
                             Creative Writer
                         </NavbarBrand>
                         <button className="navbar-toggler" aria-expanded={false}>
@@ -38,17 +40,16 @@ class NavBar extends Component {
                             <span className="navbar-toggler-bar bar2" />
                             <span className="navbar-toggler-bar bar3" />
                         </button>
-                        <Collapse navbar isOpen={false}>
+                        <Collapse navbar isOpen={false} style={{position: "absolute", right: "0"}}>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
                                     <NavLink
                                         href="#"
                                         onClick={() => this.props.history.push('/')}
                                     >
-                                        <i
-                                            aria-hidden={true}
-                                            className="tim-icons icon-send"
-                                        />
+                                        <i className="material-icons md-24">
+                                            dashboard
+                                        </i>
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
@@ -56,10 +57,13 @@ class NavBar extends Component {
                                         href="#pablo"
                                         onClick={e => e.preventDefault()}
                                     >
-                                        <i
-                                            aria-hidden={true}
-                                            className="tim-icons icon-single-02"
-                                        />
+                                        {/*<i*/}
+                                            {/*aria-hidden={true}*/}
+                                            {/*className="tim-icons icon-single-02"*/}
+                                        {/*/>*/}
+                                        <i className="material-icons md-24">
+                                            person_outline
+                                        </i>
                                     </NavLink>
                                 </NavItem>
                                 <UncontrolledDropdown nav>
@@ -72,10 +76,13 @@ class NavBar extends Component {
                                         nav
                                         onClick={e => e.preventDefault()}
                                     >
-                                        <i
-                                            aria-hidden={true}
-                                            className="tim-icons icon-settings-gear-63"
-                                        />
+                                        {/*<i*/}
+                                            {/*aria-hidden={true}*/}
+                                            {/*className="tim-icons icon-settings-gear-63"*/}
+                                        {/*/>*/}
+                                        <i className="material-icons md-24">
+                                            apps
+                                        </i>
                                     </DropdownToggle>
                                     <DropdownMenu
                                         aria-labelledby="navbarDropdownMenuLink"

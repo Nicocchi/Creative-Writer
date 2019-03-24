@@ -55,12 +55,8 @@ class NavBar extends Component {
                                 <NavItem>
                                     <NavLink
                                         href="#pablo"
-                                        onClick={e => e.preventDefault()}
+                                        onClick={() => this.props.history.push('/editor')}
                                     >
-                                        {/*<i*/}
-                                            {/*aria-hidden={true}*/}
-                                            {/*className="tim-icons icon-single-02"*/}
-                                        {/*/>*/}
                                         <i className="material-icons md-24">
                                             person_outline
                                         </i>
@@ -77,8 +73,8 @@ class NavBar extends Component {
                                         onClick={e => e.preventDefault()}
                                     >
                                         {/*<i*/}
-                                            {/*aria-hidden={true}*/}
-                                            {/*className="tim-icons icon-settings-gear-63"*/}
+                                        {/*aria-hidden={true}*/}
+                                        {/*className="tim-icons icon-settings-gear-63"*/}
                                         {/*/>*/}
                                         <i className="material-icons md-24">
                                             apps

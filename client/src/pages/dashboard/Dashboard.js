@@ -32,11 +32,12 @@ class Dashboard extends Component {
                 </div>
                 <div>
                     <Button color="primary" onClick={this.toggleModalDemo}>
-                        Start Writing!
+                        <i className="tim-icons icon-pencil" style={{marginRight: "10px"}}>
+                        </i>Start Writing!
                     </Button>
-                    <Button color="primary" onClick={() => this.props.history.push('/editor')}>
-                        Skip to editor d
-                    </Button>
+                    {/*<Button color="primary" onClick={() => this.props.history.push('/editor')}>*/}
+                        {/*Skip to editor d*/}
+                    {/*</Button>*/}
                     <Modal isOpen={this.state.modalDemo} toggle={this.toggleModalDemo}>
                         <div className="modal-header"  style={{border: 0, backgroundColor: "#1f2251", display: "flex", justifyContent: "center"}}>
                             <h3 className="modal-title" id="exampleModalLabel" style={{color: "hsla(0,0%,100%,.8)"}}>

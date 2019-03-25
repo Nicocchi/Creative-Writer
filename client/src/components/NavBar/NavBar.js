@@ -88,6 +88,12 @@ class NavBar extends Component {
                                             href="#pablo"
                                             onClick={e => e.preventDefault()}
                                         >
+                                            Save
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            href="#pablo"
+                                            onClick={e => e.preventDefault()}
+                                        >
                                             Preferences
                                         </DropdownItem>
                                         <DropdownItem

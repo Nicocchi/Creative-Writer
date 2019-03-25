@@ -5,27 +5,67 @@ import 'react-quill/dist/quill.bubble.css';
 import SideNav, {NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import demoText from "./DemoText";
+import {connect} from "react-redux";
+import { createNewProject, createNewChapter, changeCurrentChapter, updateChapter } from "../../store/actions";
 
 class Editor extends Component {
     state = {
         text: 'Enter Text Here',
         open: true,
         selected: 'home',
+        chapExpanded: false,
+        charExpanded: false,
     }
 
     componentWillMount() {
-        this.setState({text: demoText});
+
+        if (this.props.project !== null || this.props.project !== undefined) {
+            if (this.props.project !== null) {
+                const chapter = this.props.project.project.chapters.filter(chp => chp.id === this.props.currentChapter)
+                this.setState({text: chapter[0].content, selected: `chapters/${this.props.currentChapter - 1}`, chapExpanded: true})
+            } else {
+                this.setState({text: "Enter Text Here"})
+            }
+        }
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.project !== this.props.project) {
+            const chapter = nextProps.project.project.chapters.filter(chp => chp.id === this.props.currentChapter)
+            this.setState({text: chapter[0].content, selected: `chapters/${this.props.currentChapter- 1}`, chapExpanded: true})
+        }
     }
 
     handleChange = value => {
-        this.setState({ text: value })
+        console.log("Value => ", value);
+        // this.setState({ text: value })
+        this.props.updateChapter(value, this.props.currentChapter);
     }
 
     handleSelected = selected => {
-        this.setState({ selected })
+        console.log("SELECTED => ", selected);
+        const chapter = this.props.project.project.chapters.filter(chp => chp.id === this.props.currentChapter)
+        this.setState({ selected, text: chapter[0].content})
+    }
+
+    handleAddChapter = () => {
+        this.props.createNewChapter();
+        console.log("CHPT => ", this.props.currentChapter);
+        const num = this.props.currentChapter;
+        this.setState({ selected: `chapters/${num}`})
+    }
+
+    handleChangeChapter = (id) => {
+        this.props.changeCurrentChapter(id);
     }
 
     render() {
+        let chapter = [{content: ""}];
+        if (this.props.project !== null) {
+            chapter = this.props.project.project.chapters.filter(chp => chp.id === this.props.currentChapter)
+        }
+
+        let selected = this.state.selected;
         return (
             <div>
             <div style={{display: "flex", justifyContent: "flex-start"}}>
@@ -33,13 +73,12 @@ class Editor extends Component {
                     <SideNav
                         expanded={true}
                         onSelect={(selected) => {
-                            // Add your code here
                             this.handleSelected(selected);
                         }}
                         style={{width: "100%", zIndex: "2000", position: "relative", backgroundColor: "transparent"}}
                     >
                         {/*<SideNav.Toggle />*/}
-                        <SideNav.Nav defaultSelected={this.state.selected}>
+                        <SideNav.Nav defaultSelected={selected}>
                             <NavItem eventKey="home">
                                 <NavIcon>
                                     <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
@@ -48,20 +87,30 @@ class Editor extends Component {
                                     Home
                                 </NavText>
                             </NavItem>
-                            <NavItem eventKey="chapters">
+                            <NavItem eventKey="chapters" expanded={this.state.chapExpanded}>
                                 <NavIcon>
                                     <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
                                 </NavIcon>
                                 <NavText>
                                     Chapters
                                 </NavText>
-                                <NavItem eventKey="charts/linechart">
-                                    <NavText>
-                                        Chapter 1
+                                {
+                                    this.props.project !== null ?
+                                        this.props.project.project.chapters.map((chapter, i) => (
+                                            <NavItem key={i} eventKey={`chapters/${i}`} onClick={() => this.handleChangeChapter(chapter.id)}>
+                                                <NavText>
+                                                    {chapter.title}
+                                                </NavText>
+                                            </NavItem>
+                                        )) : null
+                                }
+                                <NavItem>
+                                    <NavText onClick={this.handleAddChapter}>
+                                        Add
                                     </NavText>
                                 </NavItem>
                             </NavItem>
-                            <NavItem eventKey="characters">
+                            <NavItem eventKey="characters" expanded={this.state.charExpanded}>
                                 <NavIcon>
                                     <i className="fa fa-fw fa-line-chart" style={{ fontSize: '1.75em' }} />
                                 </NavIcon>
@@ -93,7 +142,8 @@ class Editor extends Component {
 
                 </div>
                 <div style={{width: "50%"}} >
-                    <ReactQuill value={this.state.text}
+                    <ReactQuill defaultValue={chapter[0].content}
+                                value={chapter[0].content}
                                 onChange={this.handleChange}
                                 theme="bubble"
                                 style={{height: "85vh" }}
@@ -108,4 +158,12 @@ class Editor extends Component {
     }
 }
 
-export default Editor;
+const mapStateToProps = state => ({
+    project: state.rootReducer.project,
+    currentChapter: state.rootReducer.currentChapter
+});
+
+export default connect(
+    mapStateToProps,
+    { createNewProject, createNewChapter, changeCurrentChapter, updateChapter }
+)(Editor);

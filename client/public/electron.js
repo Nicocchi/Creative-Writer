@@ -4,6 +4,11 @@ const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
+const Store = require("electron-store");
+const store = new Store();
+
+const fs = require("fs");
+
 let mainWindow;
 
 createWindow = () => {
@@ -14,7 +19,7 @@ createWindow = () => {
         titleBarStyle: 'hidden',
         webPreferences: {
             nodeIntegration: false,
-            preload: __dirname + '/preload.js',
+            preload: path.join(__dirname + '/preload.js'),
         },
         height: 860,
         width: 1280,
@@ -140,4 +145,80 @@ app.on('activate', () => {
 
 ipcMain.on('load-page', (event, arg) => {
     mainWindow.loadURL(arg);
+});
+
+/**
+ * Handles event listener to create and save a new project and load back to
+ * the state
+ * @param  {} event - Event argument
+ * @param  {} path - Current path of the new project to save
+ */
+ipcMain.on("create-project", (event, path) => {
+
+    const fileName = path.title;
+    const filePath = path.location;
+
+    const project = {
+        id: null,
+        title: fileName,
+        location: filePath,
+        editor: true,
+        project: {
+            editorState: "",
+            chapters: [{
+                id: 1,
+                title: "Chapter 1",
+                content: "<h1>Hello World</h1>"
+            }],
+            currentChapter: 0,
+            characters: [{
+                id: 1,
+                name: "John Doe",
+                nickname: "Mr. Doe",
+                gender: "Male",
+                biography: "A mysterious man",
+                images: [],
+
+            }],
+            settings: [{
+                id: 1,
+                name: "Backyard",
+                location: "349th Broker St.",
+                images: [],
+            }],
+        }
+
+    };
+
+    const proj = JSON.stringify(project);
+
+    // Write the file to disc
+    fs.writeFile(`${filePath}/${fileName}.cwr`, proj, err => {
+        if (err) {
+            console.log(err.message);
+            event.returnValue = null;
+            return;
+        }
+    });
+
+    // Recents
+    // handleSaveRecents(project);
+
+    event.returnValue = project;
+});
+
+ipcMain.on("openFolder", (event, path) => {
+    const { dialog } = require("electron");
+
+    dialog.showOpenDialog(
+        mainWindow,
+        {
+            properties: ["openDirectory"]
+        },
+        paths => respondWithPath(paths)
+    );
+
+    function respondWithPath(paths) {
+        return (event.returnValue = paths);
+    }
 });

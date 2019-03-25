@@ -31,6 +31,8 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
     "@trendmicro/react-sidenav": "^0.4.5",
     "blk-design-system-react": "^1.0.0",
     "bootstrap": "^4.3.1",

@@ -12,8 +12,8 @@ import {
     Nav,
     Container,
 } from "reactstrap";
-import SideNav, { Toggle, Nav as Nav1, NavItem as NavItem2, NavIcon, NavText, ClickOutside } from '@trendmicro/react-sidenav';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+// import SideNav, { Toggle, Nav as Nav1, NavItem as NavItem2, NavIcon, NavText, ClickOutside } from '@trendmicro/react-sidenav';
+// import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 class NavBar extends Component {
     state = {
@@ -27,7 +27,6 @@ class NavBar extends Component {
     }
 
     render() {
-        // console.log(this.props.history.location.pathname)
         return (
             <div>
                 <Navbar className="bg-transparent" expand="lg" role="navigation">

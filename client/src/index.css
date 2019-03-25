@@ -55,3 +55,13 @@ html, body {
 /* Rules for using icons as white on a dark background. */
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+
+.sidenav---sidenav-subnavitem---1cD47::before {
+  left: 0;
+}
+
+.MuiDrawer-paper-3 {
+  /*top: 60px !important;*/
+  width: 20%;
+}

@@ -5,9 +5,6 @@ import NavBar from "./components/NavBar/NavBar";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Editor from "./pages/editor/editor";
 
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText, ClickOutside } from '@trendmicro/react-sidenav';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-
 class App extends Component {
   render() {
     return (

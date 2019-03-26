@@ -54,7 +54,7 @@ export function createNewChapter() {
         const state = getState().rootReducer;
 
         const chapter = {
-            content: `<h1>Chapter ${state.project.project.chapters.length + 1}</h1>`,
+            content: `<h1 class="ql-align-center">Chapter ${state.project.project.chapters.length + 1}</h1>`,
             id: state.project.project.chapters.length + 1,
             title: `Chapter ${state.project.project.chapters.length + 1}`
         }

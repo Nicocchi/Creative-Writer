@@ -15,8 +15,43 @@ code {
 
 html, body {
   overflow: hidden;
+  /*background-color: white;*/
 }
 
+* {
+  color: black;
+}
+
+.ql-editor * {
+  color: black !important;
+}
+
+.quill {
+  border: none;
+  box-shadow: none;
+}
+
+.ql-snow {
+  border: none;
+  box-shadow: none;
+}
+
+.ql-editor {
+  /*padding: 4% 25% 20% 25%;*/
+  /*height: 100vh;*/
+  padding: 4% 25%;
+  /*height: 80%;*/
+  width: 100%;
+  border: none;
+  box-shadow: none;
+}
+
+.ql-container {
+  margin: auto;
+  height: 86vh;
+  border: none;
+  box-shadow: none;
+}
 
 /* width */
 ::-webkit-scrollbar {
@@ -59,9 +94,4 @@ html, body {
 
 .sidenav---sidenav-subnavitem---1cD47::before {
   left: 0;
-}
-
-.MuiDrawer-paper-3 {
-  /*top: 60px !important;*/
-  width: 20%;
 }

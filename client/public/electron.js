@@ -168,7 +168,7 @@ ipcMain.on("create-project", (event, path) => {
             chapters: [{
                 id: 1,
                 title: "Chapter 1",
-                content: "<h1>Hello World</h1>"
+                content: `<h1 class="ql-align-center">Chapter 1</h1>`
             }],
             currentChapter: 0,
             characters: [{

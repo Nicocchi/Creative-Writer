@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Route, Switch, withRouter} from 'react-router-dom';
-import NavBar from "./components/NavBar/NavBar";
+import withRoot from "./withRoot";
 import Dashboard from "./pages/dashboard/Dashboard";
-import Editor from "./pages/editor/editor";
+import Editor from "./pages/editor/Editor";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-          <NavBar history={this.props.history} />
+          {/*<NavBar history={this.props.history} />*/}
+          {/*<Header/>*/}
+          {/*<Navigator/>*/}
+          {/*<Content/>*/}
           <Switch>
               <Route exact path='/' component={Dashboard} />
               <Route exact path='/editor' component={Editor} />
@@ -19,4 +22,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default withRouter(withRoot(App));

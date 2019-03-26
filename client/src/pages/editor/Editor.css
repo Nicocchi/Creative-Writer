@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css?family=Rufina');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC');
+
+.ql-editor {
+    font-size: 16px;
+    font-family: 'Rufina', serif;
+    color: black !important;
+    /* font-family: "Noto Sans SC"; */
+}
+
+/* Set dropdown font-families */
+.ql-font span[data-label="Ubuntu"]::before {
+    font-family: "Ubuntu";
+}
+.ql-font .ql-font span[data-label="Raleway"]::before {
+    font-family: "Raleway";
+}
+.ql-font span[data-label="Roboto"]::before {
+    font-family: "Roboto";
+}
+
+/* Set content font-families */
+.ql-font-Raleway {
+    font-family: "Raleway";
+}
+.ql-font-Roboto {
+    font-family: "Roboto";
+}
+
+.ql-toolbar {
+    z-index: 9000;
+}
+
+.ql-container {
+    color: black !important;
+  }
+
+.ql-formats {
+    z-index: 9000;
+}
+
+.ql-bubble {
+    color: black !important;
+}
+
+.ql-snow.ql-editor p {
+    color: black !important;
+}
+
+.ql-editor * {
+    color: black !important;
+}
+
+.chapter-title {
+    text-align: center;
+    font-size: 38px;
+    background-color: #f7f7f7;
+    border: 0;
+    color: #ddd;
+    margin: 20px 0 20px 0;
+}
+
+.text-field {
+    text-align: center;
+    font-size: 38px;
+    background-color: #f7f7f7;
+    border: 0;
+    color: #ccc;
+    font-family: 'Rufina', serif;
+    margin: 0 0 0 1%;
+}
+
+.hr-input {
+    width: 20%;
+    margin-top: 15px;
+    border-top: 1px solid #ccc;
+}
+
+.RichEditor-root {
+    background: #f7f7f7;
+    border: 0;
+    font-family: 'Rufina', serif;
+    /* font-family: 'Noto Sans SC', sans-serif; */
+    font-size: 18px;
+    padding-left: 20%;
+    padding-right: 20%;
+    width: 100%;
+    margin: 0 auto;
+    position: fixed;
+    top: 105px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    line-height: 1.5em;
+}
+
+

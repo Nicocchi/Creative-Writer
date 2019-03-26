@@ -1,13 +1,10 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import "./Dashboard.css";
-import {
-    Button,
-    Label,
-    FormGroup,
-    Input,
-    Modal, ModalBody, FormText
-} from "reactstrap";
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Gallery from "../../components/Gallery/Gallery";
 import { createNewProject } from "../../store/actions";
 
@@ -23,6 +20,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import Icon from "@material-ui/core/Icon";
+import Header from "../../components/Header/Header";
+import Slide from '@material-ui/core/Slide';
 
 const variantIcon = {
     success: CheckCircleIcon,
@@ -55,7 +54,17 @@ const styles = theme => ({
         display: 'flex',
         alignItems: 'center',
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
+    input: {
+        display: 'none',
+    },
 });
+
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 
 function MySnackbarContent(props) {
     const { className, message, onClose, variant, ...other } = props;
@@ -102,6 +111,14 @@ class Dashboard extends Component {
         }
     }
 
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     snackbarOpen = (e) => {
         e.preventDefault();
         this.setState({ open: true });
@@ -147,7 +164,7 @@ class Dashboard extends Component {
             location: this.state.location
         };
 
-        this.setState({ modalDemo: false, name: '' });
+        this.setState({ open: false, name: '' });
 
         this.props.createNewProject(path);
     };
@@ -168,77 +185,137 @@ class Dashboard extends Component {
     };
 
     render() {
+        const { classes } = this.props;
         return (
             <div className={"dashboard container"}>
+                <Header project={this.props.project} route={this.props}/>
                 <div className={"dashboard header"}>
                     <h1>Dashboard</h1>
                 </div>
                 <div>
-                    <Button color="primary" onClick={this.toggleModal}>
-                        <i className="tim-icons icon-pencil" style={{marginRight: "10px"}}>
-                        </i>Start Writing!
+                    {/*<Button color="primary" onClick={this.toggleModal}>*/}
+                        {/*<i className="tim-icons icon-pencil" style={{marginRight: "10px"}}>*/}
+                        {/*</i>Start Writing!*/}
+                    {/*</Button>*/}
+                    <Button variant="contained" color="secondary" className={classes.button}>
+                        Open Project
+                    </Button>
+                    <Button onClick={() => this.handleClickOpen()} variant="contained" color="secondary" className={classes.button}>
+                        Start Writing!
                     </Button>
 
-                    <Modal
-                        modalClassName="modal-black"
-                        isOpen={this.state.modalCreate}
-                        toggle={this.toggleModal}
+                    <Dialog
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="form-dialog-title"
+                        TransitionComponent={Transition}
+                        keepMounted
+                        maxWidth="sm"
+                        fullWidth={true}
                     >
-                        <h3 className="modal-title" id="exampleModalLabel" style={{textAlign: "center", marginTop: "20px", marginBottom: "20px"}}>
-                            Create New Project
-                        </h3>
-                        <form style={{margin: "1%"}}>
-                            <FormGroup>
-                                <Label for="exampleEmail">Project Name</Label>
-                                <Input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    placeholder="Enter project name"
-                                    defaultValue={this.state.name}
-                                    onChange={this.handleInput}
-                                />
-                                <FormText style={{color: "red !important"}}>
-                                    You must enter a project name
-                                </FormText>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="location">Project Folder</Label>
-                                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                                    <Input
-                                        type="text"
-                                        name="location"
-                                        id="location"
-                                        placeholder="Enter project location"
-                                        autoComplete="off"
-                                        style={{width: "90%", marginRight: "10px"}}
-                                        defaultValue={this.state.location}
-                                        onChange={this.handleInput}
-                                    />
-                                    <Button onClick={(e) => this.openFile(e)} color="primary" type="submit">
-                                        Browse
-                                    </Button>
-                                </div>
-                            </FormGroup>
-                            <FormGroup style={{display: "flex", justifyContent: "center"}}>
-                                <Button onClick={e => this.handleCreateNewProject(e)} color="primary" type="submit">
-                                    Start Writing!
-                                </Button>
-                            </FormGroup>
+                        <DialogTitle id="form-dialog-title">Create New Project</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Start creating your project!
+                            </DialogContentText>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                name="name"
+                                label="Book Title"
+                                type="text"
+                                fullWidth
+                                defaultValue={this.state.name}
+                                onChange={this.handleInput}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="location"
+                                location="location"
+                                label="Project Folder"
+                                type="text"
+                                fullWidth
+                                defaultValue={this.state.location}
+                                value={this.state.location}
+                                onChange={this.handleInput}
+                            />
+                            <Button onClick={(e) => this.openFile(e)} variant="contained" color="secondary" className={classes.button}>
+                                Browse
+                            </Button>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={e => this.handleCreateNewProject(e)} color="primary">
+                                Create
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
-                        </form>
-                    </Modal>
+
+                    {/*<Modal*/}
+                        {/*modalClassName="modal-black"*/}
+                        {/*isOpen={this.state.modalCreate}*/}
+                        {/*toggle={this.toggleModal}*/}
+                    {/*>*/}
+                        {/*<h3 className="modal-title" id="exampleModalLabel" style={{textAlign: "center", marginTop: "20px", marginBottom: "20px"}}>*/}
+                            {/*Create New Project*/}
+                        {/*</h3>*/}
+                        {/*<form style={{margin: "1%"}}>*/}
+                            {/*<FormGroup>*/}
+                                {/*<label for="exampleEmail">Project Name</label>*/}
+                                {/*<Input*/}
+                                    {/*type="text"*/}
+                                    {/*name="name"*/}
+                                    {/*id="name"*/}
+                                    {/*placeholder="Enter project name"*/}
+                                    {/*defaultValue={this.state.name}*/}
+                                    {/*onChange={this.handleInput}*/}
+                                {/*/>*/}
+                                {/*<label style={{color: "red !important"}}>*/}
+                                    {/*You must enter a project name*/}
+                                {/*</label>*/}
+                            {/*</FormGroup>*/}
+                            {/*<FormGroup>*/}
+                                {/*<label for="location">Project Folder</label>*/}
+                                {/*<div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>*/}
+                                    {/*<Input*/}
+                                        {/*type="text"*/}
+                                        {/*name="location"*/}
+                                        {/*id="location"*/}
+                                        {/*placeholder="Enter project location"*/}
+                                        {/*autoComplete="off"*/}
+                                        {/*style={{width: "90%", marginRight: "10px"}}*/}
+                                        {/*defaultValue={this.state.location}*/}
+                                        {/*onChange={this.handleInput}*/}
+                                    {/*/>*/}
+                                    {/*<Button onClick={(e) => this.openFile(e)} color="primary" type="submit">*/}
+                                        {/*Browse*/}
+                                    {/*</Button>*/}
+                                {/*</div>*/}
+                            {/*</FormGroup>*/}
+                            {/*<FormGroup style={{display: "flex", justifyContent: "center"}}>*/}
+                                {/*<Button onClick={e => this.handleCreateNewProject(e)} color="primary" type="submit">*/}
+                                    {/*Start Writing!*/}
+                                {/*</Button>*/}
+                            {/*</FormGroup>*/}
+
+                        {/*</form>*/}
+                    {/*</Modal>*/}
                 </div>
-                <Button onClick={e => this.snackbarOpen(e)}>
-                    Open success snackbar
-                </Button>
+                {/*<Button onClick={e => this.snackbarOpen(e)}>*/}
+                    {/*Open success snackbar*/}
+                {/*</Button>*/}
                 <Gallery name="Recent Projects" clickHandler={this.alert} list={[{name: "Cras justo odio"}, {name: "Dapibus ac facilisis in"}, {name: "Morbi leo risus"}, {name: "Porta ac consectetur ac"}, {name: "Vestibulum at eros"}]}/>
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
                     }}
-                    open={this.state.open}
+                    open={this.state.open1}
                     autoHideDuration={2000}
                     onClose={this.snackbarClose}
                 >
@@ -260,4 +337,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { createNewProject }
-)(Dashboard);
+)(withStyles(styles)(Dashboard));

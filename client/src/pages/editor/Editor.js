@@ -293,9 +293,9 @@ class Editor extends React.Component {
                         </Hidden>
                     </nav>
                     <div className={classes.appContent}>
-                        <Header onDrawerToggle={this.handleDrawerToggle} name={this.props.project !== null ? this.props.project.title : "Project Title"} />
+                        <Header onDrawerToggle={this.handleDrawerToggle} name={this.props.project !== null ? this.props.project.title : "Project Title"} route={this.props} />
                         <main className={classes.mainContent}>
-                            <Content chapter={chapter} handleChange={this.handleChange} />
+                            <Content chapter={chapter} handleChange={this.handleChange} project={this.props.project} />
                         </main>
                     </div>
                 </div>

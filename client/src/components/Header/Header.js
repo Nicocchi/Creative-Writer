@@ -15,6 +15,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ArrowBack from '@material-ui/icons/ArrowBackIos';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -50,6 +52,7 @@ const styles = theme => ({
 
 function Header(props) {
     const { classes, onDrawerToggle } = props;
+    console.log("HEADER =>", props);
 
     return (
         <React.Fragment>
@@ -103,6 +106,17 @@ function Header(props) {
                                 {props.name}
                             </Typography>
                         </Grid>
+                        {
+                            props.project !== null && props.route.location.pathname === '/' ?
+                                <Grid item>
+                                    <Tooltip title="Back to writing">
+                                        <IconButton color="inherit" onClick={() => props.route.history.push('/editor')}>
+                                            <ArrowBack />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid> : null
+                        }
+
                         <Grid item>
                             <Tooltip title="Help">
                                 <IconButton color="inherit">

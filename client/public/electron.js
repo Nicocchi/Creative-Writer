@@ -207,6 +207,37 @@ ipcMain.on("create-project", (event, path) => {
     event.returnValue = project;
 });
 
+ipcMain.on("openProject", (event, path) => {
+    const { dialog } = require("electron");
+
+    dialog.showOpenDialog(
+        mainWindow,
+        {
+            properties: ["openFile"]
+        },
+        paths => respondWithPath(paths)
+    );
+
+    function respondWithPath(paths) {
+        const fs = require("fs");
+        if (paths === undefined) {
+            console.log("No file selected");
+            return (event.returnValue = null);
+        }
+
+        fs.readFile(paths[0], "utf-8", function(err, data) {
+            if (err) return (event.returnValue = null);
+            const project = JSON.parse(data);
+
+            console.log(project);
+
+            // handleSaveRecents(project);
+
+            event.returnValue = project;
+        });
+    }
+});
+
 ipcMain.on("openFolder", (event, path) => {
     const { dialog } = require("electron");
 

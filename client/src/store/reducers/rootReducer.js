@@ -1,5 +1,9 @@
 import {
     TEST,
+    OPEN_PROJECT_START,
+    OPEN_PROJECT_SUCCESS,
+    OPEN_PROJECT_FAILED,
+
     CREATE_PROJECT_SUCCESS,
     CREATE_PROJECT_FAILED,
 
@@ -22,6 +26,21 @@ export const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case TEST:
             return state;
+
+        case OPEN_PROJECT_START:
+            return state;
+
+        case OPEN_PROJECT_SUCCESS:
+            return {
+                ...state,
+                project: action.payload
+            }
+
+        case OPEN_PROJECT_FAILED:
+            return {
+                error: true,
+                errorMessage: "Failed to open project. Please check file/path and try again."
+            }
 
         case CREATE_PROJECT_SUCCESS:
             return {

@@ -3,6 +3,10 @@
  */
 export const TEST = "TEST";
 
+export const OPEN_PROJECT_START = 'OPEN_PROJECT_START';
+export const OPEN_PROJECT_SUCCESS = 'OPEN_PROJECT_SUCCESS';
+export const OPEN_PROJECT_FAILED = 'OPEN_PROJECT_FAILED';
+
 export const CREATE_PROJECT_START = 'CREATE_PROJECT_START';
 export const CREATE_PROJECT_SUCCESS = 'CREATE_PROJECT_SUCCESS';
 export const CREATE_PROJECT_FAILED = 'CREATE_PROJECT_FAILED';
@@ -28,6 +32,39 @@ export const UPDATE_CHAPTER_SUCCESS = 'UPDATE_CHAPTER_SUCCESS';
 export const testFunction = () => dispatch => {
     dispatch({ type: TEST });
 };
+
+/**
+ * Opens up a project from the electron dialog
+ * @param  {} dispatch
+ */
+export function openProject() {
+    return (dispatch, getState) => {
+        dispatch({ type: OPEN_PROJECT_START });
+
+        const project = window.IpcRenderer.sendSync("openProject");
+        if (project === null) return dispatch({ type: OPEN_PROJECT_FAILED });
+
+        const state = getState().rootReducer;
+
+        const contentState = project.project.editorState;
+
+        const proj = {
+            id: 1,
+            title: project.title,
+            location: project.location,
+            editor: project.editor,
+            project: {
+                editorState: contentState,
+                chapters: project.project.chapters,
+                currentChapter: project.project.currentChapter,
+                characters: project.project.characters,
+                settings: project.project.settings
+            }
+        }
+
+        dispatch({ type: OPEN_PROJECT_SUCCESS, payload: proj });
+    };
+}
 
 /**
  * Create and set a new project

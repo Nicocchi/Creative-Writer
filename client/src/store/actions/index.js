@@ -1,6 +1,12 @@
+import {OPEN_PROJECT_START} from "./rootActions";
+
 export {
     TEST,
     testFunction,
+    OPEN_PROJECT_START,
+    OPEN_PROJECT_SUCCESS,
+    OPEN_PROJECT_FAILED,
+    openProject,
     CREATE_PROJECT_START,
     CREATE_PROJECT_SUCCESS,
     CREATE_PROJECT_FAILED,

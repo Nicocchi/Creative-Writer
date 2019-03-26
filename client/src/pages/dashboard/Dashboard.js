@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Gallery from "../../components/Gallery/Gallery";
-import { createNewProject } from "../../store/actions";
+import { createNewProject, openProject } from "../../store/actions";
 
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -152,6 +152,13 @@ class Dashboard extends Component {
     };
 
     /**
+     * Open the file dialog and open an existing project
+     */
+    handleOpenProject = () => {
+        this.props.openProject();
+    };
+
+    /**
      * Creates a new project
      */
     handleCreateNewProject = (e) => {
@@ -197,7 +204,7 @@ class Dashboard extends Component {
                         {/*<i className="tim-icons icon-pencil" style={{marginRight: "10px"}}>*/}
                         {/*</i>Start Writing!*/}
                     {/*</Button>*/}
-                    <Button variant="contained" color="secondary" className={classes.button}>
+                    <Button onClick={this.handleOpenProject} variant="contained" color="secondary" className={classes.button}>
                         Open Project
                     </Button>
                     <Button onClick={() => this.handleClickOpen()} variant="contained" color="secondary" className={classes.button}>
@@ -336,5 +343,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { createNewProject }
+    { createNewProject, openProject }
 )(withStyles(styles)(Dashboard));

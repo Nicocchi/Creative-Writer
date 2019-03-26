@@ -1,5 +1,3 @@
-import {OPEN_PROJECT_START} from "./rootActions";
-
 export {
     TEST,
     testFunction,
@@ -21,4 +19,8 @@ export {
     UPDATE_CHAPTER_START,
     UPDATE_CHAPTER_SUCCESS,
     updateChapter,
+    GET_RECENTS_START,
+    GET_RECENTS_SUCCESS,
+    GET_RECENTS_FAILED,
+    getRecents,
 } from "./rootActions";

@@ -262,11 +262,11 @@ class Editor extends React.Component {
             );
         }
 
-        let selected = this.state.selected;
-        const { classes, theme, other, onDrawerToggle } = this.props;
-        const { anchorEl, mobileMoreAnchorEl } = this.state;
-        const isMenuOpen = Boolean(anchorEl);
-        const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+        // let selected = this.state.selected;
+        const { classes, theme } = this.props;
+        // const { anchorEl, mobileMoreAnchorEl } = this.state;
+        // const isMenuOpen = Boolean(anchorEl);
+        // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
         return (
             <MuiThemeProvider theme={theme}>

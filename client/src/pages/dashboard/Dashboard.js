@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import "./Dashboard.css";
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Gallery from "../../components/Gallery/Gallery";
-import { createNewProject, openProject } from "../../store/actions";
+import { createNewProject, openProject, getRecents } from "../../store/actions";
 
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -19,7 +19,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
-import Icon from "@material-ui/core/Icon";
 import Header from "../../components/Header/Header";
 import Slide from '@material-ui/core/Slide';
 
@@ -104,6 +103,10 @@ class Dashboard extends Component {
         location: "",
         open: false,
     };
+
+    componentWillMount() {
+        this.props.getRecents();
+    }
 
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.project !== null) {
@@ -244,7 +247,7 @@ class Dashboard extends Component {
                                 label="Project Folder"
                                 type="text"
                                 fullWidth
-                                defaultValue={this.state.location}
+                                // defaultValue={this.state.location}
                                 value={this.state.location}
                                 onChange={this.handleInput}
                             />
@@ -343,5 +346,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { createNewProject, openProject }
+    { createNewProject, openProject, getRecents }
 )(withStyles(styles)(Dashboard));

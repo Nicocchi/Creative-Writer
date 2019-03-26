@@ -2,20 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import HelpIcon from '@material-ui/icons/Help';
-import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import ArrowBack from '@material-ui/icons/ArrowBackIos';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
@@ -51,7 +45,7 @@ const styles = theme => ({
 });
 
 function Header(props) {
-    const { classes, onDrawerToggle } = props;
+    const { classes } = props;
     console.log("HEADER =>", props);
 
     return (
@@ -158,8 +152,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
-    classes: PropTypes.object.isRequired,
-    onDrawerToggle: PropTypes.func.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Header);

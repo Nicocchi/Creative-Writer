@@ -13,6 +13,10 @@ import {
     CHANGE_CHAPTER_START,
     CHANGE_CHAPTER_SUCCESS,
     CHANGE_CHAPTER_FAILED,
+
+    GET_RECENTS_START,
+    GET_RECENTS_SUCCESS,
+    GET_RECENTS_FAILED,
 } from "../actions/";
 
 const initialState = {
@@ -20,6 +24,7 @@ const initialState = {
     currentChapter: 1,
     error: false,
     errorMessage: "",
+    recents: null
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -39,7 +44,7 @@ export const rootReducer = (state = initialState, action) => {
         case OPEN_PROJECT_FAILED:
             return {
                 error: true,
-                errorMessage: "Failed to open project. Please check file/path and try again."
+                errorMessage: action.payload
             }
 
         case CREATE_PROJECT_SUCCESS:
@@ -75,6 +80,22 @@ export const rootReducer = (state = initialState, action) => {
             }
 
         case CHANGE_CHAPTER_FAILED:
+            return {
+                ...state,
+                error: true,
+                errorMessage: action.payload
+            }
+
+        case GET_RECENTS_START:
+            return state;
+
+        case GET_RECENTS_SUCCESS:
+            return {
+                ...state,
+                recents: action.payload
+            }
+
+        case GET_RECENTS_FAILED:
             return {
                 ...state,
                 error: true,

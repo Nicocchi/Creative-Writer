@@ -21,6 +21,10 @@ export const CHANGE_CHAPTER_FAILED = 'CHANGE_CHAPTER_FAILED';
 export const UPDATE_CHAPTER_START = 'UPDATE_CHAPTER_START';
 export const UPDATE_CHAPTER_SUCCESS = 'UPDATE_CHAPTER_SUCCESS';
 
+export const GET_RECENTS_START = 'GET_RECENTS_START';
+export const GET_RECENTS_SUCCESS = 'GET_RECENTS_SUCCESS';
+export const GET_RECENTS_FAILED = 'GET_RECENTS_FAILED';
+
 /*
  * Action creators
  */
@@ -42,9 +46,7 @@ export function openProject() {
         dispatch({ type: OPEN_PROJECT_START });
 
         const project = window.IpcRenderer.sendSync("openProject");
-        if (project === null) return dispatch({ type: OPEN_PROJECT_FAILED });
-
-        const state = getState().rootReducer;
+        if (project === null) return dispatch({ type: OPEN_PROJECT_FAILED, payload: "Failed to open project. Please check file/path and try again." });
 
         const contentState = project.project.editorState;
 
@@ -112,7 +114,6 @@ export function changeCurrentChapter(id) {
     return (dispatch) => {
         dispatch({ type: CHANGE_CHAPTER_START });
 
-        const chapID = Number(id);
         dispatch({ type: CHANGE_CHAPTER_SUCCESS, payload: id });
         // if (typeof(chapID) === 'Number') {
 
@@ -141,3 +142,28 @@ export function updateChapter(value, id) {
 
     }
 }
+
+/**
+ * Gets the recents from the electron-store
+ * @param  {} dispatch
+ */
+export const getRecents = () => dispatch => {
+    dispatch({ type: GET_RECENTS_START });
+
+    const results = window.IpcRenderer.sendSync("get-recents");
+
+    console.log("RESULTS => ", results);
+
+    if (results=== null) return dispatch({ type: GET_RECENTS_FAILED, payload: "Failed to load recents" });
+
+    let recents = [];
+    results.forEach(rec => {
+        const project = {
+            title: rec.title,
+            location: rec.location
+        };
+        recents.push(project);
+    });
+
+    dispatch({ type: GET_RECENTS_SUCCESS, payload: recents });
+};

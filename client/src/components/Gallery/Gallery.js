@@ -1,5 +1,5 @@
 import React from "react";
-import { CardImg, CardTitle, CardDeck, CardBody } from "reactstrap";
+import { Card, CardImg, CardTitle, CardDeck, CardBody } from "reactstrap";
 
 const Gallery = props => {
   return (
@@ -7,7 +7,7 @@ const Gallery = props => {
       <h3 style={{ paddingTop: "20px" }}>{props.name}</h3>
       <CardDeck style={{ display: "flex", justifyContent: "center" }}>
         {props.list.map((itm, i) => (
-          <card style={{ width: "200px", margin: "2%", cursor: "pointer"}} onClick={props.clickHandler ? () => props.clickHandler(itm.name) : null}>
+          <Card key={i} style={{ width: "200px", margin: "2%", cursor: "pointer"}} onClick={props.clickHandler ? () => props.clickHandler(itm.name) : null}>
             <CardImg
               top
               width="100%"
@@ -17,7 +17,7 @@ const Gallery = props => {
             <CardBody>
               <CardTitle>{itm.name}</CardTitle>
             </CardBody>
-          </card>
+          </Card>
         ))}
       </CardDeck>
     </div>

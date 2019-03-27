@@ -70,7 +70,13 @@ export const rootReducer = (state = initialState, action) => {
         case CREATE_PROJECT_SUCCESS:
             return {
                 ...state,
-                project: action.payload
+                project: action.payload,
+                currentChapter: 1,
+                currentChar: null,
+                currentInfo: null,
+                error: false,
+                errorMessage: "",
+                recents: null
             }
 
         case CREATE_PROJECT_FAILED:

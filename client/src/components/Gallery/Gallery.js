@@ -11,7 +11,7 @@ const Gallery = props => {
             <CardImg
               top
               width="100%"
-              src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180"
+              src="https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg"
               alt="Card image cap"
             />
             <CardBody>

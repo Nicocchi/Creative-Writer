@@ -160,12 +160,14 @@ class Editor extends React.Component {
         open2: false,
         open3: false,
         open4: false,
+        toolTip1: false,
         selected: "home",
         chapExpanded: false,
         charExpanded: false,
         navExpanded: true,
         anchorEl: null,
-        mobileMoreAnchorEl: null
+        mobileMoreAnchorEl: null,
+        arrowRef: null,
     };
 
     componentWillMount() {
@@ -197,6 +199,14 @@ class Editor extends React.Component {
             });
         }
     }
+
+    handleTooltipClose = () => {
+        this.setState({ toolTip1: false });
+    };
+
+    handleTooltipOpen = () => {
+        this.setState({ toolTip1: true });
+    };
 
     handleDrawerOpen = () => {
         this.setState({ open: true });
@@ -254,6 +264,20 @@ class Editor extends React.Component {
         this.setState(state => ({ mobileOpen: !state.mobileOpen }));
     };
 
+    handleCloseMenu = () => {
+        this.setState({ anchorEl: null });
+    }
+
+    handleOpenMenu = (event) => {
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleArrowRef = node => {
+        this.setState({
+            arrowRef: node,
+        });
+    };
+
     render() {
         let chapter = [{ content: "" }];
         if (this.props.project !== null) {
@@ -267,6 +291,9 @@ class Editor extends React.Component {
         // const { anchorEl, mobileMoreAnchorEl } = this.state;
         // const isMenuOpen = Boolean(anchorEl);
         // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
 
         return (
             <MuiThemeProvider theme={theme}>
@@ -293,7 +320,7 @@ class Editor extends React.Component {
                         </Hidden>
                     </nav>
                     <div className={classes.appContent}>
-                        <Header onDrawerToggle={this.handleDrawerToggle} name={this.props.project !== null ? this.props.project.title : "Project Title"} route={this.props} />
+                        <Header arrowRef={this.state.arrowRef} handleArrowRef={this.handleArrowRef} handleTooltipClose={this.handleTooltipClose} handleTooltipOpen={this.handleTooltipOpen} toolTip1={this.state.toolTip1} onDrawerToggle={this.handleDrawerToggle} name={this.props.project !== null ? this.props.project.title : "Project Title"} route={this.props} anchorEl={this.state.anchorEl} handleClose={this.handleCloseMenu} handleOpen={this.handleOpenMenu} open={open} />
                         <main className={classes.mainContent}>
                             <Content chapter={chapter} handleChange={this.handleChange} project={this.props.project} />
                         </main>

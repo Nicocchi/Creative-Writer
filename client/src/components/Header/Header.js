@@ -46,7 +46,6 @@ const styles = theme => ({
 
 function Header(props) {
     const { classes } = props;
-    console.log("HEADER =>", props);
 
     return (
         <React.Fragment>

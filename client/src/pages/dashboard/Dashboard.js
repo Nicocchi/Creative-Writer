@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Gallery from "../../components/Gallery/Gallery";
-import { createNewProject, openProject, getRecents } from "../../store/actions";
+import { createNewProject, openProject, getRecents, openRecentProject } from "../../store/actions";
 
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -105,7 +105,7 @@ class Dashboard extends Component {
     };
 
     componentWillMount() {
-        this.props.getRecents();
+        if (this.props.project === null) this.props.getRecents();
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -178,6 +178,10 @@ class Dashboard extends Component {
 
         this.props.createNewProject(path);
     };
+
+    handleOpenRecentProject = location => {
+        this.props.openRecentProject(location);
+    }
 
     /**
      * Open the file dialog and select a folder to save the project
@@ -319,7 +323,7 @@ class Dashboard extends Component {
                 {/*<Button onClick={e => this.snackbarOpen(e)}>*/}
                     {/*Open success snackbar*/}
                 {/*</Button>*/}
-                <Gallery name="Recent Projects" clickHandler={this.alert} list={[{name: "Cras justo odio"}, {name: "Dapibus ac facilisis in"}, {name: "Morbi leo risus"}, {name: "Porta ac consectetur ac"}, {name: "Vestibulum at eros"}]}/>
+                <Gallery name="Recent Projects" clickHandler={this.handleOpenRecentProject} list={this.props.recents !== null ? this.props.recents : [{name: "No project"}]}/>
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
@@ -341,10 +345,11 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-    project: state.rootReducer.project
+    project: state.rootReducer.project,
+    recents: state.rootReducer.recents
 });
 
 export default connect(
     mapStateToProps,
-    { createNewProject, openProject, getRecents }
+    { createNewProject, openProject, getRecents, openRecentProject }
 )(withStyles(styles)(Dashboard));

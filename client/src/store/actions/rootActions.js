@@ -25,6 +25,10 @@ export const GET_RECENTS_START = 'GET_RECENTS_START';
 export const GET_RECENTS_SUCCESS = 'GET_RECENTS_SUCCESS';
 export const GET_RECENTS_FAILED = 'GET_RECENTS_FAILED';
 
+export const OPEN_RECENT_START = 'OPEN_RECENT_START';
+export const OPEN_RECENT_SUCCESS = 'OPEN_RECENT_SUCCESS';
+export const OPEN_RECENT_FAILED = 'OPEN_RECENT_FAILED';
+
 /*
  * Action creators
  */
@@ -167,3 +171,21 @@ export const getRecents = () => dispatch => {
 
     dispatch({ type: GET_RECENTS_SUCCESS, payload: recents });
 };
+
+/**
+ * Opens up a recent project from the electron electron-store
+ * @param  {} dispatch
+ */
+export function openRecentProject(recent) {
+    return (dispatch, getState) => {
+        dispatch({ type: OPEN_RECENT_START });
+
+        const project = window.IpcRenderer.sendSync("open-recent", recent);
+        if (project === null) return dispatch({ type: OPEN_RECENT_FAILED });
+
+        const state = getState().rootReducer;
+
+
+        dispatch({ type: OPEN_RECENT_SUCCESS, payload: project });
+    };
+}

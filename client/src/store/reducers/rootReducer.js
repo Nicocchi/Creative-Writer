@@ -17,6 +17,10 @@ import {
     GET_RECENTS_START,
     GET_RECENTS_SUCCESS,
     GET_RECENTS_FAILED,
+
+    OPEN_RECENT_START,
+    OPEN_RECENT_SUCCESS,
+    OPEN_RECENT_FAILED,
 } from "../actions/";
 
 const initialState = {
@@ -44,7 +48,8 @@ export const rootReducer = (state = initialState, action) => {
         case OPEN_PROJECT_FAILED:
             return {
                 error: true,
-                errorMessage: action.payload
+                errorMessage: action.payload,
+                project: null,
             }
 
         case CREATE_PROJECT_SUCCESS:
@@ -101,6 +106,22 @@ export const rootReducer = (state = initialState, action) => {
                 error: true,
                 errorMessage: action.payload
             }
+
+        case OPEN_RECENT_START:
+            return state;
+
+        case OPEN_RECENT_SUCCESS:
+            return {
+                ...state,
+                project: action.payload,
+                currentChapter: 1
+            }
+
+        case OPEN_RECENT_FAILED: return {
+            ...state,
+            error: true,
+            errorMessage: action.payload
+        }
 
         default:
             return state;

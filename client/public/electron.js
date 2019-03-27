@@ -320,7 +320,7 @@ ipcMain.on("get-recents", (event, arg) => {
 
     let recentsObj = store.get("recents");
 
-    event.returnValue = recentsObj.recents;
+    event.returnValue = recentsObj;
 });
 
 ipcMain.on("open-recent", (event, arg) => {

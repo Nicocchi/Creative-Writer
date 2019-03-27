@@ -23,4 +23,8 @@ export {
     GET_RECENTS_SUCCESS,
     GET_RECENTS_FAILED,
     getRecents,
+    OPEN_RECENT_START,
+    OPEN_RECENT_SUCCESS,
+    OPEN_RECENT_FAILED,
+    openRecentProject
 } from "./rootActions";

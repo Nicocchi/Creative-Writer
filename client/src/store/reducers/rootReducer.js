@@ -21,11 +21,26 @@ import {
     OPEN_RECENT_START,
     OPEN_RECENT_SUCCESS,
     OPEN_RECENT_FAILED,
+
+    CHANGE_CHAR_START,
+    CHANGE_CHAR_SUCCESS,
+    CHANGE_CHAR_FAILED,
+
+    UPDATE_CHAR_START,
+    UPDATE_CHAR_SUCCESS,
+
+    ADD_CHARACTER_INFO_START,
+    ADD_CHARACTER_INFO_SUCCESS,
+
+    ADD_CHARACTER_START,
+    ADD_CHARACTER_SUCCESS,
 } from "../actions/";
 
 const initialState = {
     project: null,
     currentChapter: 1,
+    currentChar: null,
+    currentInfo: null,
     error: false,
     errorMessage: "",
     recents: null
@@ -81,7 +96,9 @@ export const rootReducer = (state = initialState, action) => {
         case CHANGE_CHAPTER_SUCCESS:
             return {
                 ...state,
-                currentChapter: action.payload
+                currentChapter: action.payload,
+                currentChar: null,
+                currentInfo: null,
             }
 
         case CHANGE_CHAPTER_FAILED:
@@ -122,6 +139,44 @@ export const rootReducer = (state = initialState, action) => {
             error: true,
             errorMessage: action.payload
         }
+
+        case CHANGE_CHAR_START:
+            return state;
+
+        case CHANGE_CHAR_SUCCESS:
+            return {
+                ...state,
+                currentChar: action.payload.char,
+                currentInfo: action.payload.info,
+                currentChapter: null
+            }
+
+        case CHANGE_CHAR_FAILED:
+            return state;
+
+        case ADD_CHARACTER_INFO_START:
+            return state;
+
+        case ADD_CHARACTER_INFO_SUCCESS:
+            return {
+                ...state,
+                project: action.payload.project,
+                currentChapter: null,
+                currentChar: action.payload.char,
+                currentInfo: action.payload.info
+            }
+
+        case ADD_CHARACTER_START:
+            return state;
+
+        case ADD_CHARACTER_SUCCESS:
+            return {
+                ...state,
+                project: action.payload,
+                currentChapter: null,
+                currentChar: state.project.project.characters.length - 1,
+                currentInfo: 0,
+            }
 
         default:
             return state;

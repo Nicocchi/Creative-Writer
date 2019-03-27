@@ -7,7 +7,7 @@ import Navigator from '../../components/Navigator/Navigator';
 import Content from '../../components/Content/Content';
 import Header from '../../components/Header/Header';
 import {connect} from "react-redux";
-import {changeCurrentChapter, createNewChapter, createNewProject, updateChapter} from "../../store/actions";
+import {changeCurrentChapter, createNewChapter, createNewProject, updateChapter, changeCurrentChar, updateCharacterInfo, createNewCharacterInfo, createNewCharacter } from "../../store/actions";
 
 let theme = createMuiTheme({
     typography: {
@@ -160,6 +160,7 @@ class Editor extends React.Component {
         open2: false,
         open3: false,
         open4: false,
+        open5: false,
         toolTip1: false,
         selected: "home",
         chapExpanded: false,
@@ -219,7 +220,12 @@ class Editor extends React.Component {
     handleChange = value => {
         console.log("Value => ", value);
         // this.setState({ text: value })
-        this.props.updateChapter(value, this.props.currentChapter);
+        if (this.props.currentChapter !== null) {
+            this.props.updateChapter(value, this.props.currentChapter);
+        } else {
+            this.props.updateCharacterInfo(value, this.props.currentChar, this.props.currentInfo)
+        }
+        
     };
 
     handleClick = () => {
@@ -278,12 +284,29 @@ class Editor extends React.Component {
         });
     };
 
+    handleChangeChar = (charI, infoI) => {
+        this.props.changeCurrentChar(charI, infoI);
+    }
+
+    handleAddCharacterInfo = (char) => {
+        this.props.createNewCharacterInfo(char);
+    }
+
+    handleAddCharacter = () => {
+        this.props.createNewCharacter();
+    }
+
     render() {
-        let chapter = [{ content: "" }];
-        if (this.props.project !== null) {
+        let chapter = [{content: ""}];
+        let character = null;
+        if (this.props.project !== null && this.props.currentChapter !== null) {
             chapter = this.props.project.project.chapters.filter(
                 chp => chp.id === this.props.currentChapter
             );
+        } else if (this.props.project !== null && this.props.currentChar !== null && this.props.currentInfo !== null) {
+            chapter.push(this.props.project.project.characters[this.props.currentChar].info[this.props.currentInfo]);
+            chapter.reverse();
+            console.log("CHAPTER => ", chapter);
         }
 
         // let selected = this.state.selected;
@@ -313,8 +336,13 @@ class Editor extends React.Component {
                                        openCollapse={this.openCollapse}
                                        handleChangeChapter={this.handleChangeChapter}
                                        handleAddChapter={this.handleAddChapter}
+                                       handleAddCharacter={this.handleAddCharacter}
+                                       handleAddCharacterInfo={this.handleAddCharacterInfo}
+                                       handleChangeChar={this.handleChangeChar}
                                        project={this.props.project}
                                        currentChapter={this.props.currentChapter}
+                                       currentChar={this.props.currentChar}
+                                       currentInfo={this.props.currentInfo}
                                        history={this.props.history}
                                        PaperProps={{ style: { width: drawerWidth } }} />
                         </Hidden>
@@ -337,10 +365,12 @@ Editor.propTypes = {
 
 const mapStateToProps = state => ({
     project: state.rootReducer.project,
-    currentChapter: state.rootReducer.currentChapter
+    currentChapter: state.rootReducer.currentChapter,
+    currentChar: state.rootReducer.currentChar,
+    currentInfo: state.rootReducer.currentInfo,
 });
 
 export default connect(
     mapStateToProps,
-    { createNewProject, createNewChapter, changeCurrentChapter, updateChapter }
+    { createNewProject, createNewChapter, changeCurrentChapter, updateChapter, changeCurrentChar, updateCharacterInfo, createNewCharacterInfo, createNewCharacter }
 )(withStyles(styles)(Editor));

@@ -42,6 +42,15 @@ export const ADD_CHARACTER_INFO_SUCCESS = 'ADD_CHARACTER_INFO_SUCCESS';
 export const ADD_CHARACTER_START = 'ADD_CHARACTER_START';
 export const ADD_CHARACTER_SUCCESS = 'ADD_CHARACTER_SUCCESS';
 
+export const CHANGE_SETTING_START = 'CHANGE_SETTING_START';
+export const CHANGE_SETTING_SUCCESS = 'CHANGE_SETTING_SUCCESS';
+
+export const ADD_SETTING_INFO_START = 'ADD_SETTING_INFO_START';
+export const ADD_SETTING_INFO_SUCCESS = 'ADD_SETTING_INFO_SUCCESS';
+
+export const ADD_SETTING_START = 'ADD_SETTING_START';
+export const ADD_SETTING_SUCCESS = 'ADD_SETTING_SUCCESS';
+
 /*
  * Action creators
  */
@@ -275,6 +284,80 @@ export function createNewCharacter() {
         console.log("ADDING CHARACTER => ", project);
 
         dispatch({ type: ADD_CHARACTER_SUCCESS, payload: project });
+
+
+
+    }
+}
+
+export function changeCurrentSetting(settingI, infoI) {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_SETTING_START });
+
+        dispatch({ type: CHANGE_SETTING_SUCCESS, payload: {setting: settingI, info: infoI} });
+
+    }
+}
+
+export function updateSettingInfo(value, char, index) {
+    return (dispatch, getState) => {
+        dispatch({ type: UPDATE_CHAR_START });
+        const state = getState().rootReducer;
+
+        let project = state.project;
+
+        project.project.settings[char].info[index].content = value;
+
+        console.log("UPDATING SETTING INFO => ", project);
+
+        dispatch({ type: UPDATE_CHAR_SUCCESS, payload: project });
+
+    }
+}
+
+export function createNewSettingInfo(setting) {
+    return (dispatch, getState) => {
+        dispatch({ type: ADD_SETTING_INFO_START });
+        const state = getState().rootReducer;
+
+        const newInfo = {title: 'New Info', content: `<h1 class="ql-align-center">New Info</h1>`};
+
+        let project = state.project;
+        project.project.settings[setting].info.push(newInfo);
+
+        console.log("ADDING SETTING INFO => ", project);
+
+        dispatch({ type: ADD_SETTING_INFO_SUCCESS, payload: {project: project, setting: setting, info: project.project.settings[setting].info.length - 1} });
+
+
+
+    }
+}
+
+export function createNewSetting() {
+    return (dispatch, getState) => {
+        dispatch({ type: ADD_SETTING_START });
+        const state = getState().rootReducer;
+
+        const settings = {
+            name: "New Setting",
+            info: [
+                {title: 'Basics', content: `<h1 class="ql-align-center">Basics</h1><p><br></p><p><strong>What is your world called? </strong></p><p><br></p><p><strong>Is it set on: </strong></p><ul><li>Earth</li><li>Alternate Earth</li><li>Not Earth</li></ul><p><br></p><p><strong> Estimate its population: </strong></p><p><br></p><p><strong>In one sentence, describe your world.</strong></p><p><br></p>`},
+                {title: 'Geography', content: `<h1 class="ql-align-center">Geography</h1>`},
+                {title: 'People', content: `<h1 class="ql-align-center">People</h1>`},
+                {title: 'Civilization', content: `<h1 class="ql-align-center">Civilization</h1>`},
+                {title: 'Technology, Magic & Weapons', content: `<h1 class="ql-align-center">Technology, Magic & Weapons</h1>`},
+                {title: 'Economy', content: `<h1 class="ql-align-center">Economy</h1>`},
+                {title: 'Politics', content: `<h1 class="ql-align-center">Politics</h1>`},
+            ]
+        }
+
+        let project = state.project;
+        project.project.settings.push(settings);
+
+        console.log("ADDING SETTING => ", project);
+
+        dispatch({ type: ADD_SETTING_SUCCESS, payload: project });
 
 
 

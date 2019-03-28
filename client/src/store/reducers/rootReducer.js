@@ -34,6 +34,14 @@ import {
 
     ADD_CHARACTER_START,
     ADD_CHARACTER_SUCCESS,
+
+    CHANGE_SETTING_START,
+    CHANGE_SETTING_SUCCESS,
+
+    ADD_SETTING_INFO_START,
+    ADD_SETTING_INFO_SUCCESS,
+    ADD_SETTING_START,
+    ADD_SETTING_SUCCESS,
 } from "../actions/";
 
 const initialState = {
@@ -93,7 +101,11 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 project: action.payload,
-                currentChapter: state.currentChapter + 1
+                currentChapter: state.currentChapter + 1,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: null,
+                currentSetInfo: null,
             }
 
         case CHANGE_CHAPTER_START:
@@ -105,6 +117,8 @@ export const rootReducer = (state = initialState, action) => {
                 currentChapter: action.payload,
                 currentChar: null,
                 currentInfo: null,
+                currentSetting: null,
+                currentSetInfo: null,
             }
 
         case CHANGE_CHAPTER_FAILED:
@@ -154,7 +168,9 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 currentChar: action.payload.char,
                 currentInfo: action.payload.info,
-                currentChapter: null
+                currentChapter: null,
+                currentSetting: null,
+                currentSetInfo: null,
             }
 
         case CHANGE_CHAR_FAILED:
@@ -169,7 +185,9 @@ export const rootReducer = (state = initialState, action) => {
                 project: action.payload.project,
                 currentChapter: null,
                 currentChar: action.payload.char,
-                currentInfo: action.payload.info
+                currentInfo: action.payload.info,
+                currentSetting: null,
+                currentSetInfo: null,
             }
 
         case ADD_CHARACTER_START:
@@ -182,6 +200,49 @@ export const rootReducer = (state = initialState, action) => {
                 currentChapter: null,
                 currentChar: state.project.project.characters.length - 1,
                 currentInfo: 0,
+                currentSetting: null,
+                currentSetInfo: null,
+            }
+
+        case CHANGE_SETTING_START:
+            return state;
+
+        case CHANGE_SETTING_SUCCESS:
+            return {
+                ...state,
+                currentChapter: null,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: action.payload.setting,
+                currentSetInfo: action.payload.info,
+        }
+
+        case ADD_SETTING_INFO_START:
+            return state;
+
+        case ADD_SETTING_INFO_SUCCESS:
+            return {
+                ...state,
+                project: action.payload.project,
+                currentChapter: null,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: action.payload.setting,
+                currentSetInfo: action.payload.info,
+            }
+
+        case ADD_SETTING_START:
+            return state;
+
+        case ADD_SETTING_SUCCESS:
+            return {
+                ...state,
+                project: action.payload,
+                currentChapter: null,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: state.project.project.settings.length - 1,
+                currentSetInfo: 0,
             }
 
         default:

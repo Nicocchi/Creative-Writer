@@ -19,7 +19,11 @@ import {
   changeCurrentChar,
   updateCharacterInfo,
   createNewCharacterInfo,
-  createNewCharacter
+  createNewCharacter,
+    changeCurrentSetting,
+    updateSettingInfo,
+    createNewSetting,
+    createNewSettingInfo,
 } from "../../store/actions";
 
 let theme = createMuiTheme({
@@ -176,6 +180,7 @@ class Editor extends React.Component {
     open5: false,
     toolTip1: false,
       characterOpen: [],
+      settingOpen: [],
     selected: "home",
     chapExpanded: false,
     charExpanded: false,
@@ -188,11 +193,10 @@ class Editor extends React.Component {
   componentWillMount() {
     if (this.props.project !== null || this.props.project !== undefined) {
       if (this.props.project !== null) {
-        const chapter = this.props.project.project.chapters.filter(
-          chp => chp.id === this.props.currentChapter
-        );
+
         let characterOpen = [];
-          this.props.project.project.characters.forEach((elem, i) => {
+          let settingOpen = [];
+          this.props.project.project.characters.forEach(() => {
               const info = {
                   isOpen: false,
               }
@@ -200,11 +204,48 @@ class Editor extends React.Component {
               characterOpen.push(info);
           })
 
+          this.props.project.project.settings.forEach(() => {
+              const info = {
+                  isOpen: false,
+              }
+
+              settingOpen.push(info);
+          })
+
+          let chapter = [{ content: "" }];
+
+          if (this.props.project.project.chapters !== null && this.props.currentChapter) {
+              console.log("CHAPTERS");
+              chapter = this.props.project.project.chapters.filter(
+                  chp => chp.id === this.props.currentChapter
+              );
+          } else if (this.props.project.project.characters !== null && this.props.currentChar) {
+              console.log("CHARACTERS");
+              chapter.push(
+                  this.props.project.project.characters[this.props.currentChar].info[
+                      this.props.currentInfo
+                      ]
+              );
+
+          } else if (this.props.project.project.settings !== null && this.props.currentSetting) {
+              console.log("SETTINGS");
+              chapter.push(
+                  this.props.project.project.settings[this.props.currentSetting].info[
+                      this.props.currentSetInfo
+                      ]
+              );
+          }
+
+          console.log("CHAP CONTENTS => ", chapter);
+          console.log("CHAP CHAR => ", this.props.currentChar);
+          console.log("CHAP INFO => ", this.props.currentInfo);
+
         this.setState({
           text: chapter[0].content,
           selected: `chapters/${this.props.currentChapter - 1}`,
           chapExpanded: true,
             characterOpen: characterOpen,
+            settingOpen: settingOpen,
 
         });
       } else {
@@ -220,6 +261,7 @@ class Editor extends React.Component {
       );
 
         let characterOpen = [];
+        let settingOpen = [];
         this.props.project.project.characters.forEach((elem, i) => {
             const info = {
                 isOpen: false,
@@ -228,11 +270,20 @@ class Editor extends React.Component {
             characterOpen.push(info);
         })
 
+        this.props.project.project.settings.forEach(() => {
+            const info = {
+                isOpen: false,
+            }
+
+            settingOpen.push(info);
+        })
+
       this.setState({
         text: chapter[0].content,
         selected: `chapters/${this.props.currentChapter - 1}`,
         chapExpanded: true,
           characterOpen: characterOpen,
+          settingOpen: settingOpen,
       });
     }
   }
@@ -258,12 +309,18 @@ class Editor extends React.Component {
     // this.setState({ text: value })
     if (this.props.currentChapter !== null) {
       this.props.updateChapter(value, this.props.currentChapter);
-    } else {
+    } else if (this.props.currentChar !== null) {
       this.props.updateCharacterInfo(
         value,
         this.props.currentChar,
         this.props.currentInfo
       );
+    } else if (this.props.currentSetting !== null) {
+        this.props.updateSettingInfo(
+            value,
+            this.props.currentSetting,
+            this.props.currentSetInfo
+        )
     }
   };
 
@@ -355,6 +412,38 @@ class Editor extends React.Component {
         }, () => console.log(this.state.characterOpen));
     }
 
+    openSetCollapse = (index) => {
+        console.log("INDEX => ", index);
+        this.setState(previousState => {
+            const settingOpen = [...previousState.settingOpen];
+            settingOpen[index] = { ...settingOpen[index], isOpen: !settingOpen[index].isOpen};
+            return { settingOpen };
+        }, () => console.log(this.state.settingOpen));
+    }
+
+    handleChangeSetting = (settingsI, infoI) => {
+        this.props.changeCurrentSetting(settingsI, infoI);
+    };
+
+    handleAddSettingInfo = setting => {
+        this.props.createNewSettingInfo(setting);
+    };
+
+    handleAddSetting = () => {
+        this.props.createNewSetting();
+
+        let settingOpen = this.state.settingOpen;
+        const info = {
+            isOpen: false,
+        }
+
+        settingOpen.push(info);
+
+        this.setState({
+            characterOpen: settingOpen,
+        });
+    };
+
   render() {
     let chapter = [{ content: "" }];
     let character = null;
@@ -373,7 +462,20 @@ class Editor extends React.Component {
         ]
       );
       chapter.reverse();
-      console.log("CHAPTER => ", chapter);
+      console.log("CHAPTER CHARACTERS => ", chapter);
+    } else if (
+        this.props.project !== null &&
+        this.props.currentSetting !== null &&
+        this.props.currentSetInfo !== null
+    ) {
+        chapter.push(
+            this.props.project.project.settings[this.props.currentSetting].info[
+                this.props.currentSetInfo
+                ]
+        );
+
+        chapter.reverse();
+        console.log("CHAPTER SETTINGS => ", chapter);
     }
 
     // let selected = this.state.selected;
@@ -407,11 +509,17 @@ class Editor extends React.Component {
                 handleAddCharacter={this.handleAddCharacter}
                 handleAddCharacterInfo={this.handleAddCharacterInfo}
                 handleChangeChar={this.handleChangeChar}
+                handleAddSetting={this.handleAddSetting}
+                handleAddSettingInfo={this.handleAddSettingInfo}
                 openCharCollapse={this.openCharCollapse}
+                openSetCollapse={this.openSetCollapse}
+                handleChangeSetting={this.handleChangeSetting}
                 project={this.props.project}
                 currentChapter={this.props.currentChapter}
                 currentChar={this.props.currentChar}
                 currentInfo={this.props.currentInfo}
+                currentSetting={this.props.currentSetting}
+                currentSetInfo={this.props.currentSetInfo}
                 history={this.props.history}
                 PaperProps={{ style: { width: drawerWidth } }}
               />
@@ -458,7 +566,9 @@ const mapStateToProps = state => ({
   project: state.rootReducer.project,
   currentChapter: state.rootReducer.currentChapter,
   currentChar: state.rootReducer.currentChar,
-  currentInfo: state.rootReducer.currentInfo
+  currentInfo: state.rootReducer.currentInfo,
+    currentSetting: state.rootReducer.currentSetting,
+    currentSetInfo: state.rootReducer.currentSetInfo,
 });
 
 export default connect(
@@ -471,6 +581,10 @@ export default connect(
     changeCurrentChar,
     updateCharacterInfo,
     createNewCharacterInfo,
-    createNewCharacter
+    createNewCharacter,
+      changeCurrentSetting,
+      updateSettingInfo,
+      createNewSetting,
+      createNewSettingInfo,
   }
 )(withStyles(styles)(Editor));

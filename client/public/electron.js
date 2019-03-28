@@ -189,7 +189,15 @@ ipcMain.on("create-project", (event, path) => {
             }],
             settings: [{
                 name: "Planetarium",
-                content: `<h1 class="ql-align-center">Planetarium</h1>`
+                info: [
+                    {title: 'Basics', content: `<h1 class="ql-align-center">Basics</h1><p><br></p><p><strong>What is your world called? </strong></p><p><br></p><p><strong>Is it set on: </strong></p><ul><li>Earth</li><li>Alternate Earth</li><li>Not Earth</li></ul><p><br></p><p><strong> Estimate its population: </strong></p><p><br></p><p><strong>In one sentence, describe your world.</strong></p><p><br></p>`},
+                    {title: 'Geography', content: `<h1 class="ql-align-center">Geography</h1>`},
+                    {title: 'People', content: `<h1 class="ql-align-center">People</h1>`},
+                    {title: 'Civilization', content: `<h1 class="ql-align-center">Civilization</h1>`},
+                    {title: 'Technology, Magic & Weapons', content: `<h1 class="ql-align-center">Technology, Magic & Weapons</h1>`},
+                    {title: 'Economy', content: `<h1 class="ql-align-center">Economy</h1>`},
+                    {title: 'Politics', content: `<h1 class="ql-align-center">Politics</h1>`},
+                ]
             }],
             notes: [{
                 name: "Ideas",

@@ -200,7 +200,8 @@ ipcMain.on("create-project", (event, path) => {
                 ]
             }],
             notes: [{
-                name: "Ideas",
+                id: 1,
+                title: "Ideas",
                 content: `<h1 class="ql-align-center">Ideas</h1>`
             }],
         }

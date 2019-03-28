@@ -40,8 +40,18 @@ import {
 
     ADD_SETTING_INFO_START,
     ADD_SETTING_INFO_SUCCESS,
+
     ADD_SETTING_START,
     ADD_SETTING_SUCCESS,
+
+    ADD_NOTE_START,
+    ADD_NOTE_SUCCESS,
+
+    CHANGE_NOTE_START,
+    CHANGE_NOTE_SUCCESS,
+
+    UPDATE_NOTE_START,
+    UPDATE_NOTE_SUCCESS,
 } from "../actions/";
 
 const initialState = {
@@ -49,6 +59,7 @@ const initialState = {
     currentChapter: 1,
     currentChar: null,
     currentInfo: null,
+    currentNote: null,
     error: false,
     errorMessage: "",
     recents: null
@@ -243,6 +254,44 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: null,
                 currentSetting: state.project.project.settings.length - 1,
                 currentSetInfo: 0,
+            }
+
+        case ADD_NOTE_START:
+            return state;
+
+        case ADD_NOTE_SUCCESS:
+            return {
+                ...state,
+                project: action.payload,
+                currentChapter: null,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: null,
+                currentSetInfo: null,
+                currentNote: state.currentNote + 1,
+            }
+
+        case CHANGE_NOTE_START:
+            return state;
+
+        case CHANGE_NOTE_SUCCESS:
+            return {
+                ...state,
+                currentChapter: null,
+                currentChar: null,
+                currentInfo: null,
+                currentSetting: null,
+                currentSetInfo: null,
+                currentNote: action.payload,
+            }
+
+        case UPDATE_NOTE_START:
+            return state;
+
+        case UPDATE_NOTE_SUCCESS:
+            return {
+                ...state,
+                project: action.payload
             }
 
         default:

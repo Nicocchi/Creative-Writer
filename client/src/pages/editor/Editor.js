@@ -20,10 +20,13 @@ import {
   updateCharacterInfo,
   createNewCharacterInfo,
   createNewCharacter,
-    changeCurrentSetting,
-    updateSettingInfo,
-    createNewSetting,
-    createNewSettingInfo,
+  changeCurrentSetting,
+  updateSettingInfo,
+  createNewSetting,
+  createNewSettingInfo,
+    createNewNote,
+    changeCurrentNote,
+    updateNote,
 } from "../../store/actions";
 
 let theme = createMuiTheme({
@@ -179,8 +182,8 @@ class Editor extends React.Component {
     open4: false,
     open5: false,
     toolTip1: false,
-      characterOpen: [],
-      settingOpen: [],
+    characterOpen: [],
+    settingOpen: [],
     selected: "home",
     chapExpanded: false,
     charExpanded: false,
@@ -193,60 +196,69 @@ class Editor extends React.Component {
   componentWillMount() {
     if (this.props.project !== null || this.props.project !== undefined) {
       if (this.props.project !== null) {
-
         let characterOpen = [];
-          let settingOpen = [];
-          this.props.project.project.characters.forEach(() => {
-              const info = {
-                  isOpen: false,
-              }
+        let settingOpen = [];
+        this.props.project.project.characters.forEach(() => {
+          const info = {
+            isOpen: false
+          };
 
-              characterOpen.push(info);
-          })
+          characterOpen.push(info);
+        });
 
-          this.props.project.project.settings.forEach(() => {
-              const info = {
-                  isOpen: false,
-              }
+        this.props.project.project.settings.forEach(() => {
+          const info = {
+            isOpen: false
+          };
 
-              settingOpen.push(info);
-          })
+          settingOpen.push(info);
+        });
 
-          let chapter = [{ content: "" }];
+        let chapter = [{ content: "" }];
 
-          if (this.props.project.project.chapters !== null && this.props.currentChapter) {
-              console.log("CHAPTERS");
-              chapter = this.props.project.project.chapters.filter(
-                  chp => chp.id === this.props.currentChapter
-              );
-          } else if (this.props.project.project.characters !== null && this.props.currentChar) {
-              console.log("CHARACTERS");
-              chapter.push(
-                  this.props.project.project.characters[this.props.currentChar].info[
-                      this.props.currentInfo
-                      ]
-              );
-
-          } else if (this.props.project.project.settings !== null && this.props.currentSetting) {
-              console.log("SETTINGS");
-              chapter.push(
-                  this.props.project.project.settings[this.props.currentSetting].info[
-                      this.props.currentSetInfo
-                      ]
-              );
-          }
-
-          console.log("CHAP CONTENTS => ", chapter);
-          console.log("CHAP CHAR => ", this.props.currentChar);
-          console.log("CHAP INFO => ", this.props.currentInfo);
+        if (
+          this.props.project.project.chapters !== null &&
+          this.props.currentChapter
+        ) {
+          console.log("CHAPTERS");
+          chapter = this.props.project.project.chapters.filter(
+            chp => chp.id === this.props.currentChapter
+          );
+        } else if (
+          this.props.project.project.characters !== null &&
+          this.props.currentChar
+        ) {
+          console.log("CHARACTERS");
+          chapter.push(
+            this.props.project.project.characters[this.props.currentChar].info[
+              this.props.currentInfo
+            ]
+          );
+        } else if (
+          this.props.project.project.settings !== null &&
+          this.props.currentSetting
+        ) {
+          console.log("SETTINGS");
+          chapter.push(
+            this.props.project.project.settings[this.props.currentSetting].info[
+              this.props.currentSetInfo
+            ]
+          );
+        } else if (
+            this.props.project.project.notes !== null &&
+            this.props.currentNote
+        ) {
+            chapter = this.props.project.project.notes.filter(
+                note => note.id === this.props.currentNote
+            );
+        }
 
         this.setState({
           text: chapter[0].content,
           selected: `chapters/${this.props.currentChapter - 1}`,
           chapExpanded: true,
-            characterOpen: characterOpen,
-            settingOpen: settingOpen,
-
+          characterOpen: characterOpen,
+          settingOpen: settingOpen
         });
       } else {
         this.setState({ text: "Enter Text Here" });
@@ -260,30 +272,30 @@ class Editor extends React.Component {
         chp => chp.id === this.props.currentChapter
       );
 
-        let characterOpen = [];
-        let settingOpen = [];
-        this.props.project.project.characters.forEach((elem, i) => {
-            const info = {
-                isOpen: false,
-            }
+      let characterOpen = [];
+      let settingOpen = [];
+      this.props.project.project.characters.forEach((elem, i) => {
+        const info = {
+          isOpen: false
+        };
 
-            characterOpen.push(info);
-        })
+        characterOpen.push(info);
+      });
 
-        this.props.project.project.settings.forEach(() => {
-            const info = {
-                isOpen: false,
-            }
+      this.props.project.project.settings.forEach(() => {
+        const info = {
+          isOpen: false
+        };
 
-            settingOpen.push(info);
-        })
+        settingOpen.push(info);
+      });
 
       this.setState({
         text: chapter[0].content,
         selected: `chapters/${this.props.currentChapter - 1}`,
         chapExpanded: true,
-          characterOpen: characterOpen,
-          settingOpen: settingOpen,
+        characterOpen: characterOpen,
+        settingOpen: settingOpen
       });
     }
   }
@@ -308,18 +320,27 @@ class Editor extends React.Component {
     console.log("Value => ", value);
     // this.setState({ text: value })
     if (this.props.currentChapter !== null) {
+        console.log("CHAPTER");
       this.props.updateChapter(value, this.props.currentChapter);
     } else if (this.props.currentChar !== null) {
+        console.log("CHARACTER INFO");
       this.props.updateCharacterInfo(
         value,
         this.props.currentChar,
         this.props.currentInfo
       );
     } else if (this.props.currentSetting !== null) {
-        this.props.updateSettingInfo(
+        console.log("SETTING INFO");
+      this.props.updateSettingInfo(
+        value,
+        this.props.currentSetting,
+        this.props.currentSetInfo
+      );
+    } else if (this.props.currentNote !== null) {
+        console.log("NOTE");
+        this.props.updateNote(
             value,
-            this.props.currentSetting,
-            this.props.currentSetInfo
+            this.props.currentNote
         )
     }
   };
@@ -391,57 +412,77 @@ class Editor extends React.Component {
   handleAddCharacter = () => {
     this.props.createNewCharacter();
 
-      let characterOpen = this.state.characterOpen;
-      const info = {
-          isOpen: false,
-      }
+    let characterOpen = this.state.characterOpen;
+    const info = {
+      isOpen: false
+    };
 
-      characterOpen.push(info);
+    characterOpen.push(info);
 
-      this.setState({
-          characterOpen: characterOpen,
-      });
+    this.setState({
+      characterOpen: characterOpen
+    });
   };
 
-    openCharCollapse = (index) => {
-        console.log("INDEX => ", index);
-        this.setState(previousState => {
-            const characterOpen = [...previousState.characterOpen];
-            characterOpen[index] = { ...characterOpen[index], isOpen: !characterOpen[index].isOpen};
-            return { characterOpen };
-        }, () => console.log(this.state.characterOpen));
-    }
+  openCharCollapse = index => {
+    console.log("INDEX => ", index);
+    this.setState(
+      previousState => {
+        const characterOpen = [...previousState.characterOpen];
+        characterOpen[index] = {
+          ...characterOpen[index],
+          isOpen: !characterOpen[index].isOpen
+        };
+        return { characterOpen };
+      },
+      () => console.log(this.state.characterOpen)
+    );
+  };
 
-    openSetCollapse = (index) => {
-        console.log("INDEX => ", index);
-        this.setState(previousState => {
-            const settingOpen = [...previousState.settingOpen];
-            settingOpen[index] = { ...settingOpen[index], isOpen: !settingOpen[index].isOpen};
-            return { settingOpen };
-        }, () => console.log(this.state.settingOpen));
-    }
+  openSetCollapse = index => {
+    console.log("INDEX => ", index);
+    this.setState(
+      previousState => {
+        const settingOpen = [...previousState.settingOpen];
+        settingOpen[index] = {
+          ...settingOpen[index],
+          isOpen: !settingOpen[index].isOpen
+        };
+        return { settingOpen };
+      },
+      () => console.log(this.state.settingOpen)
+    );
+  };
 
-    handleChangeSetting = (settingsI, infoI) => {
-        this.props.changeCurrentSetting(settingsI, infoI);
+  handleChangeSetting = (settingsI, infoI) => {
+    this.props.changeCurrentSetting(settingsI, infoI);
+  };
+
+  handleAddSettingInfo = setting => {
+    this.props.createNewSettingInfo(setting);
+  };
+
+  handleAddSetting = () => {
+    this.props.createNewSetting();
+
+    let settingOpen = this.state.settingOpen;
+    const info = {
+      isOpen: false
     };
 
-    handleAddSettingInfo = setting => {
-        this.props.createNewSettingInfo(setting);
+    settingOpen.push(info);
+
+    this.setState({
+      characterOpen: settingOpen
+    });
+  };
+
+    handleAddNote = () => {
+        this.props.createNewNote();
     };
 
-    handleAddSetting = () => {
-        this.props.createNewSetting();
-
-        let settingOpen = this.state.settingOpen;
-        const info = {
-            isOpen: false,
-        }
-
-        settingOpen.push(info);
-
-        this.setState({
-            characterOpen: settingOpen,
-        });
+    handleChangeNote = id => {
+        this.props.changeCurrentNote(id);
     };
 
   render() {
@@ -464,18 +505,25 @@ class Editor extends React.Component {
       chapter.reverse();
       console.log("CHAPTER CHARACTERS => ", chapter);
     } else if (
-        this.props.project !== null &&
-        this.props.currentSetting !== null &&
-        this.props.currentSetInfo !== null
+      this.props.project !== null &&
+      this.props.currentSetting !== null &&
+      this.props.currentSetInfo !== null
     ) {
-        chapter.push(
-            this.props.project.project.settings[this.props.currentSetting].info[
-                this.props.currentSetInfo
-                ]
-        );
+      chapter.push(
+        this.props.project.project.settings[this.props.currentSetting].info[
+          this.props.currentSetInfo
+        ]
+      );
 
-        chapter.reverse();
-        console.log("CHAPTER SETTINGS => ", chapter);
+      chapter.reverse();
+      console.log("CHAPTER SETTINGS => ", chapter);
+    } else if (
+        this.props.project !== null &&
+        this.props.currentNote !== null
+    ) {
+        chapter = this.props.project.project.notes.filter(
+            note => note.id === this.props.currentNote
+        );
     }
 
     // let selected = this.state.selected;
@@ -511,6 +559,8 @@ class Editor extends React.Component {
                 handleChangeChar={this.handleChangeChar}
                 handleAddSetting={this.handleAddSetting}
                 handleAddSettingInfo={this.handleAddSettingInfo}
+                handleAddNote={this.handleAddNote}
+                handleChangeNote={this.handleChangeNote}
                 openCharCollapse={this.openCharCollapse}
                 openSetCollapse={this.openSetCollapse}
                 handleChangeSetting={this.handleChangeSetting}
@@ -520,6 +570,7 @@ class Editor extends React.Component {
                 currentInfo={this.props.currentInfo}
                 currentSetting={this.props.currentSetting}
                 currentSetInfo={this.props.currentSetInfo}
+                currentNote={this.props.currentNote}
                 history={this.props.history}
                 PaperProps={{ style: { width: drawerWidth } }}
               />
@@ -567,8 +618,9 @@ const mapStateToProps = state => ({
   currentChapter: state.rootReducer.currentChapter,
   currentChar: state.rootReducer.currentChar,
   currentInfo: state.rootReducer.currentInfo,
-    currentSetting: state.rootReducer.currentSetting,
-    currentSetInfo: state.rootReducer.currentSetInfo,
+  currentSetting: state.rootReducer.currentSetting,
+  currentSetInfo: state.rootReducer.currentSetInfo,
+    currentNote: state.rootReducer.currentNote
 });
 
 export default connect(
@@ -582,9 +634,12 @@ export default connect(
     updateCharacterInfo,
     createNewCharacterInfo,
     createNewCharacter,
-      changeCurrentSetting,
-      updateSettingInfo,
-      createNewSetting,
-      createNewSettingInfo,
+    changeCurrentSetting,
+    updateSettingInfo,
+    createNewSetting,
+    createNewSettingInfo,
+      createNewNote,
+      changeCurrentNote,
+      updateNote,
   }
 )(withStyles(styles)(Editor));

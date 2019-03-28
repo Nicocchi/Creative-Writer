@@ -545,55 +545,110 @@ function Navigator(props) {
           </ListItemText>
           {props.state.open3 ? <ExpandLess dense /> : <ExpandMore dense />}
         </ListItem>
-        <Collapse in={props.state.open3} timeout="auto" unmountOnExit>
-          <List disablePadding>
-            <ListItem
-              button
-              dense
-              className={classNames(
-                classes.item,
-                classes.itemActionable,
-                true && classes.itemActiveItem
-              )}
-              style={{ paddingLeft: "20%" }}
-            >
-              <ListItemIcon>
-                <SpeakerNotes />
-              </ListItemIcon>
-              <ListItemText
-                classes={{
-                  primary: classes.itemPrimary,
-                  textDense: classes.textDense
-                }}
-              >
-                Ideas
-              </ListItemText>
-            </ListItem>
-            <List disablePadding>
-              <ListItem
-                button
-                dense
-                className={classNames(
-                  classes.item,
-                  classes.itemActionable,
-                  true && classes.itemActiveItem
-                )}
-                onClick={props.handleAddChapter}
-                style={{ paddingLeft: "45%" }}
-              >
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary,
-                    textDense: classes.textDense
-                  }}
-                />
-              </ListItem>
-            </List>
-          </List>
-        </Collapse>
+          <Collapse in={props.state.open3} timeout="auto" unmountOnExit>
+              <List disablePadding>
+                  {props.project !== null
+                      ? props.project.project.notes.map((note, i) => (
+                          <ListItem
+                              button
+                              dense
+                              key={i}
+                              className={classNames(
+                                  classes.item,
+                                  classes.itemActionable,
+                                  true && classes.itemActiveItem
+                              )}
+                              onClick={() => props.handleChangeNote(note.id)}
+                              style={{ paddingLeft: "20%" }}
+                          >
+                              <ListItemIcon>
+                                  {props.currentNote === i + 1 ? <SpeakerNotes /> : <Notes />}
+                              </ListItemIcon>
+                              <ListItemText
+                                  classes={{
+                                      primary: classes.itemPrimary,
+                                      textDense: classes.textDense
+                                  }}
+                              >
+                                  {note.title}
+                              </ListItemText>
+                          </ListItem>
+                      ))
+                      : null}
+                  <List disablePadding>
+                      <ListItem
+                          button
+                          dense
+                          className={classNames(
+                              classes.item,
+                              classes.itemActionable,
+                              true && classes.itemActiveItem
+                          )}
+                          onClick={props.handleAddNote}
+                          style={{ paddingLeft: "45%" }}
+                      >
+                          <ListItemIcon>
+                              <AddIcon />
+                          </ListItemIcon>
+                          <ListItemText
+                              classes={{
+                                  primary: classes.itemPrimary,
+                                  textDense: classes.textDense
+                              }}
+                          />
+                      </ListItem>
+                  </List>
+              </List>
+          </Collapse>
+        {/*<Collapse in={props.state.open3} timeout="auto" unmountOnExit>*/}
+          {/*<List disablePadding>*/}
+            {/*<ListItem*/}
+              {/*button*/}
+              {/*dense*/}
+              {/*className={classNames(*/}
+                {/*classes.item,*/}
+                {/*classes.itemActionable,*/}
+                {/*true && classes.itemActiveItem*/}
+              {/*)}*/}
+              {/*style={{ paddingLeft: "20%" }}*/}
+            {/*>*/}
+              {/*<ListItemIcon>*/}
+                {/*<SpeakerNotes />*/}
+              {/*</ListItemIcon>*/}
+              {/*<ListItemText*/}
+                {/*classes={{*/}
+                  {/*primary: classes.itemPrimary,*/}
+                  {/*textDense: classes.textDense*/}
+                {/*}}*/}
+              {/*>*/}
+                {/*Ideas*/}
+              {/*</ListItemText>*/}
+            {/*</ListItem>*/}
+            {/*<List disablePadding>*/}
+              {/*<ListItem*/}
+                {/*button*/}
+                {/*dense*/}
+                {/*className={classNames(*/}
+                  {/*classes.item,*/}
+                  {/*classes.itemActionable,*/}
+                  {/*true && classes.itemActiveItem*/}
+                {/*)}*/}
+                {/*onClick={props.handleAddChapter}*/}
+                {/*style={{ paddingLeft: "45%" }}*/}
+              {/*>*/}
+                {/*<ListItemIcon>*/}
+                  {/*<AddIcon />*/}
+                {/*</ListItemIcon>*/}
+                {/*<ListItemText*/}
+                  {/*classes={{*/}
+                    {/*primary: classes.itemPrimary,*/}
+                    {/*textDense: classes.textDense*/}
+                  {/*}}*/}
+                {/*/>*/}
+              {/*</ListItem>*/}
+            {/*</List>*/}
+          {/*</List>*/}
+        {/*</Collapse>*/}
 
         <Divider />
         <ListItem className={classes.categoryHeader}>

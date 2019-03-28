@@ -51,6 +51,15 @@ export const ADD_SETTING_INFO_SUCCESS = 'ADD_SETTING_INFO_SUCCESS';
 export const ADD_SETTING_START = 'ADD_SETTING_START';
 export const ADD_SETTING_SUCCESS = 'ADD_SETTING_SUCCESS';
 
+export const ADD_NOTE_START = 'ADD_NOTE_START';
+export const ADD_NOTE_SUCCESS = 'ADD_NOTE_SUCCESS';
+
+export const CHANGE_NOTE_START = 'CHANGE_NOTE_START';
+export const CHANGE_NOTE_SUCCESS = 'CHANGE_NOTE_SUCCESS';
+
+export const UPDATE_NOTE_START = 'UPDATE_NOTE_START';
+export const UPDATE_NOTE_SUCCESS = 'UPDATE_NOTE_SUCCESS';
+
 /*
  * Action creators
  */
@@ -360,6 +369,54 @@ export function createNewSetting() {
         dispatch({ type: ADD_SETTING_SUCCESS, payload: project });
 
 
+
+    }
+}
+
+export function createNewNote() {
+    return (dispatch, getState) => {
+        dispatch({ type: ADD_NOTE_START });
+        const state = getState().rootReducer;
+
+        const note = {
+            content: `<h1 class="ql-align-center">Ideas</h1>`,
+            title: `New Note`,
+            id: state.project.project.notes.length + 1
+        }
+
+        let project = state.project;
+        project.project.notes.push(note);
+
+        console.log("ADDING NOTE => ", project);
+
+        dispatch({ type: ADD_NOTE_SUCCESS, payload: project });
+    }
+}
+
+export function changeCurrentNote(id) {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_NOTE_START });
+
+        dispatch({ type: CHANGE_NOTE_SUCCESS, payload: id });
+    }
+}
+
+export function updateNote(value, id) {
+    return (dispatch, getState) => {
+        dispatch({ type: UPDATE_NOTE_START });
+        const state = getState().rootReducer;
+
+        let project = state.project;
+
+        project.project.notes.forEach(note => {
+            if (note.id === id) {
+                note.content = value
+            }
+        })
+
+        console.log("UPDATING NOTE => ", project);
+
+        dispatch({ type: UPDATE_NOTE_SUCCESS, payload: project });
 
     }
 }

@@ -50,4 +50,13 @@ export {
     ADD_SETTING_SUCCESS,
     createNewSettingInfo,
     createNewSetting,
+    ADD_NOTE_START,
+    ADD_NOTE_SUCCESS,
+    CHANGE_NOTE_START,
+    CHANGE_NOTE_SUCCESS,
+    UPDATE_NOTE_START,
+    UPDATE_NOTE_SUCCESS,
+    createNewNote,
+    changeCurrentNote,
+    updateNote,
 } from "./rootActions";

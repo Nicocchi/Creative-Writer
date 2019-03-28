@@ -244,11 +244,11 @@ function Header(props) {
                                   </React.Fragment>
                               }
                           >
-                              <Tooltip title="Stats">
+                              {/*<Tooltip title="Stats">*/}
                               <IconButton color="inherit" onClick={props.handleTooltipOpen}>
                                   <TextFormat />
                               </IconButton>
-                              </Tooltip>
+                              {/*</Tooltip>*/}
                           </Tooltip>
                       </div>
                   </ClickAwayListener>

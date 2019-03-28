@@ -29,6 +29,7 @@ import Person from "@material-ui/icons/Person";
 import PersonOutline from "@material-ui/icons/PersonOutline";
 import LandScape from "@material-ui/icons/Landscape";
 import AddPhotoAlternative from "@material-ui/icons/AddPhotoAlternate";
+import NavListItem from "./NavListItem";
 
 const styles = theme => ({
   categoryHeader: {
@@ -133,522 +134,89 @@ function Navigator(props) {
             Dashboard
           </ListItemText>
         </ListItem>
-        <ListItem
-          button
-          dense
-          className={classNames(
-            classes.item,
-            classes.itemActionable,
-            true && classes.itemActiveItem
-          )}
-          onClick={() => props.openCollapse("open1")}
-        >
-          <ListItemIcon>
-            <LibraryBooks />
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-              textDense: classes.textDense
-            }}
-          >
-            Chapters
-          </ListItemText>
-          {props.state.open1 ? <ExpandLess dense /> : <ExpandMore dense />}
-        </ListItem>
-        <Collapse in={props.state.open1} timeout="auto" unmountOnExit>
-          <List disablePadding>
-            {props.project !== null
-              ? props.project.project.chapters.map((chap, i) => (
-                  <ListItem
-                    button
-                    dense
-                    key={i}
-                    className={classNames(
-                      classes.item,
-                      classes.itemActionable,
-                      true && classes.itemActiveItem
-                    )}
-                    onClick={() => props.handleChangeChapter(chap.id)}
-                    style={{ paddingLeft: "20%" }}
-                  >
-                    <ListItemIcon>
-                      {props.currentChapter === i + 1 ? <Book /> : <BookMark />}
-                    </ListItemIcon>
-                    <ListItemText
-                      classes={{
-                        primary: classes.itemPrimary,
-                        textDense: classes.textDense
-                      }}
-                    >
-                      {chap.title}
-                    </ListItemText>
-                  </ListItem>
-                ))
-              : null}
-            <List disablePadding>
-              <ListItem
-                button
-                dense
-                className={classNames(
-                  classes.item,
-                  classes.itemActionable,
-                  true && classes.itemActiveItem
-                )}
-                onClick={props.handleAddChapter}
-                style={{ paddingLeft: "45%" }}
-              >
-                <ListItemIcon>
-                  <AddIcon />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary,
-                    textDense: classes.textDense
-                  }}
-                />
-              </ListItem>
-            </List>
-          </List>
-        </Collapse>
-        {/* Characters */}
-        <ListItem
-          button
-          dense
-          className={classNames(
-            classes.item,
-            classes.itemActionable,
-            true && classes.itemActiveItem
-          )}
-          onClick={() => props.openCollapse("open2")}
-        >
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-              textDense: classes.textDense
-            }}
-          >
-            Characters
-          </ListItemText>
-          {props.state.open2 ? <ExpandLess dense /> : <ExpandMore dense />}
-        </ListItem>
-        <Collapse in={props.state.open2} timeout="auto" unmountOnExit>
-          <List disablePadding>
-            {props.project !== null
-              ? props.project.project.characters.map((char, i) => (
-                  <div>
-                    <ListItem
-                      button
-                      dense
-                      className={classNames(
-                        classes.item,
-                        classes.itemActionable,
-                        true && classes.itemActiveItem
-                      )}
-                      onClick={() => props.openCharCollapse(i)}
-                      style={{ paddingLeft: "20%" }}
-                    >
-                      <ListItemIcon>
-                        {props.currentChar === i ? (
-                          <Person />
-                        ) : (
-                          <PersonOutline />
-                        )}
-                      </ListItemIcon>
-                      <ListItemText
-                        classes={{
-                          primary: classes.itemPrimary,
-                          textDense: classes.textDense
-                        }}
-                      >
-                        {char.name}
-                      </ListItemText>
-                      {props.state.characterOpen[i].isOpen ? (
-                        <ExpandLess dense />
-                      ) : (
-                        <ExpandMore dense />
-                      )}
-                    </ListItem>
 
-                    <Collapse
-                      in={props.state.characterOpen[i].isOpen}
-                      timeout="auto"
-                      unmountOnExit
-                    >
-                      <List disablePadding>
-                        {char !== null
-                          ? char.info.map((info, j) => (
-                              <ListItem
-                                button
-                                dense
-                                key={j}
-                                className={classNames(
-                                  classes.item,
-                                  classes.itemActionable,
-                                  true && classes.itemActiveItem
-                                )}
-                                onClick={() => props.handleChangeChar(i, j)}
-                                style={{ paddingLeft: "24%" }}
-                              >
-                                <ListItemIcon>
-                                  {props.currentChar === i &&
-                                  props.currentInfo === j ? (
-                                    <SpeakerNotes />
-                                  ) : (
-                                    <Notes />
-                                  )}
-                                </ListItemIcon>
-                                <ListItemText
-                                  classes={{
-                                    primary: classes.itemPrimary,
-                                    textDense: classes.textDense
-                                  }}
-                                >
-                                  {info.title}
-                                </ListItemText>
-                              </ListItem>
-                            ))
-                          : null}
-                        <List disablePadding>
-                          <ListItem
-                            buttonjoin
-                            dense
-                            className={classNames(
-                              classes.item,
-                              classes.itemActionable,
-                              true && classes.itemActiveItem
-                            )}
-                            onClick={() => props.handleAddCharacterInfo(i)}
-                            style={{ paddingLeft: "45%", cursor: "pointer" }}
-                          >
-                            <ListItemIcon style={{ paddingLeft: "15%" }}>
-                              <AddIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                              classes={{
-                                primary: classes.itemPrimary,
-                                textDense: classes.textDense
-                              }}
-                            />
-                          </ListItem>
-                        </List>
-                      </List>
-                    </Collapse>
-                  </div>
-                ))
-              : null}
-            <List disablePadding>
-              <ListItem
-                button
-                dense
-                className={classNames(
-                  classes.item,
-                  classes.itemActionable,
-                  true && classes.itemActiveItem
-                )}
-                onClick={props.handleAddCharacter}
-                style={{ paddingLeft: "45%" }}
-              >
-                <ListItemIcon>
-                  <PersonAdd />
-                </ListItemIcon>
-                <ListItemText
-                  classes={{
-                    primary: classes.itemPrimary,
-                    textDense: classes.textDense
-                  }}
-                />
-              </ListItem>
-            </List>
-          </List>
-        </Collapse>
+          {/* Chapters */}
+        <NavListItem
+          type="single"
+          title="Chapters"
+          project={props.project}
+          state={props.state}
+          open="open1"
+          isOpen={props.state.open1}
+          openCollapse={props.openCollapse}
+          handleChange={props.handleChangeChapter}
+          handleAdd={props.handleAddChapter}
+          current={props.currentChapter}
+          array={props.project !== null ? props.project.project.chapters : []}
+          icon={<LibraryBooks />}
+          addIcon={<AddIcon />}
+          focus={<Book />}
+          unfocused={<BookMark />}
+        />
+        {/* Characters */}
+          <NavListItem
+              type="double"
+              title="Characters"
+              project={props.project}
+              state={props.state}
+              open="open2"
+              isOpen={props.state.open2}
+              openCollapse={props.openCollapse}
+              openNestedCollapse={props.openCharCollapse}
+              handleChange={props.handleChangeChar}
+              handleAdd={props.handleAddCharacter}
+              handleAddInfo={props.handleAddCharacterInfo}
+              current={props.currentChar}
+              currentInfo={props.currentInfo}
+              array={props.project !== null ? props.project.project.characters : []}
+              openArray={props.state.characterOpen}
+              icon={<PeopleIcon />}
+              addIcon={<PersonAdd />}
+              focus={<PermMediaOutlinedIcon />}
+              unfocused={<LandScape />}
+          />
 
         {/* Settings */}
-        <ListItem
-          button
-          dense
-          className={classNames(
-            classes.item,
-            classes.itemActionable,
-            true && classes.itemActiveItem
-          )}
-          onClick={() => props.openCollapse("open4")}
-        >
-          <ListItemIcon>
-            <PermMediaOutlinedIcon />
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-              textDense: classes.textDense
-            }}
-          >
-            Settings
-          </ListItemText>
-          {props.state.open4 ? <ExpandLess dense /> : <ExpandMore dense />}
-        </ListItem>
-          <Collapse in={props.state.open4} timeout="auto" unmountOnExit>
-              <List disablePadding>
-                  {props.project !== null
-                      ? props.project.project.settings.map((char, i) => (
-                          <div>
-                              <ListItem
-                                  button
-                                  dense
-                                  className={classNames(
-                                      classes.item,
-                                      classes.itemActionable,
-                                      true && classes.itemActiveItem
-                                  )}
-                                  onClick={() => props.openSetCollapse(i)}
-                                  style={{ paddingLeft: "20%" }}
-                              >
-                                  <ListItemIcon>
-                                      {props.currentSetting === i ? (
-                                          <PermMediaOutlinedIcon />
-                                      ) : (
-                                          <LandScape />
-                                      )}
-                                  </ListItemIcon>
-                                  <ListItemText
-                                      classes={{
-                                          primary: classes.itemPrimary,
-                                          textDense: classes.textDense
-                                      }}
-                                  >
-                                      {char.name}
-                                  </ListItemText>
-                                  {props.state.settingOpen[i].isOpen ? (
-                                      <ExpandLess dense />
-                                  ) : (
-                                      <ExpandMore dense />
-                                  )}
-                              </ListItem>
-
-                              <Collapse
-                                  in={props.state.settingOpen[i].isOpen}
-                                  timeout="auto"
-                                  unmountOnExit
-                              >
-                                  <List disablePadding>
-                                      {char !== null
-                                          ? char.info.map((info, j) => (
-                                              <ListItem
-                                                  button
-                                                  dense
-                                                  key={j}
-                                                  className={classNames(
-                                                      classes.item,
-                                                      classes.itemActionable,
-                                                      true && classes.itemActiveItem
-                                                  )}
-                                                  onClick={() => props.handleChangeSetting(i, j)}
-                                                  style={{ paddingLeft: "24%" }}
-                                              >
-                                                  <ListItemIcon>
-                                                      {props.currentSetting === i &&
-                                                      props.currentSetInfo === j ? (
-                                                          <SpeakerNotes />
-                                                      ) : (
-                                                          <Notes />
-                                                      )}
-                                                  </ListItemIcon>
-                                                  <ListItemText
-                                                      classes={{
-                                                          primary: classes.itemPrimary,
-                                                          textDense: classes.textDense
-                                                      }}
-                                                  >
-                                                      {info.title}
-                                                  </ListItemText>
-                                              </ListItem>
-                                          ))
-                                          : null}
-                                      <List disablePadding>
-                                          <ListItem
-                                              buttonjoin
-                                              dense
-                                              className={classNames(
-                                                  classes.item,
-                                                  classes.itemActionable,
-                                                  true && classes.itemActiveItem
-                                              )}
-                                              onClick={() => props.handleAddSettingInfo(i)}
-                                              style={{ paddingLeft: "45%", cursor: "pointer" }}
-                                          >
-                                              <ListItemIcon style={{ paddingLeft: "15%" }}>
-                                                  <AddIcon />
-                                              </ListItemIcon>
-                                              <ListItemText
-                                                  classes={{
-                                                      primary: classes.itemPrimary,
-                                                      textDense: classes.textDense
-                                                  }}
-                                              />
-                                          </ListItem>
-                                      </List>
-                                  </List>
-                              </Collapse>
-                          </div>
-                      ))
-                      : null}
-                  <List disablePadding>
-                      <ListItem
-                          button
-                          dense
-                          className={classNames(
-                              classes.item,
-                              classes.itemActionable,
-                              true && classes.itemActiveItem
-                          )}
-                          onClick={props.handleAddSetting}
-                          style={{ paddingLeft: "45%" }}
-                      >
-                          <ListItemIcon>
-                              <AddPhotoAlternative />
-                          </ListItemIcon>
-                          <ListItemText
-                              classes={{
-                                  primary: classes.itemPrimary,
-                                  textDense: classes.textDense
-                              }}
-                          />
-                      </ListItem>
-                  </List>
-              </List>
-          </Collapse>
+          <NavListItem
+              type="double"
+              title="Settings"
+              project={props.project}
+              state={props.state}
+              open="open4"
+              isOpen={props.state.open4}
+              openCollapse={props.openCollapse}
+              openNestedCollapse={props.openSetCollapse}
+              handleChange={props.handleChangeSetting}
+              handleAdd={props.handleAddSetting}
+              handleAddInfo={props.handleAddSettingInfo}
+              current={props.currentSetting}
+              currentInfo={props.currentSetInfo}
+              array={props.project !== null ? props.project.project.settings : []}
+              openArray={props.state.settingOpen}
+              icon={<LandScape />}
+              addIcon={<AddPhotoAlternative />}
+              focus={<PermMediaOutlinedIcon />}
+              unfocused={<LandScape />}
+          />
 
         {/* Notes */}
-        <ListItem
-          button
-          dense
-          className={classNames(
-            classes.item,
-            classes.itemActionable,
-            true && classes.itemActiveItem
-          )}
-          onClick={() => props.openCollapse("open3")}
-        >
-          <ListItemIcon>
-            <Notes />
-          </ListItemIcon>
-          <ListItemText
-            classes={{
-              primary: classes.itemPrimary,
-              textDense: classes.textDense
-            }}
-          >
-            Notes
-          </ListItemText>
-          {props.state.open3 ? <ExpandLess dense /> : <ExpandMore dense />}
-        </ListItem>
-          <Collapse in={props.state.open3} timeout="auto" unmountOnExit>
-              <List disablePadding>
-                  {props.project !== null
-                      ? props.project.project.notes.map((note, i) => (
-                          <ListItem
-                              button
-                              dense
-                              key={i}
-                              className={classNames(
-                                  classes.item,
-                                  classes.itemActionable,
-                                  true && classes.itemActiveItem
-                              )}
-                              onClick={() => props.handleChangeNote(note.id)}
-                              style={{ paddingLeft: "20%" }}
-                          >
-                              <ListItemIcon>
-                                  {props.currentNote === i + 1 ? <SpeakerNotes /> : <Notes />}
-                              </ListItemIcon>
-                              <ListItemText
-                                  classes={{
-                                      primary: classes.itemPrimary,
-                                      textDense: classes.textDense
-                                  }}
-                              >
-                                  {note.title}
-                              </ListItemText>
-                          </ListItem>
-                      ))
-                      : null}
-                  <List disablePadding>
-                      <ListItem
-                          button
-                          dense
-                          className={classNames(
-                              classes.item,
-                              classes.itemActionable,
-                              true && classes.itemActiveItem
-                          )}
-                          onClick={props.handleAddNote}
-                          style={{ paddingLeft: "45%" }}
-                      >
-                          <ListItemIcon>
-                              <AddIcon />
-                          </ListItemIcon>
-                          <ListItemText
-                              classes={{
-                                  primary: classes.itemPrimary,
-                                  textDense: classes.textDense
-                              }}
-                          />
-                      </ListItem>
-                  </List>
-              </List>
-          </Collapse>
-        {/*<Collapse in={props.state.open3} timeout="auto" unmountOnExit>*/}
-          {/*<List disablePadding>*/}
-            {/*<ListItem*/}
-              {/*button*/}
-              {/*dense*/}
-              {/*className={classNames(*/}
-                {/*classes.item,*/}
-                {/*classes.itemActionable,*/}
-                {/*true && classes.itemActiveItem*/}
-              {/*)}*/}
-              {/*style={{ paddingLeft: "20%" }}*/}
-            {/*>*/}
-              {/*<ListItemIcon>*/}
-                {/*<SpeakerNotes />*/}
-              {/*</ListItemIcon>*/}
-              {/*<ListItemText*/}
-                {/*classes={{*/}
-                  {/*primary: classes.itemPrimary,*/}
-                  {/*textDense: classes.textDense*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*Ideas*/}
-              {/*</ListItemText>*/}
-            {/*</ListItem>*/}
-            {/*<List disablePadding>*/}
-              {/*<ListItem*/}
-                {/*button*/}
-                {/*dense*/}
-                {/*className={classNames(*/}
-                  {/*classes.item,*/}
-                  {/*classes.itemActionable,*/}
-                  {/*true && classes.itemActiveItem*/}
-                {/*)}*/}
-                {/*onClick={props.handleAddChapter}*/}
-                {/*style={{ paddingLeft: "45%" }}*/}
-              {/*>*/}
-                {/*<ListItemIcon>*/}
-                  {/*<AddIcon />*/}
-                {/*</ListItemIcon>*/}
-                {/*<ListItemText*/}
-                  {/*classes={{*/}
-                    {/*primary: classes.itemPrimary,*/}
-                    {/*textDense: classes.textDense*/}
-                  {/*}}*/}
-                {/*/>*/}
-              {/*</ListItem>*/}
-            {/*</List>*/}
-          {/*</List>*/}
-        {/*</Collapse>*/}
+          <NavListItem
+              type="single"
+              title="Notes"
+              project={props.project}
+              state={props.state}
+              open="open3"
+              isOpen={props.state.open3}
+              openCollapse={props.openCollapse}
+              handleChange={props.handleChangeNote}
+              handleAdd={props.handleAddNote}
+              current={props.currentNote}
+              array={props.project !== null ? props.project.project.notes : []}
+              icon={<Notes />}
+              addIcon={<AddIcon />}
+              focus={<SpeakerNotes />}
+              unfocused={<Notes />}
+          />
 
         <Divider />
         <ListItem className={classes.categoryHeader}>

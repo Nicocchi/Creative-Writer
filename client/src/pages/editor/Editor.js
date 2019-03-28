@@ -190,7 +190,7 @@ class Editor extends React.Component {
     navExpanded: true,
     anchorEl: null,
     mobileMoreAnchorEl: null,
-    arrowRef: null
+    arrowRef: null,
   };
 
   componentWillMount() {
@@ -487,7 +487,6 @@ class Editor extends React.Component {
 
   render() {
     let chapter = [{ content: "" }];
-    let character = null;
     if (this.props.project !== null && this.props.currentChapter !== null) {
       chapter = this.props.project.project.chapters.filter(
         chp => chp.id === this.props.currentChapter

@@ -93,6 +93,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentChapter: 1,
                 currentChar: null,
                 currentInfo: null,
+                currentNote: null,
                 error: false,
                 errorMessage: "",
                 recents: null
@@ -117,6 +118,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: null,
                 currentSetting: null,
                 currentSetInfo: null,
+                currentNote: null,
             }
 
         case CHANGE_CHAPTER_START:
@@ -130,6 +132,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: null,
                 currentSetting: null,
                 currentSetInfo: null,
+                currentNote: null,
             }
 
         case CHANGE_CHAPTER_FAILED:
@@ -199,6 +202,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: action.payload.info,
                 currentSetting: null,
                 currentSetInfo: null,
+                currentNote: null,
             }
 
         case ADD_CHARACTER_START:
@@ -213,6 +217,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: 0,
                 currentSetting: null,
                 currentSetInfo: null,
+                currentNote: null,
             }
 
         case CHANGE_SETTING_START:
@@ -226,6 +231,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: null,
                 currentSetting: action.payload.setting,
                 currentSetInfo: action.payload.info,
+                currentNote: null,
         }
 
         case ADD_SETTING_INFO_START:
@@ -254,6 +260,7 @@ export const rootReducer = (state = initialState, action) => {
                 currentInfo: null,
                 currentSetting: state.project.project.settings.length - 1,
                 currentSetInfo: 0,
+                currentNote: null,
             }
 
         case ADD_NOTE_START:

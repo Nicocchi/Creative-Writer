@@ -55,6 +55,9 @@ import {
 
     UPDATE_CHAPTER_TITLE_START,
     UPDATE_CHAPTER_TITLE_SUCCESS,
+
+    REMOVE_ITEM_START,
+    REMOVE_ITEM_SUCCESS,
 } from "../actions/";
 
 const initialState = {
@@ -115,8 +118,8 @@ export const rootReducer = (state = initialState, action) => {
         case ADD_CHAPTER_SUCCESS:
             return {
                 ...state,
-                project: action.payload,
-                currentChapter: state.currentChapter + 1,
+                project: action.payload.project,
+                currentChapter: action.payload.id,
                 currentChar: null,
                 currentInfo: null,
                 currentSetting: null,
@@ -312,6 +315,37 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 project: action.payload
             }
+
+        case REMOVE_ITEM_START:
+            return state;
+
+        case REMOVE_ITEM_SUCCESS:
+            if (action.payload.type === "Chapters") {
+                let current = state.currentChapter;
+                if (action.payload.project.project.chapters.length === 0) {
+                    current = action.payload.id;
+                    action.payload.project.project.chapters.push({title: "New Chapter", content: "New Chapter", id: action.payload.id})
+                } else if (current !== action.payload.project.project.chapters[0].id) {
+                    current = action.payload.project.project.chapters[0].id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: current,
+                    currentChar: null,
+                    currentInfo: null,
+                    currentSetting: null,
+                    currentSetInfo: null,
+                    currentNote: null,
+                }
+            }
+
+            return {
+                ...state,
+                project: action.payload.project
+            }
+
 
         default:
             return state;

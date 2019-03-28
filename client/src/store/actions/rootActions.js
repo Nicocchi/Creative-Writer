@@ -63,6 +63,20 @@ export const UPDATE_NOTE_SUCCESS = 'UPDATE_NOTE_SUCCESS';
 export const UPDATE_CHAPTER_TITLE_START = 'UPDATE_CHAPTER_TITLE_START';
 export const UPDATE_CHAPTER_TITLE_SUCCESS = 'UPDATE_CHAPTER_TITLE_SUCCESS';
 
+export const REMOVE_ITEM_START = 'REMOVE_ITEM_START';
+export const REMOVE_ITEM_SUCCESS = 'REMOVE_ITEM_SUCCESS';
+
+
+function guid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+}
+
 /*
  * Action creators
  */
@@ -125,61 +139,6 @@ export function createNewProject(path) {
     };
 }
 
-export function createNewChapter() {
-    return (dispatch, getState) => {
-        dispatch({ type: ADD_CHAPTER_START });
-        const state = getState().rootReducer;
-
-        const chapter = {
-            content: `<h1 class="ql-align-center">Chapter ${state.project.project.chapters.length + 1}</h1>`,
-            id: state.project.project.chapters.length + 1,
-            title: `Chapter ${state.project.project.chapters.length + 1}`
-        }
-
-        let project = state.project;
-        project.project.chapters.push(chapter);
-
-        console.log("ADDING CHAPTER => ", project);
-
-        dispatch({ type: ADD_CHAPTER_SUCCESS, payload: project });
-
-
-
-    }
-}
-
-export function changeCurrentChapter(id) {
-    return (dispatch) => {
-        dispatch({ type: CHANGE_CHAPTER_START });
-
-        dispatch({ type: CHANGE_CHAPTER_SUCCESS, payload: id });
-        // if (typeof(chapID) === 'Number') {
-
-        // } else {
-        //     dispatch({ type: CHANGE_CHAPTER_FAILED, payload: "Failed to change chapter" });
-        // }
-    }
-}
-
-export function updateChapter(value, id) {
-    return (dispatch, getState) => {
-        dispatch({ type: UPDATE_CHAPTER_START });
-        const state = getState().rootReducer;
-
-        let project = state.project;
-
-        project.project.chapters.forEach(chapter => {
-            if (chapter.id === id) {
-                chapter.content = value
-            }
-        })
-
-        console.log("UPDATING CHAPTER => ", project);
-
-        dispatch({ type: UPDATE_CHAPTER_SUCCESS, payload: project });
-
-    }
-}
 
 /**
  * Gets the recents from the electron-store
@@ -223,6 +182,54 @@ export function openRecentProject(recent) {
         dispatch({ type: OPEN_RECENT_SUCCESS, payload: project });
     };
 }
+
+// CHAPTERS
+
+export function createNewChapter() {
+    return (dispatch, getState) => {
+        dispatch({ type: ADD_CHAPTER_START });
+        const state = getState().rootReducer;
+
+        const chapter = {
+            content: `<h1 class="ql-align-center">New Chapter</h1>`,
+            id: guid(),
+            title: `New Chapter`
+        }
+
+        let project = state.project;
+        project.project.chapters.push(chapter);
+
+        dispatch({ type: ADD_CHAPTER_SUCCESS, payload: {project, id: chapter.id} });
+    }
+}
+
+export function changeCurrentChapter(id) {
+    return (dispatch) => {
+        dispatch({ type: CHANGE_CHAPTER_START });
+
+        dispatch({ type: CHANGE_CHAPTER_SUCCESS, payload: id });
+    }
+}
+
+export function updateChapter(value, id) {
+    return (dispatch, getState) => {
+        dispatch({ type: UPDATE_CHAPTER_START });
+        const state = getState().rootReducer;
+
+        let project = state.project;
+
+        project.project.chapters.forEach(chapter => {
+            if (chapter.id === id) {
+                chapter.content = value
+            }
+        })
+
+        dispatch({ type: UPDATE_CHAPTER_SUCCESS, payload: project });
+
+    }
+}
+
+// CHARACTERS
 
 export function changeCurrentChar(charI, infoI) {
     return (dispatch) => {
@@ -300,6 +307,8 @@ export function createNewCharacter() {
     }
 }
 
+// SETTINGS
+
 export function changeCurrentSetting(settingI, infoI) {
     return (dispatch) => {
         dispatch({ type: CHANGE_SETTING_START });
@@ -370,6 +379,8 @@ export function createNewSetting() {
     }
 }
 
+// NOTES
+
 export function createNewNote() {
     return (dispatch, getState) => {
         dispatch({ type: ADD_NOTE_START });
@@ -418,6 +429,8 @@ export function updateNote(value, id) {
     }
 }
 
+// UPDATING
+
 export function updateName(value, type, id, ind) {
     return (dispatch, getState) => {
         dispatch({ type: UPDATE_CHAPTER_TITLE_START });
@@ -453,5 +466,34 @@ export function updateName(value, type, id, ind) {
         console.log("UPDATE NAME => ", project.project.characters);
 
         dispatch({ type: UPDATE_CHAPTER_TITLE_SUCCESS, payload: project });
+    }
+}
+
+export function deleteItem (value, type, id, ind) {
+    return (dispatch, getState) => {
+        dispatch({ type: REMOVE_ITEM_START });
+        const state = getState().rootReducer;
+
+        let project = state.project;
+        const newId = guid();
+
+        if (type === 'Chapters') {
+            project.project.chapters = state.project.project.chapters.filter(chapter => chapter.id !== id);
+        } else if (type === 'Notes') {
+            project.project.notes = state.project.project.chapters.filter(note => note.id !== id);
+        } else if (type === 'Characters') {
+            project.project.characters = state.project.project.characters.slice(id, 1);
+        } else if (type === 'Settings') {
+            project.project.settings = state.project.project.settings.slice(id, 1);
+        } else if (type === 'CharactersInfo') {
+            project.project.characters[id].info.slice(ind, 1);
+        } else if (type === 'SettingsInfo') {
+            project.project.settings[id].info.slice(ind, 1);
+        }
+
+        console.log("PROJ => ", project);
+
+
+        dispatch({ type: REMOVE_ITEM_SUCCESS, payload: {project, type, id: newId} });
     }
 }

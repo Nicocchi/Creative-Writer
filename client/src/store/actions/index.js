@@ -61,5 +61,8 @@ export {
     updateNote,
     UPDATE_CHAPTER_TITLE_START,
     UPDATE_CHAPTER_TITLE_SUCCESS,
-    updateName
+    updateName,
+    REMOVE_ITEM_START,
+    REMOVE_ITEM_SUCCESS,
+    deleteItem
 } from "./rootActions";

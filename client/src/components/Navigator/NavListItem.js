@@ -54,23 +54,21 @@ const styles = theme => ({
   divider: {
     marginTop: theme.spacing.unit * 2
   },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-        width: "100%",
-    },
-    dense: {
-        marginTop: 19,
-    },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: "100%"
+  },
+  dense: {
+    marginTop: 19
+  }
 });
 
 class navListItem extends Component {
-
-    render() {
+  render() {
     const { classes } = this.props;
     return (
       <Fragment>
-
         <ListItem
           button
           dense
@@ -82,31 +80,32 @@ class navListItem extends Component {
           onClick={() => this.props.openCollapse(this.props.open)}
         >
           <ListItemIcon>{this.props.icon}</ListItemIcon>
-        <ListItemText
+          <ListItemText
             classes={{
-                primary: classes.itemPrimary,
-                textDense: classes.textDense
+              primary: classes.itemPrimary,
+              textDense: classes.textDense
             }}
-        >
+          >
             {this.props.title}
-        </ListItemText>
+          </ListItemText>
 
-            {this.props.isOpen ? <ExpandLess dense /> : <ExpandMore dense />}
+          {this.props.isOpen ? <ExpandLess dense /> : <ExpandMore dense />}
         </ListItem>
         <Collapse in={this.props.isOpen} timeout="auto" unmountOnExit>
           <List disablePadding>
             {this.props.project !== null ? (
               this.props.type === "single" ? (
                 <NavListItemCollapse
-                    type="single"
+                  type="single"
                   array={this.props.array}
-                    title={this.props.title}
+                  title={this.props.title}
                   handleChange={this.props.handleChange}
                   current={this.props.current}
                   focus={this.props.focus}
                   unfocused={this.props.unfocused}
                 />
-              ) : <NavListItemCollapse
+              ) : (
+                <NavListItemCollapse
                   type="double"
                   title={this.props.title}
                   title2={this.props.title2}
@@ -121,7 +120,8 @@ class navListItem extends Component {
                   openArray={this.props.openArray}
                   focus={this.props.focus}
                   unfocused={this.props.unfocused}
-              />
+                />
+              )
             ) : null}
             <List disablePadding>
               <ListItem
@@ -135,9 +135,7 @@ class navListItem extends Component {
                 onClick={this.props.handleAdd}
                 style={{ paddingLeft: "45%" }}
               >
-                <ListItemIcon>
-                    {this.props.addIcon}
-                </ListItemIcon>
+                <ListItemIcon>{this.props.addIcon}</ListItemIcon>
                 <ListItemText
                   classes={{
                     primary: classes.itemPrimary,

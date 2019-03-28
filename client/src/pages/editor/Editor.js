@@ -296,6 +296,7 @@ class Editor extends React.Component {
         settingOpen: settingOpen
       });
     }
+
   }
 
   handleTooltipClose = () => {
@@ -449,11 +450,13 @@ class Editor extends React.Component {
     };
 
   render() {
-    let chapter = [{ content: "" }];
+    let chapter = [{ title: "", content: "", id: 0 }];
     if (this.props.project !== null && this.props.currentChapter !== null) {
       chapter = this.props.project.project.chapters.filter(
         chp => chp.id === this.props.currentChapter
       );
+
+      console.log("CHAPTER IS => ", chapter);
     } else if (
       this.props.project !== null &&
       this.props.currentChar !== null &&

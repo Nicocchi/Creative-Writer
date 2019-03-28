@@ -20,13 +20,7 @@ import Notes from "@material-ui/icons/Notes";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import Info from "@material-ui/icons/Info";
 import AddIcon from "@material-ui/icons/Add";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
-import { join } from "path";
 import PersonAdd from "@material-ui/icons/PersonAdd";
-import Person from "@material-ui/icons/Person";
-import PersonOutline from "@material-ui/icons/PersonOutline";
 import LandScape from "@material-ui/icons/Landscape";
 import AddPhotoAlternative from "@material-ui/icons/AddPhotoAlternate";
 import NavListItem from "./NavListItem";
@@ -157,6 +151,7 @@ function Navigator(props) {
           <NavListItem
               type="double"
               title="Characters"
+              title2="CharactersInfo"
               project={props.project}
               state={props.state}
               open="open2"
@@ -180,6 +175,7 @@ function Navigator(props) {
           <NavListItem
               type="double"
               title="Settings"
+              title2="SettingsInfo"
               project={props.project}
               state={props.state}
               open="open4"

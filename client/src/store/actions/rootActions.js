@@ -60,6 +60,9 @@ export const CHANGE_NOTE_SUCCESS = 'CHANGE_NOTE_SUCCESS';
 export const UPDATE_NOTE_START = 'UPDATE_NOTE_START';
 export const UPDATE_NOTE_SUCCESS = 'UPDATE_NOTE_SUCCESS';
 
+export const UPDATE_CHAPTER_TITLE_START = 'UPDATE_CHAPTER_TITLE_START';
+export const UPDATE_CHAPTER_TITLE_SUCCESS = 'UPDATE_CHAPTER_TITLE_SUCCESS';
+
 /*
  * Action creators
  */
@@ -239,8 +242,6 @@ export function updateCharacterInfo(value, char, index) {
 
         project.project.characters[char].info[index].content = value;
 
-        console.log("UPDATING CHARACTER INFO => ", project);
-
         dispatch({ type: UPDATE_CHAR_SUCCESS, payload: project });
 
     }
@@ -317,8 +318,6 @@ export function updateSettingInfo(value, char, index) {
 
         project.project.settings[char].info[index].content = value;
 
-        console.log("UPDATING SETTING INFO => ", project);
-
         dispatch({ type: UPDATE_CHAR_SUCCESS, payload: project });
 
     }
@@ -333,8 +332,6 @@ export function createNewSettingInfo(setting) {
 
         let project = state.project;
         project.project.settings[setting].info.push(newInfo);
-
-        console.log("ADDING SETTING INFO => ", project);
 
         dispatch({ type: ADD_SETTING_INFO_SUCCESS, payload: {project: project, setting: setting, info: project.project.settings[setting].info.length - 1} });
 
@@ -418,5 +415,43 @@ export function updateNote(value, id) {
 
         dispatch({ type: UPDATE_NOTE_SUCCESS, payload: project });
 
+    }
+}
+
+export function updateName(value, type, id, ind) {
+    return (dispatch, getState) => {
+        dispatch({ type: UPDATE_CHAPTER_TITLE_START });
+        const state = getState().rootReducer;
+
+        let project = state.project;
+
+        console.log("TYPE => ", type, id, ind);
+
+        if (type === 'Chapters') {
+            project.project.chapters.forEach(chapter => {
+                if (chapter.id === id) {
+                    chapter.title = value
+                }
+            })
+        } else if (type === 'Notes') {
+            project.project.notes.forEach(note => {
+                if (note.id === id) {
+                    note.title = value
+                }
+            })
+        } else if (type === 'Characters') {
+            project.project.characters[id].name = value;
+        } else if (type === 'Settings') {
+            project.project.settings[id].name = value;
+        } else if (type === 'CharactersInfo') {
+            console.log("value", value)
+            project.project.characters[id].info[ind].title = value;
+        } else if (type === 'SettingsInfo') {
+            project.project.settings[id].info[ind].title = value;
+        }
+
+        console.log("UPDATE NAME => ", project.project.characters);
+
+        dispatch({ type: UPDATE_CHAPTER_TITLE_SUCCESS, payload: project });
     }
 }

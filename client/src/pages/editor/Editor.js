@@ -228,7 +228,6 @@ class Editor extends React.Component {
           this.props.project.project.characters !== null &&
           this.props.currentChar
         ) {
-          console.log("CHARACTERS");
           chapter.push(
             this.props.project.project.characters[this.props.currentChar].info[
               this.props.currentInfo
@@ -238,7 +237,6 @@ class Editor extends React.Component {
           this.props.project.project.settings !== null &&
           this.props.currentSetting
         ) {
-          console.log("SETTINGS");
           chapter.push(
             this.props.project.project.settings[this.props.currentSetting].info[
               this.props.currentSetInfo
@@ -308,14 +306,6 @@ class Editor extends React.Component {
     this.setState({ toolTip1: true });
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
   handleChange = value => {
     console.log("Value => ", value);
     // this.setState({ text: value })
@@ -345,20 +335,8 @@ class Editor extends React.Component {
     }
   };
 
-  handleClick = () => {
-    this.setState(state => ({ open1: !state.open1 }));
-  };
-
   openCollapse = nr => {
     this.setState(state => ({ [nr]: !state[nr] }));
-  };
-
-  handleSelected = selected => {
-    console.log("SELECTED => ", selected);
-    const chapter = this.props.project.project.chapters.filter(
-      chp => chp.id === this.props.currentChapter
-    );
-    this.setState({ selected, text: chapter[0].content });
   };
 
   handleAddChapter = () => {
@@ -370,17 +348,6 @@ class Editor extends React.Component {
 
   handleChangeChapter = id => {
     this.props.changeCurrentChapter(id);
-  };
-
-  toggleChapters = () => {
-    this.setState({
-      chapExpanded: !this.state.chapExpanded,
-      charExpanded: false
-    });
-  };
-
-  toggleNav = () => {
-    this.setState({ navExpanded: !this.state.navExpanded });
   };
 
   handleDrawerToggle = () => {
@@ -425,7 +392,6 @@ class Editor extends React.Component {
   };
 
   openCharCollapse = index => {
-    console.log("INDEX => ", index);
     this.setState(
       previousState => {
         const characterOpen = [...previousState.characterOpen];
@@ -434,13 +400,11 @@ class Editor extends React.Component {
           isOpen: !characterOpen[index].isOpen
         };
         return { characterOpen };
-      },
-      () => console.log(this.state.characterOpen)
+      }
     );
   };
 
   openSetCollapse = index => {
-    console.log("INDEX => ", index);
     this.setState(
       previousState => {
         const settingOpen = [...previousState.settingOpen];
@@ -449,8 +413,7 @@ class Editor extends React.Component {
           isOpen: !settingOpen[index].isOpen
         };
         return { settingOpen };
-      },
-      () => console.log(this.state.settingOpen)
+      }
     );
   };
 
@@ -502,7 +465,6 @@ class Editor extends React.Component {
         ]
       );
       chapter.reverse();
-      console.log("CHAPTER CHARACTERS => ", chapter);
     } else if (
       this.props.project !== null &&
       this.props.currentSetting !== null &&
@@ -515,7 +477,6 @@ class Editor extends React.Component {
       );
 
       chapter.reverse();
-      console.log("CHAPTER SETTINGS => ", chapter);
     } else if (
         this.props.project !== null &&
         this.props.currentNote !== null
@@ -525,11 +486,7 @@ class Editor extends React.Component {
         );
     }
 
-    // let selected = this.state.selected;
     const { classes, theme } = this.props;
-    // const { anchorEl, mobileMoreAnchorEl } = this.state;
-    // const isMenuOpen = Boolean(anchorEl);
-    // const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);

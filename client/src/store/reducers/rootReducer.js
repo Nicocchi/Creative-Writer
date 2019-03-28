@@ -52,6 +52,9 @@ import {
 
     UPDATE_NOTE_START,
     UPDATE_NOTE_SUCCESS,
+
+    UPDATE_CHAPTER_TITLE_START,
+    UPDATE_CHAPTER_TITLE_SUCCESS,
 } from "../actions/";
 
 const initialState = {
@@ -296,6 +299,15 @@ export const rootReducer = (state = initialState, action) => {
             return state;
 
         case UPDATE_NOTE_SUCCESS:
+            return {
+                ...state,
+                project: action.payload
+            }
+
+        case UPDATE_CHAPTER_TITLE_START:
+            return state;
+
+        case UPDATE_CHAPTER_TITLE_SUCCESS:
             return {
                 ...state,
                 project: action.payload

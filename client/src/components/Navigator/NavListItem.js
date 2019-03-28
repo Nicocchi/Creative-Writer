@@ -2,33 +2,13 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import HomeIcon from "@material-ui/icons/Home";
-import PeopleIcon from "@material-ui/icons/People";
-import PermMediaOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActual";
-import SettingsIcon from "@material-ui/icons/Settings";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Book from "@material-ui/icons/Book";
-import BookMark from "@material-ui/icons/Bookmark";
-import SpeakerNotes from "@material-ui/icons/SpeakerNotes";
-import Notes from "@material-ui/icons/Notes";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Info from "@material-ui/icons/Info";
-import AddIcon from "@material-ui/icons/Add";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
-import { join } from "path";
-import PersonAdd from "@material-ui/icons/PersonAdd";
-import Person from "@material-ui/icons/Person";
-import PersonOutline from "@material-ui/icons/PersonOutline";
-import LandScape from "@material-ui/icons/Landscape";
-import AddPhotoAlternative from "@material-ui/icons/AddPhotoAlternate";
 import NavListItemCollapse from "./NavListItemCollapse";
 
 const styles = theme => ({
@@ -73,19 +53,24 @@ const styles = theme => ({
   textDense: {},
   divider: {
     marginTop: theme.spacing.unit * 2
-  }
+  },
+    textField: {
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: "100%",
+    },
+    dense: {
+        marginTop: 19,
+    },
 });
 
 class navListItem extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  render() {
+    render() {
     const { classes } = this.props;
-    console.log(this.props.array);
     return (
       <Fragment>
+
         <ListItem
           button
           dense
@@ -97,15 +82,16 @@ class navListItem extends Component {
           onClick={() => this.props.openCollapse(this.props.open)}
         >
           <ListItemIcon>{this.props.icon}</ListItemIcon>
-          <ListItemText
+        <ListItemText
             classes={{
-              primary: classes.itemPrimary,
-              textDense: classes.textDense
+                primary: classes.itemPrimary,
+                textDense: classes.textDense
             }}
-          >
+        >
             {this.props.title}
-          </ListItemText>
-          {this.props.isOpen ? <ExpandLess dense /> : <ExpandMore dense />}
+        </ListItemText>
+
+            {this.props.isOpen ? <ExpandLess dense /> : <ExpandMore dense />}
         </ListItem>
         <Collapse in={this.props.isOpen} timeout="auto" unmountOnExit>
           <List disablePadding>
@@ -114,6 +100,7 @@ class navListItem extends Component {
                 <NavListItemCollapse
                     type="single"
                   array={this.props.array}
+                    title={this.props.title}
                   handleChange={this.props.handleChange}
                   current={this.props.current}
                   focus={this.props.focus}
@@ -121,6 +108,8 @@ class navListItem extends Component {
                 />
               ) : <NavListItemCollapse
                   type="double"
+                  title={this.props.title}
+                  title2={this.props.title2}
                   array={this.props.array}
                   isOpen={this.props.isOpen}
                   openNestedCollapse={this.props.openNestedCollapse}

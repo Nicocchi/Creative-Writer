@@ -59,4 +59,7 @@ export {
     createNewNote,
     changeCurrentNote,
     updateNote,
+    UPDATE_CHAPTER_TITLE_START,
+    UPDATE_CHAPTER_TITLE_SUCCESS,
+    updateName
 } from "./rootActions";

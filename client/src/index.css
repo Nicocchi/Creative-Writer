@@ -95,3 +95,15 @@ html, body {
 .sidenav---sidenav-subnavitem---1cD47::before {
   left: 0;
 }
+
+.nav-input textarea:focus, input:focus{
+  /*outline: none;*/
+}
+
+.nav-input textarea, input {
+  background: transparent;
+  outline: none;
+  border: none;
+  margin-left: 15px;
+  font-size: 18px;
+}

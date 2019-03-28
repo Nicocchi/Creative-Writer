@@ -2,34 +2,18 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import HomeIcon from "@material-ui/icons/Home";
-import PeopleIcon from "@material-ui/icons/People";
-import PermMediaOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActual";
-import SettingsIcon from "@material-ui/icons/Settings";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Book from "@material-ui/icons/Book";
-import BookMark from "@material-ui/icons/Bookmark";
 import SpeakerNotes from "@material-ui/icons/SpeakerNotes";
 import Notes from "@material-ui/icons/Notes";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Info from "@material-ui/icons/Info";
 import AddIcon from "@material-ui/icons/Add";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Collapse from "@material-ui/core/Collapse";
-import { join } from "path";
-import PersonAdd from "@material-ui/icons/PersonAdd";
-import Person from "@material-ui/icons/Person";
-import PersonOutline from "@material-ui/icons/PersonOutline";
-import LandScape from "@material-ui/icons/Landscape";
-import AddPhotoAlternative from "@material-ui/icons/AddPhotoAlternate";
-import NavListItem from "./NavListItem";
+import {connect} from "react-redux";
+import { updateName } from "../../store/actions";
 
 const styles = theme => ({
     categoryHeader: {
@@ -77,8 +61,31 @@ const styles = theme => ({
 });
 
 class NavListItemCollapse extends Component {
-    constructor(props) {
-        super(props);
+    state = {
+        title: '',
+        isEditing: false,
+        isEditing2: false,
+        id: null,
+        ind: null
+    }
+
+    handleChange = name => event => {
+        this.setState({ [name]: event.target.value });
+    };
+
+    handleEdit = (title, id) => {
+        this.setState({ title: title, id: id, isEditing: !this.state.isEditing })
+    }
+
+    handleEdit2 = (title, id, ind) => {
+        this.setState({ title: title, id: id, ind: ind, isEditing: false, isEditing2: !this.state.isEditing2})
+}
+
+    handleSubmit = (e, id, type, ind = 0) => {
+        e.preventDefault();
+        console.log("TITLE => ", type, id, ind, this.state.title);
+        this.props.updateName(this.state.title, type, id, ind);
+        this.setState({ isEditing: false, isEditing2: false })
     }
 
     render() {
@@ -100,26 +107,37 @@ class NavListItemCollapse extends Component {
                                     onClick={this.props.type === 'single' ? () => this.props.handleChange(chap.id) : () => this.props.openNestedCollapse(i)}
                                     style={{ paddingLeft: "20%" }}
                                 >
-                                    <ListItemIcon>
+                                    <ListItemIcon style={{marginRight: "10px"}}>
                                         {this.props.type === 'single' ? this.props.current === i + 1 ? this.props.focus : this.props.unfocused :
                                             this.props.current === i ? this.props.focus : this.props.unfocused
                                         }
                                     </ListItemIcon>
-                                    <ListItemText
-                                        classes={{
-                                            primary: classes.itemPrimary,
-                                            textDense: classes.textDense
-                                        }}
-                                    >
-                                        { this.props.type === 'single' ? chap.title : chap.name }
-                                    </ListItemText>
+                                        <form id="changeTitle" onSubmit={this.props.type === 'single' ? e => this.handleSubmit(e, chap.id, this.props.title) : e => this.handleSubmit(e, i, this.props.title)} className={classes.container} noValidate autoComplete="off">
+                                            {
+                                        this.state.isEditing && this.state.id === chap.id && this.props.type === 'single' || this.state.isEditing && this.state.id === i && this.props.type === 'double' ?
+                                            <input type="text" defaultValue={this.state.title} onChange={this.handleChange('title')} />
+
+                                        :
+                                            <ListItemText
+                                                onDoubleClick={this.props.type === 'single' ? () => this.handleEdit(chap.title, chap.id) : () => this.handleEdit(chap.name, i)}
+                                                classes={{
+                                                    primary: classes.itemPrimary,
+                                                    textDense: classes.textDense
+                                                }}
+                                            >
+                                                { this.props.type === 'single' ? chap.title : chap.name }
+                                            </ListItemText>
+
+
+                                    }
+                                        </form>
                                     { this.props.type === 'double' ? this.props.openArray[i].isOpen ? <ExpandLess dense /> : <ExpandMore dense /> : null}
                                 </ListItem>
 
                                 {
                                     this.props.type === 'double' ?
                                         <Collapse
-                                            in={this.props.openArray[i].isOpen}
+                                            in={this.props.openArray[i].isOpen && !this.state.isEditing}
                                             timeout="auto"
                                             unmountOnExit
                                         >
@@ -136,6 +154,7 @@ class NavListItemCollapse extends Component {
                                                                 true && classes.itemActiveItem
                                                             )}
                                                             onClick={() => this.props.handleChange(i, j)}
+                                                            onDoubleClick={() => this.handleEdit2(info.title, i, j)}
                                                             style={{ paddingLeft: "24%" }}
                                                         >
                                                             <ListItemIcon>
@@ -146,14 +165,23 @@ class NavListItemCollapse extends Component {
                                                                     <Notes />
                                                                 )}
                                                             </ListItemIcon>
-                                                            <ListItemText
-                                                                classes={{
-                                                                    primary: classes.itemPrimary,
-                                                                    textDense: classes.textDense
-                                                                }}
-                                                            >
-                                                                {info.title}
-                                                            </ListItemText>
+                                                            <form id="changeTitle" onSubmit={e => this.handleSubmit(e, i, this.props.title2, j)} className={classes.container} noValidate autoComplete="off">
+                                                                {
+                                                                    this.state.isEditing2 && this.state.id === i && this.state.ind === j ?
+                                                                        <input type="text" defaultValue={this.state.title} onChange={this.handleChange('title')} />
+                                                                        :
+                                                                        <ListItemText
+                                                                            classes={{
+                                                                                primary: classes.itemPrimary,
+                                                                                textDense: classes.textDense
+                                                                            }}
+                                                                        >
+                                                                            {info.title}
+                                                                        </ListItemText>
+
+
+                                                                }
+                                                            </form>
                                                         </ListItem>
                                                     ))
                                                     : null}
@@ -195,4 +223,11 @@ class NavListItemCollapse extends Component {
     }
 }
 
-export default withStyles(styles)(NavListItemCollapse)
+const mapStateToProps = state => ({
+
+});
+
+export default connect(
+    mapStateToProps,
+    { updateName }
+)(withStyles(styles)(NavListItemCollapse));

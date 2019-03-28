@@ -275,13 +275,13 @@ export const rootReducer = (state = initialState, action) => {
         case ADD_NOTE_SUCCESS:
             return {
                 ...state,
-                project: action.payload,
+                project: action.payload.project,
                 currentChapter: null,
                 currentChar: null,
                 currentInfo: null,
                 currentSetting: null,
                 currentSetInfo: null,
-                currentNote: state.currentNote + 1,
+                currentNote: action.payload.id,
             }
 
         case CHANGE_NOTE_START:
@@ -338,6 +338,25 @@ export const rootReducer = (state = initialState, action) => {
                     currentSetting: null,
                     currentSetInfo: null,
                     currentNote: null,
+                }
+            } else if (action.payload.type === "Notes") {
+                let current = state.currentNote;
+                if (action.payload.project.project.notes.length === 0) {
+                    current = action.payload.id;
+                    action.payload.project.project.notes.push({title: "New Note", content: "Ideas", id: action.payload.id})
+                } else if (current !== action.payload.project.project.notes[0].id) {
+                    current = action.payload.project.project.notes[0].id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: null,
+                    currentChar: null,
+                    currentInfo: null,
+                    currentSetting: null,
+                    currentSetInfo: null,
+                    currentNote: current,
                 }
             }
 

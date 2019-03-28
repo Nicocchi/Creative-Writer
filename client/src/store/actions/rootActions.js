@@ -386,18 +386,18 @@ export function createNewNote() {
         dispatch({ type: ADD_NOTE_START });
         const state = getState().rootReducer;
 
+        const id = guid();
+
         const note = {
             content: `<h1 class="ql-align-center">Ideas</h1>`,
             title: `New Note`,
-            id: state.project.project.notes.length + 1
+            id: id
         }
 
         let project = state.project;
         project.project.notes.push(note);
 
-        console.log("ADDING NOTE => ", project);
-
-        dispatch({ type: ADD_NOTE_SUCCESS, payload: project });
+        dispatch({ type: ADD_NOTE_SUCCESS, payload: {project, id: note.id} });
     }
 }
 
@@ -422,8 +422,6 @@ export function updateNote(value, id) {
             }
         })
 
-        console.log("UPDATING NOTE => ", project);
-
         dispatch({ type: UPDATE_NOTE_SUCCESS, payload: project });
 
     }
@@ -438,32 +436,32 @@ export function updateName(value, type, id, ind) {
 
         let project = state.project;
 
-        console.log("TYPE => ", type, id, ind);
-
         if (type === 'Chapters') {
             project.project.chapters.forEach(chapter => {
                 if (chapter.id === id) {
                     chapter.title = value
                 }
             })
+
         } else if (type === 'Notes') {
             project.project.notes.forEach(note => {
                 if (note.id === id) {
                     note.title = value
                 }
             })
+
         } else if (type === 'Characters') {
             project.project.characters[id].name = value;
+
         } else if (type === 'Settings') {
             project.project.settings[id].name = value;
+
         } else if (type === 'CharactersInfo') {
-            console.log("value", value)
             project.project.characters[id].info[ind].title = value;
+
         } else if (type === 'SettingsInfo') {
             project.project.settings[id].info[ind].title = value;
         }
-
-        console.log("UPDATE NAME => ", project.project.characters);
 
         dispatch({ type: UPDATE_CHAPTER_TITLE_SUCCESS, payload: project });
     }
@@ -480,7 +478,7 @@ export function deleteItem (value, type, id, ind) {
         if (type === 'Chapters') {
             project.project.chapters = state.project.project.chapters.filter(chapter => chapter.id !== id);
         } else if (type === 'Notes') {
-            project.project.notes = state.project.project.chapters.filter(note => note.id !== id);
+            project.project.notes = state.project.project.notes.filter(note => note.id !== id);
         } else if (type === 'Characters') {
             project.project.characters = state.project.project.characters.slice(id, 1);
         } else if (type === 'Settings') {

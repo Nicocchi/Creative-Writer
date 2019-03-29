@@ -320,6 +320,7 @@ export const rootReducer = (state = initialState, action) => {
             return state;
 
         case REMOVE_ITEM_SUCCESS:
+            // TODO: REFACTOR THIS TO BE DRY
             if (action.payload.type === "Chapters") {
                 let current = state.currentChapter;
                 if (action.payload.project.project.chapters.length === 0) {
@@ -340,7 +341,14 @@ export const rootReducer = (state = initialState, action) => {
                     currentNote: null,
                 }
             } else if (action.payload.type === "Notes") {
-                let current = state.currentNote;
+                let current = state.currentNote
+                let currentChap = null;
+
+                if (state.currentChapter) {
+                    currentChap = state.currentChapter;
+                    current = null;
+                }
+
                 if (action.payload.project.project.notes.length === 0) {
                     current = action.payload.id;
                     action.payload.project.project.notes.push({title: "New Note", content: "Ideas", id: action.payload.id})
@@ -351,12 +359,132 @@ export const rootReducer = (state = initialState, action) => {
                 return {
                     ...state,
                     project: action.payload.project,
-                    currentChapter: null,
+                    currentChapter: currentChap,
                     currentChar: null,
                     currentInfo: null,
                     currentSetting: null,
                     currentSetInfo: null,
                     currentNote: current,
+                }
+            } else if (action.payload.type === 'Characters') {
+                let current = state.currentChar;
+                let current2 = state.currentInfo;
+                let currentChap = null;
+
+                if (state.currentChapter) {
+                    currentChap = state.currentChapter;
+                    current = null;
+                    current2 = null;
+                }
+
+                if (action.payload.project.project.characters.length === 0) {
+                    current = action.payload.id;
+                    current2 = action.payload.info;
+                    action.payload.project.project.characters.push({name: "John Doe", id: current, info: [{id: current2, title: 'Notes', content: `<h1 class="ql-align-center">New Character</h1>`},]})
+                } else if (current !== action.payload.project.project.characters[0].id) {
+                    current = action.payload.project.project.characters[0].id;
+                    current2 = action.payload.project.project.characters[0].info.id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: currentChap,
+                    currentChar: current,
+                    currentInfo: current2,
+                    currentSetting: null,
+                    currentSetInfo: null,
+                    currentNote: null,
+                }
+            } else if (action.payload.type === 'Settings') {
+                let current = state.currentSetting;
+                let current2 = state.currentSetInfo;
+                let currentChap = null;
+
+                if (state.currentChapter) {
+                    currentChap = state.currentChapter;
+                    current = null;
+                    current2 = null;
+                }
+
+                if (action.payload.project.project.settings.length === 0) {
+                    current = action.payload.id;
+                    current2 = action.payload.info;
+                    action.payload.project.project.settings.push({name: "Farm", id: current, info: [{id: current2, title: 'Basics', content: `<h1 class="ql-align-center">New Settings</h1>`},]})
+                } else if (current !== action.payload.project.project.settings[0].id) {
+                    current = action.payload.project.project.settings[0].id;
+                    current2 = action.payload.project.project.settings[0].info.id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: currentChap,
+                    currentChar: null,
+                    currentInfo: null,
+                    currentSetting: current,
+                    currentSetInfo: current2,
+                    currentNote: null,
+                }
+            } else if (action.payload.type === 'CharactersInfo') {
+                let current = state.currentChar;
+                let current2 = state.currentInfo;
+                let currentChap = null;
+
+                if (state.currentChapter) {
+                    currentChap = state.currentChapter;
+                    current = null;
+                    current2 = null;
+                }
+
+                if (action.payload.project.project.characters[action.payload.f1].info.length === 0) {
+                    current = action.payload.id;
+                    current2 = action.payload.info;
+                    action.payload.project.project.characters[action.payload.f1].info.push({id: current2, title: 'Basics', content: `<h1 class="ql-align-center">New Info</h1>`})
+                } else if (current2 !== action.payload.project.project.characters[action.payload.f1].id) {
+                    current = action.payload.project.project.characters[0].id;
+                    current2 = action.payload.project.project.characters[0].info.id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: currentChap,
+                    currentChar: current,
+                    currentInfo: current2,
+                    currentSetting: null,
+                    currentSetInfo: null,
+                    currentNote: null,
+                }
+            } else if (action.payload.type === 'SettingsInfo') {
+                let current = state.currentSetting;
+                let current2 = state.currentSetInfo;
+                let currentChap = null;
+
+                if (state.currentChapter) {
+                    currentChap = state.currentChapter;
+                    current = null;
+                    current2 = null;
+                }
+
+                if (action.payload.project.project.settings[action.payload.f1].info.length === 0) {
+                    current = action.payload.id;
+                    current2 = action.payload.info;
+                    action.payload.project.project.settings[action.payload.f1].info.push({id: current2, title: 'Basics', content: `<h1 class="ql-align-center">New Info</h1>`})
+                } else if (current2 !== action.payload.project.project.settings[action.payload.f1].id) {
+                    current = action.payload.project.project.settings[0].id;
+                    current2 = action.payload.project.project.settings[0].info.id;
+                }
+
+                return {
+                    ...state,
+                    project: action.payload.project,
+                    currentChapter: currentChap,
+                    currentChar: null,
+                    currentInfo: null,
+                    currentSetting: current,
+                    currentSetInfo: current2,
+                    currentNote: null,
                 }
             }
 

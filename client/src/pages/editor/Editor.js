@@ -220,7 +220,6 @@ class Editor extends React.Component {
           this.props.project.project.chapters !== null &&
           this.props.currentChapter
         ) {
-          console.log("CHAPTERS");
           chapter = this.props.project.project.chapters.filter(
             chp => chp.id === this.props.currentChapter
           );
@@ -228,20 +227,32 @@ class Editor extends React.Component {
           this.props.project.project.characters !== null &&
           this.props.currentChar
         ) {
-          chapter.push(
-            this.props.project.project.characters[this.props.currentChar].info[
-              this.props.currentInfo
-            ]
+          this.props.project.project.characters.forEach((char, i) => {
+              if (char.id === this.props.currentChar) {
+                chapter = char.info.filter(inf => inf.id === this.props.currentInfo)
+              }
+            }
           );
+          // chapter.push(
+          //   this.props.project.project.characters[this.props.currentChar].info[
+          //     this.props.currentInfo
+          //   ]
+          // );
         } else if (
           this.props.project.project.settings !== null &&
           this.props.currentSetting
         ) {
-          chapter.push(
-            this.props.project.project.settings[this.props.currentSetting].info[
-              this.props.currentSetInfo
-            ]
+          this.props.project.project.settings.forEach((char, i) => {
+                if (char.id === this.props.currentSetting) {
+                  chapter = char.info.filter(inf => inf.id === this.props.currentSetInfo)
+                }
+              }
           );
+          // chapter.push(
+          //   this.props.project.project.settings[this.props.currentSetting].info[
+          //     this.props.currentSetInfo
+          //   ]
+          // );
         } else if (
             this.props.project.project.notes !== null &&
             this.props.currentNote
@@ -464,7 +475,9 @@ class Editor extends React.Component {
     } else if (
       this.props.project !== null &&
       this.props.currentChar !== null &&
-      this.props.currentInfo !== null
+        this.props.currentChar !== undefined &&
+      this.props.currentInfo !== null &&
+        this.props.currentInfo !== undefined
     ) {
       this.props.project.project.characters.forEach(char => {
         if (char.id === this.props.currentChar) {
@@ -475,7 +488,9 @@ class Editor extends React.Component {
     } else if (
       this.props.project !== null &&
       this.props.currentSetting !== null &&
-      this.props.currentSetInfo !== null
+      this.props.currentSetInfo !== null &&
+        this.props.currentSetting !== undefined &&
+        this.props.currentSetInfo !== undefined
     ) {
       this.props.project.project.settings.forEach(char => {
         if (char.id === this.props.currentSetting) {

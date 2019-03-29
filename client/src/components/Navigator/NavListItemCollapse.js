@@ -134,7 +134,7 @@ class NavListItemCollapse extends Component {
                     ? this.props.current === chap.id
                       ? this.props.focus
                       : this.props.unfocused
-                    : this.props.current === i
+                    : this.props.current === chap.id
                     ? this.props.focus
                     : this.props.unfocused}
                 </ListItemIcon>
@@ -158,7 +158,7 @@ class NavListItemCollapse extends Component {
                     this.state.id === chap.id &&
                     this.props.type === "single") ||
                   (this.state.isEditing &&
-                    this.state.id === i &&
+                    this.state.id === chap.id &&
                     this.props.type === "double") ? (
 
                     <input
@@ -212,63 +212,65 @@ class NavListItemCollapse extends Component {
                 <List disablePadding>
                   {chap !== null
                     ? chap.info.map((info, j) => (
-                        <ListItem
-                          button
-                          dense
-                          key={j}
-                          className={classNames(
-                            classes.item,
-                            classes.itemActionable,
-                            true && classes.itemActiveItem
-                          )}
-                          onClick={() => this.props.handleChange(chap.id, info.id)}
-                          onDoubleClick={() =>
-                            this.handleEdit2(info.title, chap.id, info.id)
-                          }
-                          style={{ paddingLeft: "24%" }}
-                        >
-                          <ListItemIcon>
-                            {this.props.current === chap.id &&
-                            this.props.currentInfo === info.id ? (
-                              <SpeakerNotes />
-                            ) : (
-                              <Notes />
-                            )}
-                          </ListItemIcon>
-                          <form
-                            id="changeTitle"
-                            onSubmit={e =>
-                              this.handleSubmit(e, i, this.props.title2, info.id)
-                            }
-                            className={classes.container}
-                            noValidate
-                            autoComplete="off"
-                          >
-                            {this.state.isEditing2 &&
-                            this.state.id === chap.id &&
-                            this.state.ind === info.id ? (
-                              <input
-                                type="text"
-                                defaultValue={this.state.title}
-                                onChange={this.handleChange("title")}
-                              />
-                            ) : (
-                              <ListItemText
-                                classes={{
-                                  primary: classes.itemPrimary,
-                                  textDense: classes.textDense
-                                }}
+                        <div style={{display: "flex"}}>
+                            <ListItem
+                              button
+                              dense
+                              key={j}
+                              className={classNames(
+                                classes.item,
+                                classes.itemActionable,
+                                true && classes.itemActiveItem
+                              )}
+                              onClick={() => this.props.handleChange(chap.id, info.id)}
+                              onDoubleClick={() =>
+                                this.handleEdit2(info.title, chap.id, info.id)
+                              }
+                              style={{ paddingLeft: "24%" }}
+                            >
+                              <ListItemIcon>
+                                {this.props.current === chap.id &&
+                                this.props.currentInfo === info.id ? (
+                                  <SpeakerNotes />
+                                ) : (
+                                  <Notes />
+                                )}
+                              </ListItemIcon>
+                              <form
+                                id="changeTitle"
+                                onSubmit={e =>
+                                  this.handleSubmit(e, chap.id, this.props.title2, info.id)
+                                }
+                                className={classes.container}
+                                noValidate
+                                autoComplete="off"
                               >
-                                {info.title}
-                              </ListItemText>
-                            )}
-                          </form>
-                          <DeleteIcon
-                            onClick={e =>
-                              this.handleDelete(e, chap.id, this.props.title2, info.id)
-                            }
-                          />
-                        </ListItem>
+                                {this.state.isEditing2 &&
+                                this.state.id === chap.id &&
+                                this.state.ind === info.id ? (
+                                  <input
+                                    type="text"
+                                    defaultValue={this.state.title}
+                                    onChange={this.handleChange("title")}
+                                  />
+                                ) : (
+                                  <ListItemText
+                                    classes={{
+                                      primary: classes.itemPrimary,
+                                      textDense: classes.textDense
+                                    }}
+                                  >
+                                    {info.title}
+                                  </ListItemText>
+                                )}
+                              </form>
+                            </ListItem>
+                            <DeleteIcon
+                                onClick={e =>
+                                    this.handleDelete(e, chap.id, this.props.title2, info.id)
+                                }
+                            />
+                        </div>
                       ))
                     : null}
                 </List>

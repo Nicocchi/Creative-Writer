@@ -466,16 +466,41 @@ export function updateName(value, type, id, ind) {
             })
 
         } else if (type === 'Characters') {
-            project.project.characters[id].name = value;
+            project.project.characters.forEach(char => {
+                if (char.id === id) {
+                    char.name = value;
+                }
+            })
 
         } else if (type === 'Settings') {
-            project.project.settings[id].name = value;
+            project.project.settings.forEach(char => {
+                if (char.id === id) {
+                    char.name = value;
+                }
+            })
 
         } else if (type === 'CharactersInfo') {
-            project.project.characters[id].info[ind].title = value;
+            project.project.characters.forEach((char, i) => {
+                if (char.id === id) {
+                    char.info.forEach((inf, j) => {
+                        if (inf.id === ind) {
+                            inf.title = value;
+                        }
+                        // project.project.characters[i].info[j].title = value;
+                    })
+                }
+            })
+
+            console.log("PRJ => ", project.project.characters);
 
         } else if (type === 'SettingsInfo') {
-            project.project.settings[id].info[ind].title = value;
+            project.project.settings.forEach((char, i) => {
+                if (char.id === id) {
+                    char.info.forEach(inf => {
+                        if (inf.id === ind) inf.title = value;
+                    })
+                }
+            })
         }
 
         dispatch({ type: UPDATE_CHAPTER_TITLE_SUCCESS, payload: project });
@@ -490,23 +515,44 @@ export function deleteItem (value, type, id, ind) {
         let project = state.project;
         const newId = guid();
 
+        let firstIndex = null;
+        let secondIndex = null;
+
         if (type === 'Chapters') {
             project.project.chapters = state.project.project.chapters.filter(chapter => chapter.id !== id);
+
         } else if (type === 'Notes') {
             project.project.notes = state.project.project.notes.filter(note => note.id !== id);
+
         } else if (type === 'Characters') {
-            project.project.characters = state.project.project.characters.slice(id, 1);
+            project.project.characters = state.project.project.characters.filter(char => char.id !== id);
+
         } else if (type === 'Settings') {
-            project.project.settings = state.project.project.settings.slice(id, 1);
+            project.project.settings = state.project.project.settings.filter(char => char.id !== id);
+
         } else if (type === 'CharactersInfo') {
-            project.project.characters[id].info.slice(ind, 1);
+            state.project.project.characters.forEach((char, i) => {
+                if (char.id === id) {
+                    project.project.characters[i].info = char.info.filter(inf => inf.id !== ind);
+                    firstIndex = i;
+                    secondIndex = 0;
+                }
+            });
+
         } else if (type === 'SettingsInfo') {
-            project.project.settings[id].info.slice(ind, 1);
+            state.project.project.settings.forEach((char, i) => {
+                if (char.id === id) {
+                    project.project.settings[i].info = char.info.filter(inf => inf.id !== ind);
+                    firstIndex = i;
+                    secondIndex = 0;
+                }
+            });
+
         }
 
         console.log("PROJ => ", project);
 
 
-        dispatch({ type: REMOVE_ITEM_SUCCESS, payload: {project, type, id: newId} });
+        dispatch({ type: REMOVE_ITEM_SUCCESS, payload: {project, type, id: newId, info: guid(), f1: firstIndex, f2: secondIndex } });
     }
 }

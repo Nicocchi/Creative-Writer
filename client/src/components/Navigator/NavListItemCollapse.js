@@ -146,7 +146,7 @@ class NavListItemCollapse extends Component {
                   onSubmit={
                     this.props.type === "single"
                       ? e => this.handleSubmit(e, chap.id, this.props.title)
-                      : e => this.handleSubmit(e, i, this.props.title)
+                      : e => this.handleSubmit(e, chap.id, this.props.title)
                   }
                   className={classes.container}
                   noValidate
@@ -171,7 +171,7 @@ class NavListItemCollapse extends Component {
                       onDoubleClick={
                         this.props.type === "single"
                           ? () => this.handleEdit(chap.title, chap.id)
-                          : () => this.handleEdit(chap.name, i)
+                          : () => this.handleEdit(chap.name, chap.id)
                       }
                       classes={{
                         primary: classes.itemPrimary,
@@ -197,10 +197,12 @@ class NavListItemCollapse extends Component {
                 onClick={e =>
                   this.props.type === "single"
                     ? this.handleDelete(e, chap.id, this.props.title)
-                    : this.handleDelete(e, i, this.props.title)
+                    : this.handleDelete(e, chap.id, this.props.title)
                 }
               />
             </div>
+
+
             {this.props.type === "double" ? (
               <Collapse
                 in={this.props.openArray[i].isOpen && !this.state.isEditing}
@@ -219,15 +221,15 @@ class NavListItemCollapse extends Component {
                             classes.itemActionable,
                             true && classes.itemActiveItem
                           )}
-                          onClick={() => this.props.handleChange(i, j)}
+                          onClick={() => this.props.handleChange(chap.id, info.id)}
                           onDoubleClick={() =>
-                            this.handleEdit2(info.title, i, j)
+                            this.handleEdit2(info.title, chap.id, info.id)
                           }
                           style={{ paddingLeft: "24%" }}
                         >
                           <ListItemIcon>
-                            {this.props.current === i &&
-                            this.props.currentInfo === j ? (
+                            {this.props.current === chap.id &&
+                            this.props.currentInfo === info.id ? (
                               <SpeakerNotes />
                             ) : (
                               <Notes />
@@ -236,15 +238,15 @@ class NavListItemCollapse extends Component {
                           <form
                             id="changeTitle"
                             onSubmit={e =>
-                              this.handleSubmit(e, i, this.props.title2, j)
+                              this.handleSubmit(e, i, this.props.title2, info.id)
                             }
                             className={classes.container}
                             noValidate
                             autoComplete="off"
                           >
                             {this.state.isEditing2 &&
-                            this.state.id === i &&
-                            this.state.ind === j ? (
+                            this.state.id === chap.id &&
+                            this.state.ind === info.id ? (
                               <input
                                 type="text"
                                 defaultValue={this.state.title}
@@ -263,7 +265,7 @@ class NavListItemCollapse extends Component {
                           </form>
                           <DeleteIcon
                             onClick={e =>
-                              this.handleDelete(e, i, this.props.title2, j)
+                              this.handleDelete(e, chap.id, this.props.title2, info.id)
                             }
                           />
                         </ListItem>

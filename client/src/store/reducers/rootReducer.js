@@ -217,10 +217,10 @@ export const rootReducer = (state = initialState, action) => {
         case ADD_CHARACTER_SUCCESS:
             return {
                 ...state,
-                project: action.payload,
+                project: action.payload.project,
                 currentChapter: null,
-                currentChar: state.project.project.characters.length - 1,
-                currentInfo: 0,
+                currentChar: action.payload.id,
+                currentInfo: action.payload.info,
                 currentSetting: null,
                 currentSetInfo: null,
                 currentNote: null,
@@ -260,12 +260,12 @@ export const rootReducer = (state = initialState, action) => {
         case ADD_SETTING_SUCCESS:
             return {
                 ...state,
-                project: action.payload,
+                project: action.payload.project,
                 currentChapter: null,
                 currentChar: null,
                 currentInfo: null,
-                currentSetting: state.project.project.settings.length - 1,
-                currentSetInfo: 0,
+                currentSetting: action.payload.id,
+                currentSetInfo: action.payload.info,
                 currentNote: null,
             }
 

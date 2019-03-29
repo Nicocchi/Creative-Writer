@@ -266,9 +266,10 @@ class Editor extends React.Component {
 
   componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.project !== this.props.project) {
-      const chapter = nextProps.project.project.chapters.filter(
-        chp => chp.id === this.props.currentChapter
-      );
+        const chapter = nextProps.project.project.chapters.filter(
+            chp => chp.id === this.props.currentChapter
+        );
+
 
       let characterOpen = [];
       let settingOpen = [];
@@ -307,12 +308,13 @@ class Editor extends React.Component {
     this.setState({ toolTip1: true });
   };
 
-  handleChange = value => {
+  handleChange = (value) => {
     console.log("Value => ", value);
-    // this.setState({ text: value })
+
     if (this.props.currentChapter !== null) {
         console.log("CHAPTER");
       this.props.updateChapter(value, this.props.currentChapter);
+
     } else if (this.props.currentChar !== null) {
         console.log("CHARACTER INFO");
       this.props.updateCharacterInfo(
@@ -320,6 +322,7 @@ class Editor extends React.Component {
         this.props.currentChar,
         this.props.currentInfo
       );
+
     } else if (this.props.currentSetting !== null) {
         console.log("SETTING INFO");
       this.props.updateSettingInfo(
@@ -327,6 +330,7 @@ class Editor extends React.Component {
         this.props.currentSetting,
         this.props.currentSetInfo
       );
+
     } else if (this.props.currentNote !== null) {
         console.log("NOTE");
         this.props.updateNote(
@@ -370,6 +374,7 @@ class Editor extends React.Component {
   };
 
   handleChangeChar = (charI, infoI) => {
+
     this.props.changeCurrentChar(charI, infoI);
   };
 
@@ -456,30 +461,28 @@ class Editor extends React.Component {
         chp => chp.id === this.props.currentChapter
       );
 
-      console.log("CHAPTER IS => ", chapter);
     } else if (
       this.props.project !== null &&
       this.props.currentChar !== null &&
       this.props.currentInfo !== null
     ) {
-      chapter.push(
-        this.props.project.project.characters[this.props.currentChar].info[
-          this.props.currentInfo
-        ]
-      );
-      chapter.reverse();
+      this.props.project.project.characters.forEach(char => {
+        if (char.id === this.props.currentChar) {
+          chapter = char.info.filter(inf => inf.id === this.props.currentInfo)
+        }
+      })
+
     } else if (
       this.props.project !== null &&
       this.props.currentSetting !== null &&
       this.props.currentSetInfo !== null
     ) {
-      chapter.push(
-        this.props.project.project.settings[this.props.currentSetting].info[
-          this.props.currentSetInfo
-        ]
-      );
+      this.props.project.project.settings.forEach(char => {
+        if (char.id === this.props.currentSetting) {
+          chapter = char.info.filter(inf => inf.id === this.props.currentSetInfo)
+        }
+      })
 
-      chapter.reverse();
     } else if (
         this.props.project !== null &&
         this.props.currentNote !== null

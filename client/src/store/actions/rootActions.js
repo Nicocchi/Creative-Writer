@@ -70,6 +70,10 @@ export const UPDATE_CHAPTER_TITLE_SUCCESS = 'UPDATE_CHAPTER_TITLE_SUCCESS';
 export const REMOVE_ITEM_START = 'REMOVE_ITEM_START';
 export const REMOVE_ITEM_SUCCESS = 'REMOVE_ITEM_SUCCESS';
 
+export const REMOVE_RECENT_START = "REMOVE_RECENT_START";
+export const REMOVE_RECENT_SUCCESS = "REMOVE_RECENT_SUCCESS";
+export const REMOVE_RECENT_FAILED = "REMOVE_RECENT_FAILED";
+
 
 function guid() {
     function s4() {
@@ -121,6 +125,7 @@ export function openProject() {
         }
 
         dispatch({ type: OPEN_PROJECT_SUCCESS, payload: proj });
+        getRecents()(dispatch);
     };
 }
 
@@ -140,6 +145,7 @@ export function createNewProject(path) {
         if (project === null) return dispatch({ type: CREATE_PROJECT_FAILED, payload: "Project failed to create. Please try again." });
 
         dispatch({ type: CREATE_PROJECT_SUCCESS, payload: project });
+        getRecents()(dispatch);
     };
 }
 
@@ -189,7 +195,7 @@ export const getRecents = () => dispatch => {
 };
 
 /**
- * Opens up a recent project from the electron electron-store
+ * Opens up a recent project from the electron-store
  * @param  {} dispatch
  */
 export function openRecentProject(recent) {
@@ -200,6 +206,21 @@ export function openRecentProject(recent) {
         if (project === null) return dispatch({ type: OPEN_RECENT_FAILED });
 
         dispatch({ type: OPEN_RECENT_SUCCESS, payload: project });
+    };
+}
+
+/**
+ * Removes up a recent project from the electron-store
+ * @param  {} dispatch
+ */
+export function removeRecentProject(recent) {
+    return (dispatch, getState) => {
+        dispatch({ type: REMOVE_RECENT_START });
+
+        const recents = window.IpcRenderer.sendSync("remove-recent", recent);
+        if (recents === null) return dispatch({ type: REMOVE_RECENT_FAILED, payload: "Failed to remove recent" });
+
+        dispatch({ type: REMOVE_RECENT_SUCCESS, payload: recents });
     };
 }
 

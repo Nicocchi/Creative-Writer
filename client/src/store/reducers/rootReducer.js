@@ -55,6 +55,10 @@ import {
 
     REMOVE_ITEM_START,
     REMOVE_ITEM_SUCCESS,
+
+    REMOVE_RECENT_START,
+    REMOVE_RECENT_SUCCESS,
+    REMOVE_RECENT_FAILED,
 } from "../actions/";
 
 const initialState = {
@@ -488,6 +492,22 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 project: action.payload.project
+            }
+
+        case REMOVE_RECENT_START:
+            return state;
+
+        case REMOVE_RECENT_SUCCESS:
+            return {
+                ...state,
+                recents: action.payload
+            }
+
+        case REMOVE_RECENT_FAILED:
+            return {
+                ...state,
+                error: true,
+                errorMessage: action.payload
             }
 
 

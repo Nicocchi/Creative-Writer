@@ -68,5 +68,9 @@ export {
     SAVE_PROJECT_START,
     SAVE_PROJECT_SUCCESS,
     SAVE_PROJECT_FAILED,
-    saveProject
+    saveProject,
+    REMOVE_RECENT_START,
+    REMOVE_RECENT_SUCCESS,
+    REMOVE_RECENT_FAILED,
+    removeRecentProject,
 } from "./rootActions";

@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import Gallery from "../../components/Gallery/Gallery";
-import { createNewProject, openProject, getRecents, openRecentProject } from "../../store/actions";
+import { createNewProject, openProject, getRecents, openRecentProject, removeRecentProject } from "../../store/actions";
 
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -200,6 +200,10 @@ class Dashboard extends Component {
         return this.handleLocation(loc[0]);
     };
 
+    handleRemoveRecent = (recent) => {
+        this.props.removeRecentProject(recent);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -274,7 +278,7 @@ class Dashboard extends Component {
                 {/*<Button onClick={e => this.snackbarOpen(e)}>*/}
                     {/*Open success snackbar*/}
                 {/*</Button>*/}
-                <Gallery name="Recent Projects" clickHandler={this.handleOpenRecentProject} list={this.props.recents !== null ? this.props.recents : [{name: "No project"}]}/>
+                <Gallery name="Recent Projects" clickHandler={this.handleOpenRecentProject} removeHandler={this.handleRemoveRecent} list={this.props.recents !== null ? this.props.recents : [{name: "No project"}]}/>
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
@@ -302,5 +306,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { createNewProject, openProject, getRecents, openRecentProject }
+    { createNewProject, openProject, getRecents, openRecentProject, removeRecentProject }
 )(withStyles(styles)(Dashboard));

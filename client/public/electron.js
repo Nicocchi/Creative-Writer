@@ -331,7 +331,7 @@ ipcMain.on("openProject", (event, path) => {
   function respondWithPath(paths) {
     const fs = require("fs");
     if (paths === undefined) {
-      console.log("No file selected");
+      // console.log("No file selected");
       return (event.returnValue = null);
     }
 
@@ -339,7 +339,7 @@ ipcMain.on("openProject", (event, path) => {
       if (err) return (event.returnValue = null);
       const project = JSON.parse(data);
 
-      console.log(project);
+      // console.log(project);
 
       // Recents
       handleSaveRecents(project);
@@ -382,7 +382,7 @@ ipcMain.on("save-project", (event, project) => {
   // Write the file to disc
   fs.writeFile(`${filePath}/${fileName}.cwr`, saved, err => {
     if (err) {
-      console.log(err.message);
+      // console.log(err.message);
       event.returnValue = false;
       return;
     }
@@ -396,29 +396,31 @@ ipcMain.on("save-project", (event, project) => {
  * @param  {} project - Current project to add to recents
  */
 function handleSaveRecents(project) {
-  let recObj = store.get("recents");
-  let recArr = recObj.recents;
+  let recents = store.get("recents");
+
+  // console.log("recObj", recents);
 
   // Add the project to the recents
-  if (recArr != null) {
+  if (recents !== null) {
     // Check if we already have this recent in our recent's store
-    const isSame = recArr.forEach(rec => {
-      if (rec.title === project.title && rec.location === project.location)
+    const isSame = recents.forEach(rec => {
+      if (rec.title === project.title && rec.location === project.location) {
         return true;
+      }
     });
 
-    // If we already have 5 recents in our list, remove the first one
-    if (recArr.length >= 5) recArr.shift();
+    // If we already have 10 recents in our list, remove the first one
+    if (recents.length >= 10) recents.pop();
 
     if (!isSame) {
-      recArr.push(project);
-      recArr.reverse();
-      store.set("recents", recArr);
+      recents.push({location: project.location, title: project.title});
+      recents.reverse();
+      store.set("recents", recents);
     }
   } else {
-    recArr = [];
-    recArr.push(project);
-    store.set("recents", recArr);
+    recents = [];
+    recents.push({location: project.location, title: project.title});
+    store.set("recents", recents);
   }
 }
 
@@ -440,17 +442,31 @@ ipcMain.on("open-recent", (event, arg) => {
 
   fs.readFile(`${filePath}/${fileName}.cwr`, "utf-8", function(err, data) {
     if (err) {
-      // let recentsObj = store.get("recents");
-      // let recArr = recentsObj.recents;
-      // const newArr = recArr.filter(
-      //   rec => rec.title !== fileName && rec.location !== filePath
-      // );
-      // recentsObj.recents = newArr;
-      // store.set("recents", recentsObj);
       return (event.returnValue = null);
     }
     const proj = JSON.parse(data);
 
     return (event.returnValue = proj);
   });
+});
+
+ipcMain.on("remove-recent", (event, arg) => {
+
+  let recents = store.get("recents");
+  if (recents === undefined || recents === null || recents === "") {
+    return (event.returnValue = null);
+  }
+
+  let newRecents = [];
+
+  recents.forEach(rec => {
+    if (rec.title === arg.title && rec.location === arg.location) {
+    } else {
+      newRecents.push(rec);
+    }
+  })
+
+    store.set("recents", newRecents);
+
+    return (event.returnValue = newRecents);
 });

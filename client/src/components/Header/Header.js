@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
-import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import HelpIcon from "@material-ui/icons/Help";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +10,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import ArrowBack from "@material-ui/icons/ArrowBackIos";
-import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Fade from "@material-ui/core/Fade";
@@ -20,7 +18,6 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import TextFormat from '@material-ui/icons/TextFields';
-import MenuList from "@material-ui/core/MenuList";
 import ViewHeadline from '@material-ui/icons/ViewHeadline';
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
@@ -208,32 +205,34 @@ function Header(props) {
                                   <React.Fragment>
                                       <div style={{display: "flex"}}>
                                           <div style={{display: "flex", flexDirection: "column", textAlign: "right", marginRight: "10px"}}>
+                                              <br />
                                               <Typography style={{ color: "white" }}>Characters</Typography>
                                               <Typography style={{ color: "white" }}>Without Spaces</Typography>
                                               <br />
                                               <Typography style={{ color: "white" }}>Words</Typography>
                                               <Typography style={{ color: "white" }}>Sentences</Typography>
                                               <Typography style={{ color: "white" }}>Paragraphs</Typography>
-                                              <Typography style={{ color: "white" }}>Lines</Typography>
-                                              <Typography style={{ color: "white" }}>Pages</Typography>
+                                              {/*<Typography style={{ color: "white" }}>Lines</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>Pages</Typography>*/}
                                               <br />
-                                              <Typography style={{ color: "white" }}>Slow</Typography>
-                                              <Typography style={{ color: "white" }}>Average</Typography>
-                                              <Typography style={{ color: "white" }}>Fast</Typography>
+                                              {/*<Typography style={{ color: "white" }}>Slow</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>Average</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>Fast</Typography>*/}
                                           </div>
                                           <div style={{display: "flex", flexDirection: "column", textAlign: "left"}}>
-                                              <Typography style={{ color: "white" }}>169</Typography>
-                                              <Typography style={{ color: "white" }}>132</Typography>
                                               <br />
-                                              <Typography style={{ color: "white" }}>32</Typography>
-                                              <Typography style={{ color: "white" }}>5</Typography>
-                                              <Typography style={{ color: "white" }}>4</Typography>
-                                              <Typography style={{ color: "white" }}>7</Typography>
-                                              <Typography style={{ color: "white" }}>0.3</Typography>
+                                              <Typography style={{ color: "white" }}>{props.characterCount}</Typography>
+                                              <Typography style={{ color: "white" }}>{props.charNoSpaces}</Typography>
                                               <br />
-                                              <Typography style={{ color: "white" }}>10 sec</Typography>
-                                              <Typography style={{ color: "white" }}>8 sec</Typography>
-                                              <Typography style={{ color: "white" }}>6 sec</Typography>
+                                              <Typography style={{ color: "white" }}>{props.wordCount}</Typography>
+                                              <Typography style={{ color: "white" }}>{props.sentenceCount}</Typography>
+                                              <Typography style={{ color: "white" }}>{props.paragraphCount}</Typography>
+                                              {/*<Typography style={{ color: "white" }}>{props.lineCount}</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>0.3</Typography>*/}
+                                              {/*<br />*/}
+                                              {/*<Typography style={{ color: "white" }}>10 sec</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>8 sec</Typography>*/}
+                                              {/*<Typography style={{ color: "white" }}>6 sec</Typography>*/}
                                           </div>
 
                                       </div>
@@ -273,7 +272,7 @@ function Header(props) {
                 <ViewHeadline/>
               </IconButton>
               <Popper
-                open={props.open}
+                open={props.open !== undefined ? props.open : false}
                 anchorEl={props.anchorEl}
                 transition
                 disablePortal

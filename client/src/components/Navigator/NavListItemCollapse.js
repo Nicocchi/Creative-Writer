@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -58,7 +57,17 @@ const styles = theme => ({
   textDense: {},
   divider: {
     marginTop: theme.spacing.unit * 2
-  }
+  },
+    deleteItemIcon: {
+      display: "none"
+    },
+    navItem: {
+      "&:hover": {
+          deleteItemIcon: {
+              display: "inline-block"
+          }
+      }
+    }
 });
 
 class NavListItemCollapse extends Component {
@@ -106,15 +115,15 @@ class NavListItemCollapse extends Component {
     return (
       <List disablePadding>
         {this.props.array.map((chap, i) => (
-          <Fragment>
+          <Fragment key={chap.id + i}>
             <div style={{ display: "flex" }}>
               <ListItem
                 button
                 dense
-                key={i}
                 className={classNames(
                   classes.item,
                   classes.itemActionable,
+                  classes.navItem,
                   true && classes.itemActiveItem
                 )}
 
@@ -122,7 +131,7 @@ class NavListItemCollapse extends Component {
                 onClick={
                   this.props.type === "single"
                     ? () => this.props.handleChange(chap.id)
-                    : () => this.props.openNestedCollapse(i)
+                    : () => {this.props.openNestedCollapse(i); console.log("NESTED ", chap.id)}
                 }
 
                 style={{ paddingLeft: "20%" }}
@@ -193,7 +202,10 @@ class NavListItemCollapse extends Component {
               </ListItem>
 
               <DeleteIcon
-                style={{ zIndex: "3000" }}
+                style={{ zIndex: "3000"}}
+                classes={{
+                    primary: classes.deleteItemIcon
+                }}
                 onClick={e =>
                   this.props.type === "single"
                     ? this.handleDelete(e, chap.id, this.props.title)
@@ -212,17 +224,16 @@ class NavListItemCollapse extends Component {
                 <List disablePadding>
                   {chap !== null
                     ? chap.info.map((info, j) => (
-                        <div style={{display: "flex"}}>
+                        <div key={info.id + j} style={{display: "flex"}}>
                             <ListItem
                               button
                               dense
-                              key={j}
                               className={classNames(
                                 classes.item,
                                 classes.itemActionable,
                                 true && classes.itemActiveItem
                               )}
-                              onClick={() => this.props.handleChange(chap.id, info.id)}
+                              onClick={() => {this.props.handleChange(chap.id, info.id); console.log("CHAP", this.props)}}
                               onDoubleClick={() =>
                                 this.handleEdit2(info.title, chap.id, info.id)
                               }
@@ -266,6 +277,7 @@ class NavListItemCollapse extends Component {
                               </form>
                             </ListItem>
                             <DeleteIcon
+
                                 onClick={e =>
                                     this.handleDelete(e, chap.id, this.props.title2, info.id)
                                 }

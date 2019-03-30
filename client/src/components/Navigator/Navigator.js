@@ -146,6 +146,7 @@ function Navigator(props) {
           addIcon={<AddIcon />}
           focus={<Book />}
           unfocused={<BookMark />}
+          dense="true"
         />
         {/* Characters */}
           <NavListItem

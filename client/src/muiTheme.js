@@ -21,9 +21,8 @@ const theme = createMuiTheme({
             paper: {
                 background: '#18202c',
                 // this is where magic happens
-                '& *': { color: 'rgba(255, 255, 255, 0.7)' },
-                width: '15%'
-            },
+                '& *': { color: 'rgba(255, 255, 255, 0.7)' }
+            }
         },
         MuiButton: {
             label: {

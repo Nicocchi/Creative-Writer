@@ -183,6 +183,8 @@ class Dashboard extends Component {
         this.props.openRecentProject(location);
     }
 
+    handleTooltipClose = () => {}
+
     /**
      * Open the file dialog and select a folder to save the project
      */
@@ -202,7 +204,7 @@ class Dashboard extends Component {
         const { classes } = this.props;
         return (
             <div className={"dashboard container"}>
-                <Header project={this.props.project} route={this.props}/>
+                <Header project={this.props.project} route={this.props} handleTooltipClose={this.handleTooltipClose}/>
                 <div className={"dashboard header"}>
                     <h1>Dashboard</h1>
                 </div>
@@ -268,57 +270,6 @@ class Dashboard extends Component {
                             </Button>
                         </DialogActions>
                     </Dialog>
-
-
-                    {/*<Modal*/}
-                        {/*modalClassName="modal-black"*/}
-                        {/*isOpen={this.state.modalCreate}*/}
-                        {/*toggle={this.toggleModal}*/}
-                    {/*>*/}
-                        {/*<h3 className="modal-title" id="exampleModalLabel" style={{textAlign: "center", marginTop: "20px", marginBottom: "20px"}}>*/}
-                            {/*Create New Project*/}
-                        {/*</h3>*/}
-                        {/*<form style={{margin: "1%"}}>*/}
-                            {/*<FormGroup>*/}
-                                {/*<label for="exampleEmail">Project Name</label>*/}
-                                {/*<Input*/}
-                                    {/*type="text"*/}
-                                    {/*name="name"*/}
-                                    {/*id="name"*/}
-                                    {/*placeholder="Enter project name"*/}
-                                    {/*defaultValue={this.state.name}*/}
-                                    {/*onChange={this.handleInput}*/}
-                                {/*/>*/}
-                                {/*<label style={{color: "red !important"}}>*/}
-                                    {/*You must enter a project name*/}
-                                {/*</label>*/}
-                            {/*</FormGroup>*/}
-                            {/*<FormGroup>*/}
-                                {/*<label for="location">Project Folder</label>*/}
-                                {/*<div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>*/}
-                                    {/*<Input*/}
-                                        {/*type="text"*/}
-                                        {/*name="location"*/}
-                                        {/*id="location"*/}
-                                        {/*placeholder="Enter project location"*/}
-                                        {/*autoComplete="off"*/}
-                                        {/*style={{width: "90%", marginRight: "10px"}}*/}
-                                        {/*defaultValue={this.state.location}*/}
-                                        {/*onChange={this.handleInput}*/}
-                                    {/*/>*/}
-                                    {/*<Button onClick={(e) => this.openFile(e)} color="primary" type="submit">*/}
-                                        {/*Browse*/}
-                                    {/*</Button>*/}
-                                {/*</div>*/}
-                            {/*</FormGroup>*/}
-                            {/*<FormGroup style={{display: "flex", justifyContent: "center"}}>*/}
-                                {/*<Button onClick={e => this.handleCreateNewProject(e)} color="primary" type="submit">*/}
-                                    {/*Start Writing!*/}
-                                {/*</Button>*/}
-                            {/*</FormGroup>*/}
-
-                        {/*</form>*/}
-                    {/*</Modal>*/}
                 </div>
                 {/*<Button onClick={e => this.snackbarOpen(e)}>*/}
                     {/*Open success snackbar*/}

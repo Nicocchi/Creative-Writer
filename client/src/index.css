@@ -39,7 +39,7 @@ html, body {
 .ql-editor {
   /*padding: 4% 25% 20% 25%;*/
   /*height: 100vh;*/
-  padding: 4% 25%;
+  padding: 4% 10%;
   /*height: 80%;*/
   width: 100%;
   border: none;
@@ -107,3 +107,11 @@ html, body {
   margin-left: 15px;
   font-size: 18px;
 }
+
+.delete-icon {
+  display: none;
+}
+
+/*.nav-item-hover:hover > .delete-icon {*/
+  /*display: inline-block;*/
+/*}*/

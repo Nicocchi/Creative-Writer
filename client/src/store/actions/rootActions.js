@@ -176,9 +176,6 @@ export function openRecentProject(recent) {
         const project = window.IpcRenderer.sendSync("open-recent", recent);
         if (project === null) return dispatch({ type: OPEN_RECENT_FAILED });
 
-        const state = getState().rootReducer;
-
-
         dispatch({ type: OPEN_RECENT_SUCCESS, payload: project });
     };
 }
@@ -191,7 +188,7 @@ export function createNewChapter() {
         const state = getState().rootReducer;
 
         const chapter = {
-            content: `<h1 class="ql-align-center">New Chapter</h1>`,
+            content: "",
             id: guid(),
             title: `New Chapter`
         }
@@ -316,6 +313,7 @@ export function createNewCharacter() {
 
 export function changeCurrentSetting(settingI, infoI) {
     return (dispatch) => {
+        console.log("CHANGE ", settingI, infoI);
         dispatch({ type: CHANGE_SETTING_START });
 
         dispatch({ type: CHANGE_SETTING_SUCCESS, payload: {setting: settingI, info: infoI} });
@@ -329,6 +327,8 @@ export function updateSettingInfo(value, char, index) {
         const state = getState().rootReducer;
 
         let project = state.project;
+
+        console.log(value, char, index);
 
         // project.project.settings[char].info[index].content = value;
         project.project.settings.forEach(chara => {

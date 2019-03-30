@@ -28,6 +28,7 @@ import {
     changeCurrentNote,
     updateNote,
 } from "../../store/actions";
+import ReactQuill from "react-quill";
 
 let theme = createMuiTheme({
   typography: {
@@ -146,7 +147,7 @@ theme = {
   }
 };
 
-const drawerWidth = 256;
+const drawerWidth = "20%";
 
 const styles = {
   root: {
@@ -191,6 +192,13 @@ class Editor extends React.Component {
     anchorEl: null,
     mobileMoreAnchorEl: null,
     arrowRef: null,
+    text1: '',
+    charCount: 0,
+    charNoSpaces: 0,
+    wordCount: 0,
+    sentenceCount: 0,
+    paragraphCount: 0,
+    lineCount: 0,
   };
 
   componentWillMount() {
@@ -319,8 +327,15 @@ class Editor extends React.Component {
     this.setState({ toolTip1: true });
   };
 
-  handleChange = (value) => {
-    console.log("Value => ", value);
+  handleChange = (value, delta, source, editor) => {
+    console.log("DELTA => ", delta);
+    console.log("EDITOR => ", editor.getContents());
+
+    let span = document.createElement('span');
+    span.innerHTML = value;
+    const result = span.textContent || span.innerText;
+
+    console.log("VALUE => ", span.innerHTML);
 
     if (this.props.currentChapter !== null) {
         console.log("CHAPTER");
@@ -349,6 +364,42 @@ class Editor extends React.Component {
             this.props.currentNote
         )
     }
+
+    if (result !== null) {
+      const words = result.match(/\b[-?(\w+)?]+\b/gi);
+      const totalChars = result;
+      const removePrefixes = value.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+      const sentences = removePrefixes.split(/[.|!|?]+/g);
+      const charCountNoSpace = result.replace(/\s+/gi, '');
+      const paragraphs = value.split('<br>');
+      const lines = value.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+
+      console.log("LINES => ", lines);
+
+      if (words === null) {
+        this.setState({
+          charCount: 0,
+          charNoSpaces: 0,
+          wordCount: 0,
+          sentenceCount: 0,
+          paragraphCount: 0,
+          lineCount: 0,
+        });
+      } else {
+        this.setState({
+          charCount: totalChars.length,
+          charNoSpaces: charCountNoSpace.length,
+          wordCount: words.length,
+          sentenceCount: sentences.length - 1,
+          paragraphCount: paragraphs.length,
+          lineCount: lines.length - 1
+        });
+      }
+
+    }
+
+
+
   };
 
   openCollapse = nr => {
@@ -435,6 +486,7 @@ class Editor extends React.Component {
   };
 
   handleChangeSetting = (settingsI, infoI) => {
+    console.log("EDITOR -> ", settingsI, infoI);
     this.props.changeCurrentSetting(settingsI, infoI);
   };
 
@@ -464,6 +516,11 @@ class Editor extends React.Component {
     handleChangeNote = id => {
         this.props.changeCurrentNote(id);
     };
+
+    countWords = (html) => {
+      // Quill.setText(html);
+      // const text = Quill.getText();
+    }
 
   render() {
     let chapter = [{ title: "", content: "", id: 0 }];
@@ -507,7 +564,7 @@ class Editor extends React.Component {
         );
     }
 
-    const { classes, theme } = this.props;
+    const { classes, theme, ...other } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
@@ -571,6 +628,12 @@ class Editor extends React.Component {
               handleClose={this.handleCloseMenu}
               handleOpen={this.handleOpenMenu}
               open={open}
+              wordCount={this.state.wordCount}
+              characterCount={this.state.charCount}
+              charNoSpaces={this.state.charNoSpaces}
+              sentenceCount={this.state.sentenceCount}
+              paragraphCount={this.state.paragraphCount}
+              lineCount={this.state.lineCount}
             />
             <main className={classes.mainContent}>
               <Content

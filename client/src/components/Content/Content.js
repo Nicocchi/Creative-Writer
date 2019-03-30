@@ -58,7 +58,7 @@ function Content(props) {
  */
 Content.modules = {
     toolbar: [
-        [{ header: "1" }, { header: "2" }],
+        [{ header: [] }],
         [{ size: [] }],
         [{ align: ["", "center", "right", "justify"] }],
         ["bold", "italic", "underline", "strike", "blockquote"],

@@ -64,5 +64,9 @@ export {
     updateName,
     REMOVE_ITEM_START,
     REMOVE_ITEM_SUCCESS,
-    deleteItem
+    deleteItem,
+    SAVE_PROJECT_START,
+    SAVE_PROJECT_SUCCESS,
+    SAVE_PROJECT_FAILED,
+    saveProject
 } from "./rootActions";

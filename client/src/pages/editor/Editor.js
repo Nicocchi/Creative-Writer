@@ -27,6 +27,7 @@ import {
     createNewNote,
     changeCurrentNote,
     updateNote,
+  saveProject
 } from "../../store/actions";
 import ReactQuill from "react-quill";
 
@@ -517,9 +518,8 @@ class Editor extends React.Component {
         this.props.changeCurrentNote(id);
     };
 
-    countWords = (html) => {
-      // Quill.setText(html);
-      // const text = Quill.getText();
+    saveProject = () => {
+      this.props.saveProject();
     }
 
   render() {
@@ -634,6 +634,7 @@ class Editor extends React.Component {
               sentenceCount={this.state.sentenceCount}
               paragraphCount={this.state.paragraphCount}
               lineCount={this.state.lineCount}
+              saveProject={this.saveProject}
             />
             <main className={classes.mainContent}>
               <Content
@@ -681,5 +682,6 @@ export default connect(
       createNewNote,
       changeCurrentNote,
       updateNote,
+    saveProject
   }
 )(withStyles(styles)(Editor));

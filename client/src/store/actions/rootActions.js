@@ -11,6 +11,10 @@ export const CREATE_PROJECT_START = 'CREATE_PROJECT_START';
 export const CREATE_PROJECT_SUCCESS = 'CREATE_PROJECT_SUCCESS';
 export const CREATE_PROJECT_FAILED = 'CREATE_PROJECT_FAILED';
 
+export const SAVE_PROJECT_START = 'SAVE_PROJECT_START';
+export const SAVE_PROJECT_SUCCESS = 'SAVE_PROJECT_SUCCESS';
+export const SAVE_PROJECT_FAILED = 'SAVE_PROJECT_FAILED';
+
 export const ADD_CHAPTER_START = 'ADD_CHAPTER_START';
 export const ADD_CHAPTER_SUCCESS = 'ADD_CHAPTER_SUCCESS';
 
@@ -139,6 +143,25 @@ export function createNewProject(path) {
     };
 }
 
+/**
+ * Save the current project
+ * @param  {} id - Unique ID of the project
+ */
+export function saveProject() {
+    return (dispatch, getState) => {
+        dispatch({ type: SAVE_PROJECT_START });
+
+        const state = getState().rootReducer;
+
+        const didSave = window.IpcRenderer.sendSync("save-project", state.project);
+
+        if (didSave) {
+            dispatch({ type: SAVE_PROJECT_SUCCESS });
+        } else {
+            dispatch({ type: SAVE_PROJECT_FAILED });
+        }
+    }
+}
 
 /**
  * Gets the recents from the electron-store

@@ -302,14 +302,8 @@ function Header(props) {
                           TransitionComponent={Fade}
                           style={{ marginTop: "40px" }}
                         >
-                          <MenuItem onClick={props.handleClose}>
-                            Profile
-                          </MenuItem>
-                          <MenuItem onClick={props.handleClose}>
-                            My account
-                          </MenuItem>
-                          <MenuItem onClick={props.handleClose}>
-                            Logout
+                          <MenuItem onClick={props.saveProject}>
+                            Save
                           </MenuItem>
                         </Menu>
                       </ClickAwayListener>

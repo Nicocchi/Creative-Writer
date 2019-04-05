@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Paper } from '@material-ui/core';
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";

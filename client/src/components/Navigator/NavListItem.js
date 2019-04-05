@@ -1,13 +1,8 @@
 import React, { Component, Fragment } from "react";
 import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
+import { withStyles, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
 import NavListItemCollapse from "./NavListItemCollapse";
 
 const styles = theme => ({

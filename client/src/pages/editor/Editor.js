@@ -5,8 +5,7 @@ import {
   createMuiTheme,
   withStyles
 } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Hidden from "@material-ui/core/Hidden";
+import { Hidden, CssBaseline } from "@material-ui/core";
 import Navigator from "../../components/Navigator/Navigator";
 import Content from "../../components/Content/Content";
 import Header from "../../components/Header/Header";
@@ -24,9 +23,9 @@ import {
   updateSettingInfo,
   createNewSetting,
   createNewSettingInfo,
-    createNewNote,
-    changeCurrentNote,
-    updateNote,
+  createNewNote,
+  changeCurrentNote,
+  updateNote,
   saveProject
 } from "../../store/actions";
 import ReactQuill from "react-quill";
@@ -203,6 +202,7 @@ class Editor extends React.Component {
   };
 
   componentWillMount() {
+    // TODO: Refactor this - too much going on
     if (this.props.project !== null || this.props.project !== undefined) {
       if (this.props.project !== null) {
         let characterOpen = [];
@@ -242,11 +242,6 @@ class Editor extends React.Component {
               }
             }
           );
-          // chapter.push(
-          //   this.props.project.project.characters[this.props.currentChar].info[
-          //     this.props.currentInfo
-          //   ]
-          // );
         } else if (
           this.props.project.project.settings !== null &&
           this.props.currentSetting
@@ -257,11 +252,6 @@ class Editor extends React.Component {
                 }
               }
           );
-          // chapter.push(
-          //   this.props.project.project.settings[this.props.currentSetting].info[
-          //     this.props.currentSetInfo
-          //   ]
-          // );
         } else if (
             this.props.project.project.notes !== null &&
             this.props.currentNote
@@ -290,7 +280,7 @@ class Editor extends React.Component {
             chp => chp.id === this.props.currentChapter
         );
 
-
+      // TODO: Refactor this
       let characterOpen = [];
       let settingOpen = [];
       this.props.project.project.characters.forEach((elem, i) => {
@@ -320,14 +310,27 @@ class Editor extends React.Component {
 
   }
 
+  /**
+   * Handles closing tooltips
+   */
   handleTooltipClose = () => {
     this.setState({ toolTip1: false });
   };
 
+  /**
+   * Handles opening tooltips
+   */
   handleTooltipOpen = () => {
     this.setState({ toolTip1: true });
   };
 
+  /**
+   * Handles ReactQuill's editor content
+   * @param value - HTML value of the content
+   * @param delta - Delta value of the content
+   * @param source - Original source of content
+   * @param editor - Editor (check if user or api editor changes)
+   */
   handleChange = (value, delta, source, editor) => {
     console.log("DELTA => ", delta);
     console.log("EDITOR => ", editor.getContents());
@@ -399,14 +402,19 @@ class Editor extends React.Component {
 
     }
 
-
-
   };
 
+  /**
+   * Open menu item
+   * @param nr
+   */
   openCollapse = nr => {
     this.setState(state => ({ [nr]: !state[nr] }));
   };
 
+  /**
+   * Add a chapter
+   */
   handleAddChapter = () => {
     this.props.createNewChapter();
     console.log("CHPT => ", this.props.currentChapter);
@@ -414,37 +422,67 @@ class Editor extends React.Component {
     this.setState({ selected: `chapters/${num}` });
   };
 
+  /**
+   * Change chapter
+   * @param id - Id of chapter
+   */
   handleChangeChapter = id => {
     this.props.changeCurrentChapter(id);
   };
 
+  /**
+   * Toggle header menu
+   */
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  /**
+   * Close header menu
+   */
   handleCloseMenu = () => {
     this.setState({ anchorEl: null });
   };
 
+  /**
+   * Open header menu
+   * @param event
+   */
   handleOpenMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  /**
+   * Arrow reference
+   * @param node
+   */
   handleArrowRef = node => {
     this.setState({
       arrowRef: node
     });
   };
 
+  /**
+   * Change editor content to a character
+   * @param charI - Id of character menu
+   * @param infoI - Id of nested character menu item
+   */
   handleChangeChar = (charI, infoI) => {
 
     this.props.changeCurrentChar(charI, infoI);
   };
 
+  /**
+   * Add a character info
+   * @param char - Character to add to
+   */
   handleAddCharacterInfo = char => {
     this.props.createNewCharacterInfo(char);
   };
 
+  /**
+   * Add a character
+   */
   handleAddCharacter = () => {
     this.props.createNewCharacter();
 
@@ -460,6 +498,10 @@ class Editor extends React.Component {
     });
   };
 
+  /**
+   * Open character menu item
+   * @param index - Index of item
+   */
   openCharCollapse = index => {
     this.setState(
       previousState => {
@@ -473,6 +515,10 @@ class Editor extends React.Component {
     );
   };
 
+  /**
+   * Open setting menu item
+   * @param index - Index of item
+   */
   openSetCollapse = index => {
     this.setState(
       previousState => {
@@ -486,15 +532,27 @@ class Editor extends React.Component {
     );
   };
 
+  /**
+   * Change editor content to a specified setting
+   * @param settingsI - Id of setting item
+   * @param infoI - Id of nested setting item
+   */
   handleChangeSetting = (settingsI, infoI) => {
     console.log("EDITOR -> ", settingsI, infoI);
     this.props.changeCurrentSetting(settingsI, infoI);
   };
 
+  /**
+   * Add setting info
+   * @param setting - Setting to add to
+   */
   handleAddSettingInfo = setting => {
     this.props.createNewSettingInfo(setting);
   };
 
+  /**
+   * Add a setting
+   */
   handleAddSetting = () => {
     this.props.createNewSetting();
 
@@ -510,19 +568,30 @@ class Editor extends React.Component {
     });
   };
 
-    handleAddNote = () => {
-        this.props.createNewNote();
-    };
+  /**
+   * Add a note
+   */
+  handleAddNote = () => {
+      this.props.createNewNote();
+  };
 
-    handleChangeNote = id => {
-        this.props.changeCurrentNote(id);
-    };
+  /**
+   * Changes editor content to a specified note
+   * @param id - Id of note
+   */
+  handleChangeNote = id => {
+      this.props.changeCurrentNote(id);
+  };
 
-    saveProject = () => {
-      this.props.saveProject();
-    }
+  /**
+   * Save project
+   */
+  saveProject = () => {
+    this.props.saveProject();
+  };
 
   render() {
+    // TODO: Refactor this into function
     let chapter = [{ title: "", content: "", id: 0 }];
     if (this.props.project !== null && this.props.currentChapter !== null) {
       chapter = this.props.project.project.chapters.filter(

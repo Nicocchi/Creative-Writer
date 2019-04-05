@@ -1,19 +1,14 @@
 import React, { Component, Fragment } from "react";
 import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
 import SpeakerNotes from "@material-ui/icons/SpeakerNotes";
 import Notes from "@material-ui/icons/Notes";
 import AddIcon from "@material-ui/icons/Add";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import Collapse from "@material-ui/core/Collapse";
 import { connect } from "react-redux";
 import { updateName, deleteItem } from "../../store/actions";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { withStyles, List, ListItem, ListItemIcon, ListItemText, Collapse } from '@material-ui/core';
 
 const styles = theme => ({
   categoryHeader: {
@@ -79,14 +74,31 @@ class NavListItemCollapse extends Component {
     ind: null
   };
 
+  /**
+   * Handles text input changing
+   * @param name - Name of the input
+   * @param event - Event of the input
+   * @returns { * }
+   */
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
 
+  /**
+   * Sets the title of the menu item and sets menu item to edit true
+   * @param title - title of the menu item
+   * @param id - id of the menu item
+   */
   handleEdit = (title, id) => {
     this.setState({ title: title, id: id, isEditing: !this.state.isEditing });
   };
 
+  /**
+   * Sets the title of the nested menu item and sets nested menu item to edit true
+   * @param title - title of the menu item
+   * @param id - id of the menu item
+   * @param ind - id of the nested menu item
+   */
   handleEdit2 = (title, id, ind) => {
     this.setState({
       title: title,
@@ -97,13 +109,26 @@ class NavListItemCollapse extends Component {
     });
   };
 
+  /**
+   * Updates the selected menu items name
+   * @param e - event
+   * @param id - id of the menu item
+   * @param type - type of the menu item (ex. chapter, character, etc.)
+   * @param ind - id of the nested menu item
+   */
   handleSubmit = (e, id, type, ind = 0) => {
     e.preventDefault();
-    console.log("TITLE => ", type, id, ind, this.state.title);
     this.props.updateName(this.state.title, type, id, ind);
     this.setState({ isEditing: false, isEditing2: false });
   };
 
+  /**
+   * Deletes the selected menu item
+   * @param e - event
+   * @param id - id of the menu item
+   * @param type - type of the menu item (ex. chapter, character, etc.)
+   * @param ind - id of the nested menu item
+   */
   handleDelete = (e, id, type, ind = 0) => {
     e.preventDefault();
     this.props.deleteItem(this.state.title, type, id, ind);

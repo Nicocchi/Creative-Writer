@@ -1,27 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Grid from "@material-ui/core/Grid";
 import HelpIcon from "@material-ui/icons/Help";
-import IconButton from "@material-ui/core/IconButton";
 import NotificationsIcon from "@material-ui/icons/Notifications";
-import Toolbar from "@material-ui/core/Toolbar";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
 import ArrowBack from "@material-ui/icons/ArrowBackIos";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Fade from "@material-ui/core/Fade";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import TextFormat from '@material-ui/icons/TextFields';
 import ViewHeadline from '@material-ui/icons/ViewHeadline';
+import { withStyles, AppBar, Grid, IconButton, Toolbar, Tooltip, Typography, Menu, MenuItem, Fade, Grow, Paper, Popper, ClickAwayListener } from '@material-ui/core';
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
+// Generate arrow design
 function arrowGenerator(color) {
   return {
     '&[x-placement*="bottom"] $arrow': {

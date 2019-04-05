@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
-import "./Dashboard.css";
-// import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import Gallery from "../../components/Gallery/Gallery";
-import { createNewProject, openProject, getRecents, openRecentProject, removeRecentProject } from "../../store/actions";
-
+import { withStyles, Button, IconButton, Snackbar, SnackbarContent, Slide, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import classNames from 'classnames';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -15,12 +8,12 @@ import InfoIcon from '@material-ui/icons/Info';
 import CloseIcon from '@material-ui/icons/Close';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
-import IconButton from '@material-ui/core/IconButton';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
+
 import Header from "../../components/Header/Header";
-import Slide from '@material-ui/core/Slide';
+import Gallery from "../../components/Gallery/Gallery";
+import "./Dashboard.css";
+import { createNewProject, openProject, getRecents, openRecentProject, removeRecentProject } from "../../store/actions";
 
 const variantIcon = {
     success: CheckCircleIcon,
@@ -61,10 +54,22 @@ const styles = theme => ({
     },
 });
 
+/**
+ * Transition animation for Snackbar
+ * @param props - props
+ * @returns {*}
+ * @constructor
+ */
 function Transition(props) {
     return <Slide direction="up" {...props} />;
 }
 
+/**
+ * Content of Snackbar
+ * @param props - props
+ * @returns {*}
+ * @constructor
+ */
 function MySnackbarContent(props) {
     const { className, message, onClose, variant, ...other } = props;
     const Icon = variantIcon[variant];
@@ -104,51 +109,68 @@ class Dashboard extends Component {
         open: false,
     };
 
+    /**
+     * Get recents if project is null
+     */
     componentWillMount() {
         if (this.props.project === null) this.props.getRecents();
     }
 
+    /**
+     * TODO: Refactor this (causes issue when deleting a recent project)
+     * If project isn't null, push to editor
+     * @param nextProps
+     * @param nextContext
+     */
     componentWillReceiveProps(nextProps, nextContext) {
         if(nextProps.project !== null) {
             this.props.history.push("/editor");
         }
     }
 
+    /**
+     * Open new project modal
+     */
     handleClickOpen = () => {
         this.setState({ open: true });
     };
 
+    /**
+     * Close new project modal
+     */
     handleClose = () => {
         this.setState({ open: false });
     };
 
+    /**
+     * Open snackbar
+     * @param e
+     */
     snackbarOpen = (e) => {
         e.preventDefault();
         this.setState({ open: true });
-    }
+    };
 
+    /**
+     * Close snackbar
+     */
     snackbarClose = () => {
         this.setState({ open: false });
     };
 
-    toggleModal = () => {
-        this.setState({
-            modalCreate: !this.state.modalCreate
-        });
-    }
-
-    alert = (message) => {
-        console.log(message)
-    }
-
+    /**
+     * Handles text input in creating project modal
+     * @param e
+     */
     handleInput = e => {
         this.setState({
             [e.target.name]: e.target.value
         })
-    }
+    };
 
     /**
      * Handles changing the location parameter for the project from browse button
+     * @param location
      */
     handleLocation = location => {
         this.setState({ location });
@@ -163,6 +185,7 @@ class Dashboard extends Component {
 
     /**
      * Creates a new project
+     * @param e
      */
     handleCreateNewProject = (e) => {
         e.preventDefault();
@@ -179,14 +202,19 @@ class Dashboard extends Component {
         this.props.createNewProject(path);
     };
 
+    /**
+     * Open recent project
+     * @param location - Folder to save project in
+     */
     handleOpenRecentProject = location => {
         this.props.openRecentProject(location);
-    }
+    };
 
-    handleTooltipClose = () => {}
+    handleTooltipClose = () => {};
 
     /**
      * Open the file dialog and select a folder to save the project
+     * @param e
      */
     openFile = (e) => {
         e.preventDefault();
@@ -200,9 +228,13 @@ class Dashboard extends Component {
         return this.handleLocation(loc[0]);
     };
 
+    /**
+     * Removes a recent project
+     * @param recent - Recent project
+     */
     handleRemoveRecent = (recent) => {
         this.props.removeRecentProject(recent);
-    }
+    };
 
     render() {
         const { classes } = this.props;

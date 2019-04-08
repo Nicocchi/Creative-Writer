@@ -115,3 +115,14 @@ html, body {
 /*.nav-item-hover:hover > .delete-icon {*/
   /*display: inline-block;*/
 /*}*/
+
+.about-page {
+  background: #18202c;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.about-page h2, h4, p {
+  color: white;
+}

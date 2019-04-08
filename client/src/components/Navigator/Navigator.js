@@ -65,6 +65,11 @@ const styles = theme => ({
   }
 });
 
+function openAboutWindow() {
+  const result = window.IpcRenderer.sendSync("toggle-about-window");
+  console.log("RESULT => ", result);
+}
+
 function Navigator(props) {
   const { classes, ...other } = props;
 
@@ -250,7 +255,7 @@ function Navigator(props) {
             classes.itemActionable,
             true && classes.itemActiveItem
           )}
-          onClick={() => props.history.push("/")}
+          onClick={() => openAboutWindow()}
         >
           <ListItemIcon>
             <Info />
@@ -272,7 +277,7 @@ function Navigator(props) {
             classes.itemActionable,
             true && classes.itemActiveItem
           )}
-          onClick={() => props.history.push("/")}
+          onClick={() => openAboutWindow()}
         >
           <ListItemIcon>
             <ExitToApp />

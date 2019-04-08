@@ -4,6 +4,7 @@ import {Route, Switch, withRouter} from 'react-router-dom';
 import withRoot from "./withRoot";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Editor from "./pages/editor/Editor";
+import About from "./pages/about/About";
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Switch>
               <Route exact path='/' component={Dashboard} />
               <Route exact path='/editor' component={Editor} />
+              <Route exact path='/about' component={About} />
           </Switch>
       </div>
     );

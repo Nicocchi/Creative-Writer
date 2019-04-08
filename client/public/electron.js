@@ -4,9 +4,7 @@ const {
   shell,
   ipcMain,
   Menu,
-  TouchBar
 } = require("electron");
-const { TouchBarButton, TouchBarLabel, TouchBarSpacer } = TouchBar;
 
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -17,6 +15,7 @@ const store = new Store();
 const fs = require("fs");
 
 let mainWindow;
+let aboutWindow;
 
 createWindow = () => {
   mainWindow = new BrowserWindow({
@@ -33,10 +32,35 @@ createWindow = () => {
     width: 1280
   });
 
+  aboutWindow = new BrowserWindow({
+    backgroundColor: "#F7F7F7",
+    minWidth: 880,
+    parent: mainWindow,
+    show: false,
+    titleBarStyle: "hidden",
+    webPreferences: {
+      nodeIntegration: false,
+      preload: path.join(__dirname + "/preload.js"),
+      contextIsolation: false
+    },
+    height: 500,
+    width: 300,
+    minWidth: 500,
+    minHeight: 300,
+    maxWidth: 500,
+    maxHeight: 300
+  });
+
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
+  );
+
+  aboutWindow.loadURL(
+      isDev
+          ? "http://localhost:3000/about"
+          : `file://${path.join(__dirname, "../build/index.html")}`
   );
 
   if (isDev) {
@@ -70,6 +94,11 @@ createWindow = () => {
       shell.openExternal(arg);
     });
   });
+
+  aboutWindow.on("close", (e) => {
+    e.preventDefault();
+    aboutWindow.hide();
+  })
 };
 
 generateMenu = () => {
@@ -464,9 +493,14 @@ ipcMain.on("remove-recent", (event, arg) => {
     } else {
       newRecents.push(rec);
     }
-  })
+  });
 
     store.set("recents", newRecents);
 
     return (event.returnValue = newRecents);
+});
+
+ipcMain.on("toggle-about-window", (event, arg) => {
+  aboutWindow.show();
+  return event.returnValue = null;
 });

@@ -159,13 +159,13 @@ function Header(props) {
               </Grid>
             ) : null}
 
-            <Grid item>
-              <Tooltip title="Help">
-                <IconButton color="inherit">
-                  <HelpIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            {/*<Grid item>*/}
+            {/*  <Tooltip title="Help">*/}
+            {/*    <IconButton color="inherit">*/}
+            {/*      <HelpIcon />*/}
+            {/*    </IconButton>*/}
+            {/*  </Tooltip>*/}
+            {/*</Grid>*/}
               <Grid item>
                   <ClickAwayListener onClickAway={props.handleTooltipClose}>
                       <div>
@@ -240,13 +240,13 @@ function Header(props) {
                       </div>
                   </ClickAwayListener>
               </Grid>
-            <Grid item>
-              <Tooltip title="Alerts • No alters">
-                <IconButton color="inherit" onClick={props.handleTooltipOpen}>
-                  <NotificationsIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            {/*<Grid item>*/}
+            {/*  <Tooltip title="Alerts • No alters">*/}
+            {/*    <IconButton color="inherit" onClick={props.handleTooltipOpen}>*/}
+            {/*      <NotificationsIcon />*/}
+            {/*    </IconButton>*/}
+            {/*  </Tooltip>*/}
+            {/*</Grid>*/}
             <Grid item>
               <IconButton
                 color="inherit"

@@ -107,6 +107,7 @@ class Dashboard extends Component {
         name: "",
         location: "",
         open: false,
+        historyUrl: "/"
     };
 
     /**
@@ -117,14 +118,13 @@ class Dashboard extends Component {
     }
 
     /**
-     * TODO: Refactor this (causes issue when deleting a recent project)
      * If project isn't null, push to editor
      * @param nextProps
      * @param nextContext
      */
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.project !== null) {
-            this.props.history.push("/editor");
+        if (nextProps.project !== null) {
+            this.props.history.push(nextProps.historyUrl);
         }
     }
 
@@ -333,7 +333,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
     project: state.rootReducer.project,
-    recents: state.rootReducer.recents
+    recents: state.rootReducer.recents,
+    historyUrl: state.rootReducer.history
 });
 
 export default connect(

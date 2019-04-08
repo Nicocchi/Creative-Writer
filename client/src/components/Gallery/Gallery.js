@@ -10,7 +10,8 @@ const Gallery = props => {
         {props.list.map((itm, i) => (
           <Card key={i} style={{ width: "200px", margin: "2%"}}>
             <CardImg
-                // onClick={props.clickHandler ? () => props.clickHandler(itm) : null}
+                style={{cursor: "pointer"}}
+                onClick={props.clickHandler ? () => props.clickHandler(itm) : null}
               top
               width="100%"
               src="https://countrylakesdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.jpg"

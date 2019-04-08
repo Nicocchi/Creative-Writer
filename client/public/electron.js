@@ -165,19 +165,28 @@ generateMenu = () => {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
+
+
 app.on("ready", () => {
   createWindow();
   generateMenu();
 });
 
 app.on("window-all-closed", () => {
-  app.quit();
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on("close-app", () => {
+  aboutWindow.close();
+  mainWindow.close();
 });
 
 ipcMain.on("load-page", (event, arg) => {
@@ -432,11 +441,20 @@ function handleSaveRecents(project) {
   // Add the project to the recents
   if (recents !== null) {
     // Check if we already have this recent in our recent's store
-    const isSame = recents.forEach(rec => {
-      if (rec.title === project.title && rec.location === project.location) {
-        return true;
+    let isSame = false;
+
+    for (let i = 0; i < recents.length; i++) {
+      const recTitle = recents['title'];
+      const recLoc = recents['location'];
+      const projTitle = project['title'];
+      const projLoc = project['location'];
+      if (recTitle === projTitle && recLoc === projLoc){
+        isSame = true;
+        break;
       }
-    });
+    }
+
+    console.log("isSame => ", isSame);
 
     // If we already have 10 recents in our list, remove the first one
     if (recents.length >= 10) recents.pop();
@@ -488,13 +506,22 @@ ipcMain.on("remove-recent", (event, arg) => {
 
   let newRecents = [];
 
-  recents.forEach(rec => {
-    if (rec.title === arg.title && rec.location === arg.location) {
-    } else {
-      newRecents.push(rec);
-    }
-  });
+  // Compare the recents
+  for (let i = 0; i < recents.length; i++) {
+    const recTitle = recents[i].title;
+    const recLoc = recents[i].location;
+    const projTitle = arg['title'];
+    const projLoc = arg['location'];
 
+    // If the recent is equal to the selected, ignore it
+    if (recTitle === projTitle && recLoc === projLoc){
+
+    } else {
+      newRecents.push(recents[i]);
+    }
+  }
+
+  console.log("newRecents => ", newRecents);
     store.set("recents", newRecents);
 
     return (event.returnValue = newRecents);

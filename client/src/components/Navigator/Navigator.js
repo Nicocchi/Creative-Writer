@@ -19,6 +19,8 @@ import PersonAdd from "@material-ui/icons/PersonAdd";
 import LandScape from "@material-ui/icons/Landscape";
 import AddPhotoAlternative from "@material-ui/icons/AddPhotoAlternate";
 import NavListItem from "./NavListItem";
+import {connect} from "react-redux";
+import { changeUrl } from "../../store/actions";
 
 const styles = theme => ({
   categoryHeader: {
@@ -67,7 +69,10 @@ const styles = theme => ({
 
 function openAboutWindow() {
   const result = window.IpcRenderer.sendSync("toggle-about-window");
-  console.log("RESULT => ", result);
+}
+
+function closeApplication() {
+  window.IpcRenderer.sendSync("close-app");
 }
 
 function Navigator(props) {
@@ -114,7 +119,7 @@ function Navigator(props) {
             classes.itemActionable,
             true && classes.itemActiveItem
           )}
-          onClick={() => props.history.push("/")}
+          onClick={() => {props.changeUrl("/"); props.history.push("/")}}
         >
           <ListItemIcon>
             <HomeIcon />
@@ -277,7 +282,7 @@ function Navigator(props) {
             classes.itemActionable,
             true && classes.itemActiveItem
           )}
-          onClick={() => openAboutWindow()}
+          onClick={() => closeApplication()}
         >
           <ListItemIcon>
             <ExitToApp />
@@ -300,4 +305,10 @@ Navigator.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Navigator);
+const mapStateToProps = state => ({
+});
+
+export default connect(
+    mapStateToProps,
+    { changeUrl }
+)(withStyles(styles)(Navigator));

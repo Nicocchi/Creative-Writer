@@ -74,6 +74,7 @@ export const REMOVE_RECENT_START = "REMOVE_RECENT_START";
 export const REMOVE_RECENT_SUCCESS = "REMOVE_RECENT_SUCCESS";
 export const REMOVE_RECENT_FAILED = "REMOVE_RECENT_FAILED";
 
+export const CHANGE_URL = 'CHANGE_URL';
 
 function guid() {
     function s4() {
@@ -106,7 +107,7 @@ export function openProject() {
         dispatch({ type: OPEN_PROJECT_START });
 
         const project = window.IpcRenderer.sendSync("openProject");
-        if (project === null) return dispatch({ type: OPEN_PROJECT_FAILED, payload: "Failed to open project. Please check file/path and try again." });
+        if (project === null || project === undefined) return dispatch({ type: OPEN_PROJECT_FAILED, payload: "Failed to open project. Please check file/path and try again." });
 
         const contentState = project.project.editorState;
 
@@ -599,4 +600,11 @@ export function deleteItem (value, type, id, ind) {
 
         dispatch({ type: REMOVE_ITEM_SUCCESS, payload: {project, type, id: newId, info: guid(), f1: firstIndex, f2: secondIndex } });
     }
+}
+
+export function changeUrl(value) {
+    return dispatch => {
+        dispatch({ type: CHANGE_URL, payload: value});
+    }
+
 }

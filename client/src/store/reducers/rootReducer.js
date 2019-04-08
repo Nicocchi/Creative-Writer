@@ -59,6 +59,8 @@ import {
     REMOVE_RECENT_START,
     REMOVE_RECENT_SUCCESS,
     REMOVE_RECENT_FAILED,
+
+    CHANGE_URL
 } from "../actions/";
 
 const initialState = {
@@ -69,7 +71,8 @@ const initialState = {
     currentNote: null,
     error: false,
     errorMessage: "",
-    recents: null
+    recents: null,
+    history: '/',
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -83,11 +86,13 @@ export const rootReducer = (state = initialState, action) => {
         case OPEN_PROJECT_SUCCESS:
             return {
                 ...state,
-                project: action.payload
+                project: action.payload,
+                history: "/editor"
             }
 
         case OPEN_PROJECT_FAILED:
             return {
+                ...state,
                 error: true,
                 errorMessage: action.payload,
                 project: null,
@@ -103,7 +108,8 @@ export const rootReducer = (state = initialState, action) => {
                 currentNote: null,
                 error: false,
                 errorMessage: "",
-                recents: null
+                recents: null,
+                history: "/editor"
             }
 
         case CREATE_PROJECT_FAILED:
@@ -172,7 +178,8 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 project: action.payload,
-                currentChapter: 1
+                currentChapter: 1,
+                history: "/editor"
             }
 
         case OPEN_RECENT_FAILED: return {
@@ -498,9 +505,11 @@ export const rootReducer = (state = initialState, action) => {
             return state;
 
         case REMOVE_RECENT_SUCCESS:
+            console.log("REMOVED RECENT");
             return {
                 ...state,
-                recents: action.payload
+                recents: action.payload,
+                history: "/"
             }
 
         case REMOVE_RECENT_FAILED:
@@ -510,7 +519,11 @@ export const rootReducer = (state = initialState, action) => {
                 errorMessage: action.payload
             }
 
-
+        case CHANGE_URL:
+            return {
+                ...state,
+                history: action.payload
+            }
         default:
             return state;
     }

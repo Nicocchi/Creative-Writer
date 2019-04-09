@@ -14,11 +14,11 @@ class App extends Component {
           {/*<Header/>*/}
           {/*<Navigator/>*/}
           {/*<Content/>*/}
-          <Switch>
-              <Route exact path='/' component={Dashboard} />
-              <Route exact path='/editor' component={Editor} />
-              <Route exact path='/about' component={About} />
-          </Switch>
+              <Switch>
+                  <Route exact path='/' component={Dashboard} />
+                  <Route exact path='/editor' component={Editor} />
+                  <Route exact path='/about' component={About} />
+              </Switch>
       </div>
     );
   }

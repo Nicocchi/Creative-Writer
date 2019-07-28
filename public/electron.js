@@ -8,18 +8,24 @@ const {
 
 const path = require("path");
 const isDev = require("electron-is-dev");
+// const { platform } = require('os');
 
 const Store = require("electron-store");
 const store = new Store();
 
 const fs = require("fs");
 
+const winURL =  isDev
+? 'http://localhost:3000'
+: `file://${path.join(__dirname, '../build/index.html')}`
+
 let mainWindow;
 let aboutWindow;
 
-createWindow = () => {
+const createWindow = () => {
   mainWindow = new BrowserWindow({
     backgroundColor: "#F7F7F7",
+    icon: `${__dirname} + '/build/icons/icon.png'`,
     minWidth: 880,
     show: false,
     titleBarStyle: "hidden",
@@ -45,23 +51,12 @@ createWindow = () => {
     },
     height: 500,
     width: 300,
-    minWidth: 500,
     minHeight: 300,
-    maxWidth: 500,
-    maxHeight: 300
   });
 
-  mainWindow.loadURL(
-    isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
-  );
+  mainWindow.loadURL(winURL);
 
-  aboutWindow.loadURL(
-      isDev
-          ? "http://localhost:3000/about"
-          : `file://${path.join(__dirname, "../build/index.html")}`
-  );
+  aboutWindow.loadURL(winURL);
 
   if (isDev) {
     const {
@@ -101,7 +96,7 @@ createWindow = () => {
   })
 };
 
-generateMenu = () => {
+const generateMenu = () => {
   const template = [
     {
       label: "File",

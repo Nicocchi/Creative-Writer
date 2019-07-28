@@ -11,7 +11,7 @@ import "./index.css";
 // import "./assets/demo/demo.css";
 
 // Router
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, HashRouter } from "react-router-dom";
 
 // Redux
 import { createStore, applyMiddleware, compose } from "redux";
@@ -41,9 +41,9 @@ const rootElement = document.getElementById("root");
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
+        <HashRouter>
             <App />
-        </Router>,
+        </HashRouter>,
     </Provider>,
     rootElement
 );

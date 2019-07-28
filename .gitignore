@@ -62,4 +62,11 @@ typings/
 
 .idea/
 yarn.lock
-package-lock.json
+
+# vs vars
+.vs/
+
+# build folders
+assets/
+build/
+dist/

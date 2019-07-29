@@ -35,8 +35,10 @@ const createWindow = () => {
       contextIsolation: false
     },
     height: 860,
-    width: 1280
+    width: 1280,
+    setMenuBarVisibility: false
   });
+  mainWindow.setMenuBarVisibility(false);
 
   aboutWindow = new BrowserWindow({
     backgroundColor: "#F7F7F7",
@@ -164,7 +166,7 @@ const generateMenu = () => {
 
 app.on("ready", () => {
   createWindow();
-  generateMenu();
+  // generateMenu();
 });
 
 app.on("window-all-closed", () => {

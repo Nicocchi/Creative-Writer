@@ -33,16 +33,15 @@ Install the dependencies and devDependencies and start the development build.
 ```sh
 $ cd Creative-Writer
 $ npm install
-$ npm run electron-dev
+$ npm run start
 ```
-Or `npm run electron-dev-win` instead of `electron-dev` for Windows builds.
-
 
 For production environments...
 
 ```sh
+$ cd Creative-Writer
 $ npm install --production
-$ npm run dist
+$ npm run build
 ```
 
 ### Development
@@ -54,7 +53,7 @@ Creative Writer uses Electron + React/Redux for cross-platform and state managem
 ### Todos
 
  - Write MORE Tests
- - Add Night Mode
+ - Add Light/Dark Modes
  - Theme engine
  - Storyboard implementation
  - Exporting project to other formats

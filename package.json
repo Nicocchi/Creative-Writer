@@ -1,14 +1,14 @@
 {
   "name": "creative-writer",
   "version": "0.1.0",
-  "description": "Building and Publishing a React Based Electron App From Scratch",
+  "description": "All in one writing application suit",
   "private": false,
   "author": "Jeremy Boggs <nicocchilover@gmail.com>",
   "license": "GPU 2.0",
   "homepage": "./",
   "main": "public/electron.js",
   "keywords": [
-    "Example",
+    "Writing",
     "React",
     "Electron"
   ],
@@ -76,9 +76,9 @@
     "wait-on": "^3.2.0"
   },
   "build": { 
-    "appId": "com.example.exampleapp",
+    "appId": "com.nyaastudios.creativewriter",
      "compression": "normal",
-     "productName": "Example",
+     "productName": "Creative Writer",
      "directories": {
        "buildResources": "build", 
       "output": "dist"    }, 

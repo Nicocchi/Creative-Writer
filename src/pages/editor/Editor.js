@@ -261,13 +261,60 @@ class Editor extends React.Component {
             );
         }
 
-        this.setState({
-          text: chapter[0].content,
-          selected: `chapters/${this.props.currentChapter - 1}`,
-          chapExpanded: true,
-          characterOpen: characterOpen,
-          settingOpen: settingOpen
-        });
+        let span = document.createElement('span');
+      span.innerHTML = chapter[0].content;
+      const result = span.textContent || span.innerText;
+
+      if (result !== null) {
+        const words = result.match(/\b[-?(\w+)?]+\b/gi);
+        const totalChars = result;
+        const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+        const sentences = removePrefixes.split(/[.|!|?]+/g);
+        const charCountNoSpace = result.replace(/\s+/gi, '');
+        const paragraphs = chapter[0].content.split('<br>');
+        const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+  
+        console.log("LINES => ", lines);
+  
+        if (words === null) {
+          this.setState({
+            charCount: 0,
+            charNoSpaces: 0,
+            wordCount: 0,
+            sentenceCount: 0,
+            paragraphCount: 0,
+            lineCount: 0,
+            text: chapter[0].content,
+            selected: `chapters/${this.props.currentChapter - 1}`,
+            chapExpanded: true,
+            characterOpen: characterOpen,
+            settingOpen: settingOpen
+          });
+        } else {
+          this.setState({
+            charCount: totalChars.length,
+            charNoSpaces: charCountNoSpace.length,
+            wordCount: words.length,
+            sentenceCount: sentences.length - 1,
+            paragraphCount: paragraphs.length,
+            lineCount: lines.length - 1,
+            text: chapter[0].content,
+            selected: `chapters/${this.props.currentChapter - 1}`,
+            chapExpanded: true,
+            characterOpen: characterOpen,
+            settingOpen: settingOpen
+          });
+        }
+  
+      }
+
+        // this.setState({
+        //   text: chapter[0].content,
+        //   selected: `chapters/${this.props.currentChapter - 1}`,
+        //   chapExpanded: true,
+        //   characterOpen: characterOpen,
+        //   settingOpen: settingOpen
+        // });
       } else {
         this.setState({ text: "Enter Text Here" });
       }
@@ -299,13 +346,60 @@ class Editor extends React.Component {
         settingOpen.push(info);
       });
 
-      this.setState({
-        text: chapter[0].content,
-        selected: `chapters/${this.props.currentChapter - 1}`,
-        chapExpanded: true,
-        characterOpen: characterOpen,
-        settingOpen: settingOpen
-      });
+      let span = document.createElement('span');
+      span.innerHTML = chapter[0].content;
+      const result = span.textContent || span.innerText;
+
+      if (result !== null) {
+        const words = result.match(/\b[-?(\w+)?]+\b/gi);
+        const totalChars = result;
+        const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+        const sentences = removePrefixes.split(/[.|!|?]+/g);
+        const charCountNoSpace = result.replace(/\s+/gi, '');
+        const paragraphs = chapter[0].content.split('<br>');
+        const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+  
+        console.log("LINES => ", lines);
+  
+        if (words === null) {
+          this.setState({
+            charCount: 0,
+            charNoSpaces: 0,
+            wordCount: 0,
+            sentenceCount: 0,
+            paragraphCount: 0,
+            lineCount: 0,
+            text: chapter[0].content,
+            selected: `chapters/${this.props.currentChapter - 1}`,
+            chapExpanded: true,
+            characterOpen: characterOpen,
+            settingOpen: settingOpen
+          });
+        } else {
+          this.setState({
+            charCount: totalChars.length,
+            charNoSpaces: charCountNoSpace.length,
+            wordCount: words.length,
+            sentenceCount: sentences.length - 1,
+            paragraphCount: paragraphs.length,
+            lineCount: lines.length - 1,
+            text: chapter[0].content,
+            selected: `chapters/${this.props.currentChapter - 1}`,
+            chapExpanded: true,
+            characterOpen: characterOpen,
+            settingOpen: settingOpen
+          });
+        }
+  
+      }
+
+      // this.setState({
+      //   text: chapter[0].content,
+      //   selected: `chapters/${this.props.currentChapter - 1}`,
+      //   chapExpanded: true,
+      //   characterOpen: characterOpen,
+      //   settingOpen: settingOpen
+      // });
     }
 
   }

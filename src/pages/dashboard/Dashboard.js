@@ -107,7 +107,9 @@ class Dashboard extends Component {
         name: "",
         location: "",
         open: false,
-        historyUrl: "/"
+        historyUrl: "/",
+        error: false,
+        error2: false,
     };
 
     /**
@@ -164,7 +166,8 @@ class Dashboard extends Component {
      */
     handleInput = e => {
         this.setState({
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
+            error: false
         })
     };
 
@@ -173,7 +176,7 @@ class Dashboard extends Component {
      * @param location
      */
     handleLocation = location => {
-        this.setState({ location });
+        this.setState({ location, error2: false });
     };
 
     /**
@@ -189,15 +192,21 @@ class Dashboard extends Component {
      */
     handleCreateNewProject = (e) => {
         e.preventDefault();
-        if (this.state.name === "") return;
-        if (this.state.location === "") return;
+        if (this.state.name === "") {
+            this.setState({ error: true }); 
+            return;
+        };
+        if (this.state.location === "") {
+            this.setState({ error2: true }); 
+            return;
+        };;
 
         const path = {
             title: this.state.name,
             location: this.state.location
         };
 
-        this.setState({ open: false, name: '' });
+        this.setState({ open: false, name: '', error: false });
 
         this.props.createNewProject(path);
     };
@@ -281,6 +290,11 @@ class Dashboard extends Component {
                                 defaultValue={this.state.name}
                                 onChange={this.handleInput}
                             />
+                            {
+                                this.state.error ? <div style={{color: "red"}}>
+                                *Project needs a title!
+                            </div> : null
+                            }
                             <TextField
                                 autoFocus
                                 margin="dense"
@@ -293,6 +307,12 @@ class Dashboard extends Component {
                                 value={this.state.location}
                                 onChange={this.handleInput}
                             />
+                            {
+                                this.state.error2 ? <div style={{color: "red"}}>
+                                *Must select project a folder to save to!
+                            </div> : null
+                            }
+                            
                             <Button onClick={(e) => this.openFile(e)} variant="contained" color="secondary" className={classes.button}>
                                 Browse
                             </Button>

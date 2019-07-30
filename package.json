@@ -89,11 +89,7 @@
                "pkg",    
                "dmg",     
                "mas"    
-         ],      
-       "publish": {
-           "provider":"github",  
-           "token": "${GITHUB_TOKEN}"
-         }  
+         ]
     }, 
    "mas": {  
      "entitlements": "assets/entitlements.mas.plist",              "entitlementsInherit": "assets/entitlements.mas.inherit.plist",      "provisioningProfile": "assets/embedded.provisionprofile"    

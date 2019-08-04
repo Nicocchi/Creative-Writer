@@ -378,7 +378,12 @@ ipcMain.on("openProject", (event, path) => {
   dialog.showOpenDialog(
     mainWindow,
     {
-      properties: ["openFile"]
+      title: "Open Project",
+      properties: ["openFile"],
+      filters: [{
+        "name": "Creative Writer Project",
+        "extensions": ["cwr"]
+      }]
     },
     paths => respondWithPath(paths)
   );

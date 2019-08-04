@@ -28,7 +28,7 @@ import {
   updateNote,
   saveProject
 } from "../../store/actions";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 
 let theme = createMuiTheme({
   typography: {
@@ -261,52 +261,62 @@ class Editor extends React.Component {
             );
         }
 
-        let span = document.createElement('span');
-      span.innerHTML = chapter[0].content;
-      const result = span.textContent || span.innerText;
+        this.calculateStats(chapter[0].content);
 
-      if (result !== null) {
-        const words = result.match(/\b[-?(\w+)?]+\b/gi);
-        const totalChars = result;
-        const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
-        const sentences = removePrefixes.split(/[.|!|?]+/g);
-        const charCountNoSpace = result.replace(/\s+/gi, '');
-        const paragraphs = chapter[0].content.split('<br>');
-        const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+      this.setState({
+        text: chapter[0].content,
+        selected: `chapters/${this.props.currentChapter - 1}`,
+        chapExpanded: true,
+        characterOpen: characterOpen,
+        settingOpen: settingOpen
+      });
+
+      //   let span = document.createElement('span');
+      // span.innerHTML = chapter[0].content;
+      // const result = span.textContent || span.innerText;
+
+      // if (result !== null) {
+      //   const words = result.match(/\b[-?(\w+)?]+\b/gi);
+      //   const totalChars = result;
+      //   const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+      //   const sentences = removePrefixes.split(/[.|!|?]+/g);
+      //   const charCountNoSpace = result.replace(/\s+/gi, '');
+      //   const paragraphs = chapter[0].content.split('<br>');
+      //   const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
   
-        console.log("LINES => ", lines);
+      //   console.log("LINES => ", lines);
   
-        if (words === null) {
-          this.setState({
-            charCount: 0,
-            charNoSpaces: 0,
-            wordCount: 0,
-            sentenceCount: 0,
-            paragraphCount: 0,
-            lineCount: 0,
-            text: chapter[0].content,
-            selected: `chapters/${this.props.currentChapter - 1}`,
-            chapExpanded: true,
-            characterOpen: characterOpen,
-            settingOpen: settingOpen
-          });
-        } else {
-          this.setState({
-            charCount: totalChars.length,
-            charNoSpaces: charCountNoSpace.length,
-            wordCount: words.length,
-            sentenceCount: sentences.length - 1,
-            paragraphCount: paragraphs.length,
-            lineCount: lines.length - 1,
-            text: chapter[0].content,
-            selected: `chapters/${this.props.currentChapter - 1}`,
-            chapExpanded: true,
-            characterOpen: characterOpen,
-            settingOpen: settingOpen
-          });
-        }
+      //   if (words === null) {
+      //     this.setState({
+      //       charCount: 0,
+      //       charNoSpaces: 0,
+      //       wordCount: 0,
+      //       sentenceCount: 0,
+      //       paragraphCount: 0,
+      //       lineCount: 0,
+      //       text: chapter[0].content,
+      //       selected: `chapters/${this.props.currentChapter - 1}`,
+      //       chapExpanded: true,
+      //       characterOpen: characterOpen,
+      //       settingOpen: settingOpen
+      //     });
+      //   } else {
+      //     this.setState({
+      //       charCount: totalChars.length,
+      //       charNoSpaces: charCountNoSpace.length,
+      //       wordCount: words.length,
+      //       sentenceCount: sentences.length - 1,
+      //       paragraphCount: paragraphs.length,
+      //       lineCount: lines.length - 1,
+      //       text: chapter[0].content,
+      //       selected: `chapters/${this.props.currentChapter - 1}`,
+      //       chapExpanded: true,
+      //       characterOpen: characterOpen,
+      //       settingOpen: settingOpen
+      //     });
+      //   }
   
-      }
+      // }
 
         // this.setState({
         //   text: chapter[0].content,
@@ -346,52 +356,62 @@ class Editor extends React.Component {
         settingOpen.push(info);
       });
 
-      let span = document.createElement('span');
-      span.innerHTML = chapter[0].content;
-      const result = span.textContent || span.innerText;
+      this.calculateStats(chapter[0].content);
 
-      if (result !== null) {
-        const words = result.match(/\b[-?(\w+)?]+\b/gi);
-        const totalChars = result;
-        const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
-        const sentences = removePrefixes.split(/[.|!|?]+/g);
-        const charCountNoSpace = result.replace(/\s+/gi, '');
-        const paragraphs = chapter[0].content.split('<br>');
-        const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+      this.setState({
+        text: chapter[0].content,
+        selected: `chapters/${this.props.currentChapter - 1}`,
+        chapExpanded: true,
+        characterOpen: characterOpen,
+        settingOpen: settingOpen
+      });
+
+      // let span = document.createElement('span');
+      // span.innerHTML = chapter[0].content;
+      // const result = span.textContent || span.innerText;
+
+      // if (result !== null) {
+      //   const words = result.match(/\b[-?(\w+)?]+\b/gi);
+      //   const totalChars = result;
+      //   const removePrefixes = chapter[0].content.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+      //   const sentences = removePrefixes.split(/[.|!|?]+/g);
+      //   const charCountNoSpace = result.replace(/\s+/gi, '');
+      //   const paragraphs = chapter[0].content.split('<br>');
+      //   const lines = chapter[0].content.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
   
-        console.log("LINES => ", lines);
+      //   console.log("LINES => ", lines);
   
-        if (words === null) {
-          this.setState({
-            charCount: 0,
-            charNoSpaces: 0,
-            wordCount: 0,
-            sentenceCount: 0,
-            paragraphCount: 0,
-            lineCount: 0,
-            text: chapter[0].content,
-            selected: `chapters/${this.props.currentChapter - 1}`,
-            chapExpanded: true,
-            characterOpen: characterOpen,
-            settingOpen: settingOpen
-          });
-        } else {
-          this.setState({
-            charCount: totalChars.length,
-            charNoSpaces: charCountNoSpace.length,
-            wordCount: words.length,
-            sentenceCount: sentences.length - 1,
-            paragraphCount: paragraphs.length,
-            lineCount: lines.length - 1,
-            text: chapter[0].content,
-            selected: `chapters/${this.props.currentChapter - 1}`,
-            chapExpanded: true,
-            characterOpen: characterOpen,
-            settingOpen: settingOpen
-          });
-        }
+        // if (words === null) {
+        //   this.setState({
+        //     charCount: 0,
+        //     charNoSpaces: 0,
+        //     wordCount: 0,
+        //     sentenceCount: 0,
+        //     paragraphCount: 0,
+        //     lineCount: 0,
+        //     text: chapter[0].content,
+        //     selected: `chapters/${this.props.currentChapter - 1}`,
+        //     chapExpanded: true,
+        //     characterOpen: characterOpen,
+        //     settingOpen: settingOpen
+        //   });
+      //   } else {
+      //     this.setState({
+      //       charCount: totalChars.length,
+      //       charNoSpaces: charCountNoSpace.length,
+      //       wordCount: words.length,
+      //       sentenceCount: sentences.length - 1,
+      //       paragraphCount: paragraphs.length,
+      //       lineCount: lines.length - 1,
+      //       text: chapter[0].content,
+      //       selected: `chapters/${this.props.currentChapter - 1}`,
+      //       chapExpanded: true,
+      //       characterOpen: characterOpen,
+      //       settingOpen: settingOpen
+      //     });
+      //   }
   
-      }
+      // }
 
       // this.setState({
       //   text: chapter[0].content,
@@ -403,6 +423,49 @@ class Editor extends React.Component {
     }
 
   }
+
+  /**
+   * Handles character stats
+   */
+  calculateStats = (value) => {
+    // Create vdom element & set it's value to the current value being passed in
+    let span = document.createElement('span');
+    span.innerHTML = value;
+    const result = span.textContent || span.innerText;
+
+    // If we have a result, continue and calculate the stats
+    if (result !== null) {
+      const words = result.match(/\b[-?(\w+)?]+\b/gi);
+      const totalChars = result;
+      const removePrefixes = value.replace(/(Mr|Mrs|Ms|Dr.)\b\./gim, '');
+      const sentences = removePrefixes.split(/[.|!|?]+/g);
+      const charCountNoSpace = result.replace(/\s+/gi, '');
+      const paragraphs = value.split('<br>');
+      const lines = value.replace(/(\/h1>|\/h2>|\/h3>|\/p>|<br>)+/gi,'\n').split('\n')
+
+      if (words === null) {
+        this.setState({
+          charCount: 0,
+          charNoSpaces: 0,
+          wordCount: 0,
+          sentenceCount: 0,
+          paragraphCount: 0,
+          lineCount: 0,
+        });
+      } else {
+        this.setState({
+          charCount: totalChars.length,
+          charNoSpaces: charCountNoSpace.length,
+          wordCount: words.length,
+          sentenceCount: sentences.length - 1,
+          paragraphCount: paragraphs.length,
+          lineCount: lines.length - 1,
+        });
+      }
+
+    }
+  }
+  
 
   /**
    * Handles closing tooltips
@@ -727,7 +790,7 @@ class Editor extends React.Component {
         );
     }
 
-    const { classes, theme, ...other } = this.props;
+    const { classes, theme } = this.props;
 
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);

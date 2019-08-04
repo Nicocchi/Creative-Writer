@@ -75,37 +75,40 @@
     "version-bump-prompt": "^5.0.0",
     "wait-on": "^3.2.0"
   },
-  "build": { 
+  "build": {
     "appId": "com.nyaastudios.creativewriter",
-     "compression": "normal",
-     "productName": "Creative Writer",
-     "directories": {
-       "buildResources": "build", 
-      "output": "dist"    }, 
-      "mac": {  
-        "icon": "assets/macos/logo.icns", 
-        "type": "distribution",
-         "target": [ 
-               "pkg",    
-               "dmg",     
-               "mas"    
-         ]
-    }, 
-   "mas": {  
-     "entitlements": "assets/entitlements.mas.plist",              "entitlementsInherit": "assets/entitlements.mas.inherit.plist",      "provisioningProfile": "assets/embedded.provisionprofile"    
- },    
- "win": {
-       "target": "nsis",   
-    "icon": "assets/windows/logo.ico"
-    },   
-  "linux": { 
+    "compression": "normal",
+    "productName": "Creative Writer",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "mac": {
+      "icon": "assets/macos/logo.icns",
+      "type": "distribution",
+      "target": [
+        "pkg",
+        "dmg",
+        "mas"
+      ]
+    },
+    "mas": {
+      "entitlements": "assets/entitlements.mas.plist",
+      "entitlementsInherit": "assets/entitlements.mas.inherit.plist",
+      "provisioningProfile": "assets/embedded.provisionprofile"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/windows/logo.ico"
+    },
+    "linux": {
       "icon": "assets/logo.png",
-       "target": [   
-      "snap",     
-    "AppImage"   
-    ],     
-  "description": "Example", 
+      "target": [
+        "snap",
+        "AppImage"
+      ],
+      "description": "Example",
       "category": "Network;Feed"
-  }
+    }
   }
 }

@@ -4,6 +4,7 @@ const {
   shell,
   ipcMain,
   Menu,
+  MenuItem
 } = require("electron");
 
 const path = require("path");
@@ -162,11 +163,30 @@ const generateMenu = () => {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 };
 
+const generateCtxMenu = () => {
+  const ctxMenu = new Menu();
+
+  ctxMenu.append(new MenuItem({ role: 'undo'}));
+  ctxMenu.append(new MenuItem({ role: 'redo'}));
+  ctxMenu.append(new MenuItem({ type: 'separator'}));
+  ctxMenu.append(new MenuItem({ role: 'cut'}));
+  ctxMenu.append(new MenuItem({ role: 'copy'}));
+  ctxMenu.append(new MenuItem({ role: 'paste'}));
+  ctxMenu.append(new MenuItem({ role: 'selectall'}));
+
+  mainWindow.webContents.on('context-menu', function(e, params){
+    ctxMenu.popup(mainWindow, params.x, params.y);
+  })
+}
+
 
 
 app.on("ready", () => {
   createWindow();
+  generateCtxMenu();
   // generateMenu();
+
+  
 });
 
 app.on("window-all-closed", () => {

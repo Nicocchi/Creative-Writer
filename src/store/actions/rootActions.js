@@ -15,6 +15,10 @@ export const SAVE_PROJECT_START = 'SAVE_PROJECT_START';
 export const SAVE_PROJECT_SUCCESS = 'SAVE_PROJECT_SUCCESS';
 export const SAVE_PROJECT_FAILED = 'SAVE_PROJECT_FAILED';
 
+export const SAVE_PROJECT_AS_START = 'SAVE_PROJECT_AS_START';
+export const SAVE_PROJECT_AS_SUCCESS = 'SAVE_PROJECT_AS_SUCCESS';
+export const SAVE_PROJECT_AS_FAILED = 'SAVE_PROJECT_AS_FAILED';
+
 export const ADD_CHAPTER_START = 'ADD_CHAPTER_START';
 export const ADD_CHAPTER_SUCCESS = 'ADD_CHAPTER_SUCCESS';
 
@@ -171,6 +175,27 @@ export function saveProject() {
 }
 
 /**
+ * Save the current project as...
+ * @param  {} id - Unique ID of the project
+ */
+export function saveProjectAs() {
+    return (dispatch, getState) => {
+        dispatch({ type: SAVE_PROJECT_AS_START });
+
+        const state = getState().rootReducer;
+
+        const didSave = window.IpcRenderer.sendSync("save-project-as", state.project);
+        console.log("DIDSAVE => ", didSave);
+
+        if (didSave) {
+            dispatch({ type: SAVE_PROJECT_AS_SUCCESS });
+        } else {
+            dispatch({ type: SAVE_PROJECT_AS_FAILED });
+        }
+    }
+}
+
+/**
  * Gets the recents from the electron-store
  * @param  {} dispatch
  */
@@ -182,12 +207,13 @@ export const getRecents = () => dispatch => {
     console.log("RESULTS => ", results);
 
     if (results=== null) return dispatch({ type: GET_RECENTS_FAILED, payload: "Failed to load recents" });
-
+    
     let recents = [];
     results.forEach(rec => {
         const project = {
             title: rec.title,
-            location: rec.location
+            location: rec.location,
+            content: rec.content
         };
         recents.push(project);
     });

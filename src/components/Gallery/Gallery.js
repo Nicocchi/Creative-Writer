@@ -1,11 +1,43 @@
 import React from "react";
-import { Card, CardImg, CardTitle, CardDeck, CardBody } from "reactstrap";
+import { CardDeck } from "reactstrap";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
 
 const Gallery = props => {
+  console.log(props.list);
   return (
     <div style={{ marginTop: "20px" }}>
-      <h3 style={{ paddingTop: "20px" }}>{props.name}</h3>
+    <CardDeck style={{ display: "flex", justifyContent: "center" }}>
+      {props.list.map((itm, i) => (
+          <Card style={{width: "20%", maxWidth: "300px", margin: "2%", cursor: "pointer"}}>
+            <CardContent onClick={props.clickHandler ? () => props.clickHandler(itm) : null}>
+              <Typography color="textSecondary" gutterBottom>
+                Jane Doe
+              </Typography>
+              <Typography variant="h5" component="h2">
+              {itm.title}
+              </Typography>
+              <Typography color="textSecondary">
+                Novel
+              </Typography>
+              <Typography variant="body2" component="p">
+                {itm.content}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">11/7/2019</Button>
+            </CardActions>
+            <DeleteIcon style={{cursor: "pointer"}} onClick={props.removeHandler ? () => props.removeHandler(itm) : null} />
+          </Card>
+      ))}
+    </CardDeck>
+    
+      {/* <h3 style={{ paddingTop: "20px" }}>{props.name}</h3>
       <CardDeck style={{ display: "flex", justifyContent: "center" }}>
         {props.list.map((itm, i) => (
           <Card key={i} style={{ width: "200px", margin: "2%"}}>
@@ -24,7 +56,7 @@ const Gallery = props => {
           </Card>
 
         ))}
-      </CardDeck>
+      </CardDeck> */}
     </div>
   );
 };

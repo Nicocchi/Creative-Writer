@@ -451,12 +451,62 @@ ipcMain.on("save-project", (event, project) => {
   event.returnValue = true;
 });
 
+ipcMain.on("save-project-as", (event, project) => {
+  const { dialog } = require("electron");
+  const fileName = project.title;
+  const filePath = project.location;
+
+  const proj = {
+    id: null,
+    title: fileName,
+    location: filePath,
+    editor: true,
+    project: project.project
+  };
+
+  const saved = JSON.stringify(proj);
+
+  dialog.showSaveDialog(
+    mainWindow,
+    {
+      title: "Save Project",
+      filters: [{
+        "name": "Creative Writer Project",
+        "extensions": ["cwr"]
+      }]
+    },
+    paths => respondWithPath(paths)
+  );
+
+  function respondWithPath(paths) {
+    const fs = require("fs");
+    if (paths === undefined) {
+      // console.log("No file selected");
+      return (event.returnValue = false);
+    }
+
+    // Write the file to disc
+    fs.writeFile(paths, saved, err => {
+      if (err) {
+        return (event.returnValue = false);
+      }
+
+      return (event.returnValue = true);
+    });
+  }
+
+  event.returnValue = false;
+
+  
+});
+
 /**
  * Handles saving the recents to the recents store to be retrieved later
  * @param  {} project - Current project to add to recents
  */
 function handleSaveRecents(project) {
   let recents = store.get("recents");
+  console.log(project);
 
   // console.log("recObj", recents);
 
@@ -482,13 +532,13 @@ function handleSaveRecents(project) {
     if (recents.length >= 10) recents.pop();
 
     if (!isSame) {
-      recents.push({location: project.location, title: project.title});
+      recents.push({location: project.location, title: project.title, content: project.project.chapters[0].content.slice(0, 20.).replace(/<[^>]*>/g,'')});
       recents.reverse();
       store.set("recents", recents);
     }
   } else {
     recents = [];
-    recents.push({location: project.location, title: project.title});
+    recents.push({location: project.location, title: project.title, content: project.project.chapters[0].content.slice(0, 20).replace(/<[^>]*>/g,'')});
     store.set("recents", recents);
   }
 }

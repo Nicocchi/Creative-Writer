@@ -26,7 +26,8 @@ import {
   createNewNote,
   changeCurrentNote,
   updateNote,
-  saveProject
+  saveProject,
+  saveProjectAs,
 } from "../../store/actions";
 import { withSnackbar } from 'notistack';
 
@@ -284,10 +285,13 @@ class Editor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
+
+    console.log("NEXT PROPS SAVED => ", nextProps.saved)
     if (nextProps.project !== this.props.project) {
         const chapter = nextProps.project.project.chapters.filter(
             chp => chp.id === this.props.currentChapter
         );
+
 
       // TODO: Refactor this
       let characterOpen = [];
@@ -656,16 +660,7 @@ class Editor extends React.Component {
    * Save project as...
    */
   saveProjectAs = () => {
-    //this.props.saveProjectAs();
-    const action = (key) => (
-      <Fragment>
-        <Button onClick={() => { this.props.closeSnackbar(key) }}>
-          {'Dismiss'}
-        </Button>
-      </Fragment>
-    );
-
-    this.props.enqueueSnackbar("Saved", {variant: 'success', action});
+    this.props.saveProjectAs();
   }
 
   openSnack = () => {
@@ -817,7 +812,8 @@ const mapStateToProps = state => ({
   currentInfo: state.rootReducer.currentInfo,
   currentSetting: state.rootReducer.currentSetting,
   currentSetInfo: state.rootReducer.currentSetInfo,
-    currentNote: state.rootReducer.currentNote
+  currentNote: state.rootReducer.currentNote,
+  saved: state.rootReducer.saved
 });
 
 export default connect(
@@ -835,9 +831,10 @@ export default connect(
     updateSettingInfo,
     createNewSetting,
     createNewSettingInfo,
-      createNewNote,
-      changeCurrentNote,
-      updateNote,
-    saveProject
+    createNewNote,
+    changeCurrentNote,
+    updateNote,
+    saveProject,
+    saveProjectAs
   }
 )(withStyles(styles)(withSnackbar(Editor)));

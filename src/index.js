@@ -12,7 +12,7 @@ import { SnackbarProvider } from 'notistack';
 // import "./assets/demo/demo.css";
 
 // Router
-import { BrowserRouter as Router, HashRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 // Redux
 import { createStore, applyMiddleware, compose } from "redux";

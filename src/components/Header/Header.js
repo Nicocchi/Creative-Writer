@@ -1,15 +1,11 @@
 import React, {Fragment} from "react";
 import PropTypes from "prop-types";
-import HelpIcon from "@material-ui/icons/Help";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import ArrowBack from "@material-ui/icons/ArrowBackIos";
 import TextFormat from '@material-ui/icons/TextFields';
 import ViewHeadline from '@material-ui/icons/ViewHeadline';
 import { withStyles, AppBar, Grid, IconButton, Toolbar, Tooltip, Typography, Menu, MenuItem, Fade, Grow, Paper, Popper, ClickAwayListener } from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 import SendIcon from '@material-ui/icons/Send';
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
@@ -134,7 +130,7 @@ const styles = theme => ({
 
 function Header(props) {
   const { classes } = props;
-  console.log("props => ", props);
+  // console.log("props => ", props);
 
   return (
     <React.Fragment>

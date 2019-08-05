@@ -60,7 +60,11 @@ import {
     REMOVE_RECENT_SUCCESS,
     REMOVE_RECENT_FAILED,
 
-    CHANGE_URL
+    CHANGE_URL,
+
+    SAVE_PROJECT_AS_START,
+    SAVE_PROJECT_AS_SUCCESS,
+    SAVE_PROJECT_AS_FAILED,
 } from "../actions/";
 
 const initialState = {
@@ -73,6 +77,7 @@ const initialState = {
     errorMessage: "",
     recents: null,
     history: '/',
+    saved: false
 };
 
 export const rootReducer = (state = initialState, action) => {
@@ -523,6 +528,24 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 history: action.payload
+            }
+
+        case SAVE_PROJECT_AS_START:
+            return {
+                ...state,
+                saved: false
+        }
+
+        case SAVE_PROJECT_AS_SUCCESS:
+            return {
+                ...state,
+                saved: true
+        }
+
+        case SAVE_PROJECT_AS_FAILED:
+            return {
+                ...state,
+                saved: false
             }
         default:
             return state;

@@ -6,6 +6,11 @@ import ArrowBack from "@material-ui/icons/ArrowBackIos";
 import TextFormat from '@material-ui/icons/TextFields';
 import ViewHeadline from '@material-ui/icons/ViewHeadline';
 import { withStyles, AppBar, Grid, IconButton, Toolbar, Tooltip, Typography, Menu, MenuItem, Fade, Grow, Paper, Popper, ClickAwayListener } from '@material-ui/core';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import SendIcon from '@material-ui/icons/Send';
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -284,7 +289,22 @@ function Header(props) {
                                               style={{ marginTop: "40px" }}
                                           >
                                               <MenuItem onClick={props.saveProject}>
-                                                  Save
+                                                <ListItemIcon>
+                                                  <SendIcon />
+                                                  </ListItemIcon>
+                                                <ListItemText primary="Save" />
+                                              </MenuItem>
+                                              <MenuItem onClick={props.saveProjectAs}>
+                                                <ListItemIcon>
+                                                  <SendIcon />
+                                                  </ListItemIcon>
+                                                <ListItemText primary="Save As" />
+                                              </MenuItem>
+                                              <MenuItem >
+                                                <ListItemIcon>
+                                                  <SendIcon />
+                                                  </ListItemIcon>
+                                                <ListItemText primary="Export" />
                                               </MenuItem>
                                           </Menu>
                                       </ClickAwayListener>

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import {
   MuiThemeProvider,
   createMuiTheme,
   withStyles
 } from "@material-ui/core/styles";
-import { Hidden, CssBaseline } from "@material-ui/core";
+import { Hidden, CssBaseline, Button } from "@material-ui/core";
 import Navigator from "../../components/Navigator/Navigator";
 import Content from "../../components/Content/Content";
 import Header from "../../components/Header/Header";
@@ -28,6 +28,8 @@ import {
   updateNote,
   saveProject
 } from "../../store/actions";
+import { withSnackbar } from 'notistack';
+
 // import ReactQuill from "react-quill";
 
 let theme = createMuiTheme({
@@ -173,6 +175,7 @@ const styles = {
 };
 
 class Editor extends React.Component {
+
   state = {
     mobileOpen: false,
     text: "Enter Text Here",
@@ -199,6 +202,9 @@ class Editor extends React.Component {
     sentenceCount: 0,
     paragraphCount: 0,
     lineCount: 0,
+
+    sopen: false,
+    setOpen: false
   };
 
   componentWillMount() {
@@ -636,7 +642,36 @@ class Editor extends React.Component {
    */
   saveProject = () => {
     this.props.saveProject();
+    const action = (key) => (
+      <Fragment>
+        <Button onClick={() => { this.props.closeSnackbar(key) }}>
+          {'Dismiss'}
+        </Button>
+      </Fragment>
+    );
+    this.props.enqueueSnackbar("Saved", {variant: 'success', action});
   };
+
+  /**
+   * Save project as...
+   */
+  saveProjectAs = () => {
+    //this.props.saveProjectAs();
+    const action = (key) => (
+      <Fragment>
+        <Button onClick={() => { this.props.closeSnackbar(key) }}>
+          {'Dismiss'}
+        </Button>
+      </Fragment>
+    );
+
+    this.props.enqueueSnackbar("Saved", {variant: 'success', action});
+  }
+
+  openSnack = () => {
+    this.props.enqueueSnackbar("Saved", {variant: 'success'});
+  }
+
 
   render() {
     // TODO: Refactor this into function
@@ -752,6 +787,8 @@ class Editor extends React.Component {
               paragraphCount={this.state.paragraphCount}
               lineCount={this.state.lineCount}
               saveProject={this.saveProject}
+              saveProjectAs={this.saveProjectAs}
+              openSnack={this.openSnack}
             />
             <main className={classes.mainContent}>
               <Content
@@ -762,6 +799,8 @@ class Editor extends React.Component {
             </main>
           </div>
         </div>
+
+        
       </MuiThemeProvider>
     );
   }
@@ -801,4 +840,4 @@ export default connect(
       updateNote,
     saveProject
   }
-)(withStyles(styles)(Editor));
+)(withStyles(styles)(withSnackbar(Editor)));

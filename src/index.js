@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
+import { SnackbarProvider } from 'notistack';
 
 // Bootstrap, MU, fonts, other style libraries
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -42,7 +43,12 @@ const rootElement = document.getElementById("root");
 ReactDOM.render(
     <Provider store={store}>
         <HashRouter>
-            <App />
+            <SnackbarProvider maxSnack={3} anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}>
+                <App />
+            </SnackbarProvider>
         </HashRouter>,
     </Provider>,
     rootElement

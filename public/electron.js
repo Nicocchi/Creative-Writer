@@ -224,6 +224,9 @@ ipcMain.on("create-project", (event, path) => {
     id: null,
     title: fileName,
     location: filePath,
+    author: path.author,
+    created: Date.now(),
+    modified: Date.now(),
     project: {
       chapters: [
         {
@@ -433,6 +436,9 @@ ipcMain.on("save-project", (event, project) => {
     id: null,
     title: fileName,
     location: filePath,
+    author: project.author,
+    created: project.created,
+    modified: Date.now(),
     editor: true,
     project: project.project
   };
@@ -460,6 +466,9 @@ ipcMain.on("save-project-as", (event, project) => {
     id: null,
     title: fileName,
     location: filePath,
+    author: project.author,
+    created: project.created,
+    modified: Date.now(),
     editor: true,
     project: project.project
   };
@@ -532,13 +541,13 @@ function handleSaveRecents(project) {
     if (recents.length >= 10) recents.pop();
 
     if (!isSame) {
-      recents.push({location: project.location, title: project.title, content: project.project.chapters[0].content.slice(0, 20.).replace(/<[^>]*>/g,'')});
+      recents.push({location: project.location, title: project.title, author: project.author, created: project.created, modified: project.modified, content: project.project.chapters[0].content.slice(0, 20.).replace(/<[^>]*>/g,'')});
       recents.reverse();
       store.set("recents", recents);
     }
   } else {
     recents = [];
-    recents.push({location: project.location, title: project.title, content: project.project.chapters[0].content.slice(0, 20).replace(/<[^>]*>/g,'')});
+    recents.push({location: project.location, title: project.title, author: project.author, created: project.created, modified: project.modified, content: project.project.chapters[0].content.slice(0, 20).replace(/<[^>]*>/g,'')});
     store.set("recents", recents);
   }
 }

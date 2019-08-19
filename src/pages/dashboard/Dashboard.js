@@ -1,115 +1,85 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
-import { withStyles, Button, IconButton, Snackbar, SnackbarContent, Slide, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import classNames from 'classnames';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import CloseIcon from '@material-ui/icons/Close';
-import green from '@material-ui/core/colors/green';
-import amber from '@material-ui/core/colors/amber';
-import WarningIcon from '@material-ui/icons/Warning';
+
+import { withStyles, IconButton } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import FilledInput from '@material-ui/core/FilledInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
 
 import Header from "../../components/Header/Header";
 import Gallery from "../../components/Gallery/Gallery";
 import "./Dashboard.css";
+
 import { createNewProject, openProject, getRecents, openRecentProject, removeRecentProject } from "../../store/actions";
 
-const variantIcon = {
-    success: CheckCircleIcon,
-    warning: WarningIcon,
-    error: ErrorIcon,
-    info: InfoIcon,
-};
-
 const styles = theme => ({
-    success: {
-        backgroundColor: green[600],
+    root: {
+      margin: 0,
+      padding: theme.spacing(2),
     },
-    error: {
-        backgroundColor: theme.palette.error.dark,
-    },
-    info: {
-        backgroundColor: theme.palette.primary.dark,
-    },
-    warning: {
-        backgroundColor: amber[700],
-    },
-    icon: {
-        fontSize: 20,
-    },
-    iconVariant: {
-        opacity: 0.9,
-        marginRight: theme.spacing.unit,
-    },
-    message: {
-        display: 'flex',
-        alignItems: 'center',
+    closeButton: {
+      position: 'absolute',
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
     },
     button: {
-        margin: theme.spacing.unit,
-    },
-    input: {
-        display: 'none',
-    },
-});
-
-/**
- * Transition animation for Snackbar
- * @param props - props
- * @returns {*}
- * @constructor
- */
-function Transition(props) {
-    return <Slide direction="up" {...props} />;
-}
-
-/**
- * Content of Snackbar
- * @param props - props
- * @returns {*}
- * @constructor
- */
-function MySnackbarContent(props) {
-    const { className, message, onClose, variant, ...other } = props;
-    const Icon = variantIcon[variant];
-
-    return (
-        <SnackbarContent
-            aria-describedby="client-snackbar"
-            message={
-                <span id="client-snackbar" className={styles.message}>
-            <Icon style={{marginRight: "20px"}} className={classNames(styles.icon, styles.iconVariant)} />
-                    {message}
-        </span>
-            }
-            action={[
-                <IconButton
-                    key="close"
-                    aria-label="Close"
-                    color="inherit"
-                    className={styles.close}
-                    onClick={onClose}
-                >
-                    <CloseIcon className={styles.icon} />
-                </IconButton>,
-            ]}
-            {...other}
-        />
-    );
-}
-
-const MySnackbarContentWrapper = MySnackbarContent;
+        margin: 5
+    }
+  });
+  
+//   const DialogTitle = withStyles(styles)(props => {
+//     const { children, classes, onClose } = props;
+//     return (
+//       <MuiDialogTitle disableTypography className={classes.root}>
+//         <Typography variant="h6">{children}</Typography>
+//         {onClose ? (
+//           <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+//             <CloseIcon />
+//           </IconButton>
+//         ) : null}
+//       </MuiDialogTitle>
+//     );
+//   });
+  
+//   const DialogContent = withStyles(theme => ({
+//     root: {
+//       padding: theme.spacing(2),
+//     },
+//   }))(MuiDialogContent);
+  
+//   const DialogActions = withStyles(theme => ({
+//     root: {
+//       margin: 0,
+//       padding: theme.spacing(1),
+//     },
+//   }))(MuiDialogActions);
 
 class Dashboard extends Component {
     state = {
         modalCreate: false,
         name: "",
         location: "",
+        author: "",
         open: false,
         historyUrl: "/",
         error: false,
         error2: false,
+        type: "Novel"
     };
 
     /**
@@ -130,6 +100,10 @@ class Dashboard extends Component {
         }
     }
 
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
     /**
      * Open new project modal
      */
@@ -141,22 +115,6 @@ class Dashboard extends Component {
      * Close new project modal
      */
     handleClose = () => {
-        this.setState({ open: false });
-    };
-
-    /**
-     * Open snackbar
-     * @param e
-     */
-    snackbarOpen = (e) => {
-        e.preventDefault();
-        this.setState({ open: true });
-    };
-
-    /**
-     * Close snackbar
-     */
-    snackbarClose = () => {
         this.setState({ open: false });
     };
 
@@ -192,6 +150,9 @@ class Dashboard extends Component {
      */
     handleCreateNewProject = (e) => {
         e.preventDefault();
+        let author = this.state.author;
+        let type = this.state.type;
+
         if (this.state.name === "") {
             this.setState({ error: true }); 
             return;
@@ -199,12 +160,24 @@ class Dashboard extends Component {
         if (this.state.location === "") {
             this.setState({ error2: true }); 
             return;
-        };;
+        };
+
+        if (this.state.author === "") {
+            author = "Unknown";
+        }
+
+        if (this.state.type === "") {
+            type = "Novel";
+        }
 
         const path = {
             title: this.state.name,
-            location: this.state.location
+            location: this.state.location,
+            author: author,
+            type: type
         };
+
+        console.log(path);
 
         this.setState({ open: false, name: '', error: false });
 
@@ -261,69 +234,85 @@ class Dashboard extends Component {
                     <Button onClick={this.handleOpenProject} variant="contained" color="secondary" className={classes.button}>
                         Open Project
                     </Button>
-                    <Button onClick={() => this.handleClickOpen()} variant="contained" color="secondary" className={classes.button}>
+                    <Button onClick={() => this.handleClickOpen()} variant="contained" color="primary" className={classes.button}>
                         Start Writing!
                     </Button>
 
-                    <Dialog
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                        aria-labelledby="form-dialog-title"
-                        TransitionComponent={Transition}
-                        keepMounted
-                        maxWidth="sm"
-                        fullWidth={true}
-                    >
-                        <DialogTitle id="form-dialog-title">Create New Project</DialogTitle>
+                    <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">New Project</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>
-                                Start creating your project!
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                name="name"
-                                label="Book Title"
-                                type="text"
-                                fullWidth
-                                defaultValue={this.state.name}
-                                onChange={this.handleInput}
-                            />
-                            {
-                                this.state.error ? <div style={{color: "red"}}>
-                                *Project needs a title!
+                        <DialogContentText style={{fontStyle: "italic"}}>
+                            "The first draft is just you telling yourself the story." - Terry Pratchett
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            name="name"
+                            label="Title"
+                            type="text"
+                            fullWidth
+                            defaultValue={this.state.name}
+                            onChange={this.handleInput}
+                            required
+                        />
+                        {
+                            this.state.error ? <div style={{color: "red"}}>
+                            *Project needs a title!
                             </div> : null
-                            }
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="location"
-                                location="location"
-                                label="Project Folder"
-                                type="text"
-                                fullWidth
-                                // defaultValue={this.state.location}
-                                value={this.state.location}
-                                onChange={this.handleInput}
-                            />
-                            {
-                                this.state.error2 ? <div style={{color: "red"}}>
-                                *Must select project a folder to save to!
+                        }
+                        <TextField
+                            margin="dense"
+                            type="text"
+                            id="author"
+                            name="author"
+                            label="Author"
+                            fullWidth
+                            defaultValue={this.state.author}
+                            onChange={this.handleInput}
+                        />
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="type-helper">Type</InputLabel>
+                            <Select
+                            value={this.state.type}
+                            onChange={this.handleChange}
+                            fullWidth
+                            input={<Input name="type" id="type-helper" />}
+                            >
+                            <MenuItem value="" disabled>
+                                <em>Type</em>
+                            </MenuItem>
+                            <MenuItem value={"Novel"}>Novel</MenuItem>
+                            </Select>
+                            <FormHelperText>Type of project</FormHelperText>
+                        </FormControl>
+                        <TextField
+                            margin="dense"
+                            id="location"
+                            location="location"
+                            label="Project Folder"
+                            type="text"
+                            fullWidth
+                            value={this.state.location}
+                            onChange={this.handleInput}
+                            required
+                        />
+                        {
+                            this.state.error2 ? <div style={{color: "red"}}>
+                            *Must select project a folder to save to!
                             </div> : null
-                            }
-                            
-                            <Button onClick={(e) => this.openFile(e)} variant="contained" color="secondary" className={classes.button}>
-                                Browse
-                            </Button>
+                        }
+                        <Button onClick={(e) => this.openFile(e)} color="primary">
+                            Browse
+                        </Button>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="primary">
-                                Cancel
-                            </Button>
-                            <Button onClick={e => this.handleCreateNewProject(e)} color="primary">
-                                Create
-                            </Button>
+                        <Button onClick={this.handleClose} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={e => this.handleCreateNewProject(e)} color="primary">
+                            Create
+                        </Button>
                         </DialogActions>
                     </Dialog>
                 </div>
@@ -331,21 +320,6 @@ class Dashboard extends Component {
                     {/*Open success snackbar*/}
                 {/*</Button>*/}
                 <Gallery name="Recent Projects" clickHandler={this.handleOpenRecentProject} removeHandler={this.handleRemoveRecent} list={this.props.recents !== null ? this.props.recents : [{name: "No project"}]}/>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    open={this.state.open1}
-                    autoHideDuration={2000}
-                    onClose={this.snackbarClose}
-                >
-                    <MySnackbarContentWrapper
-                        onClose={this.snackbarClose}
-                        variant="success"
-                        message="This is a success message!"
-                    />
-                </Snackbar>
             </div>
         );
     }

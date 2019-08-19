@@ -1,3 +1,10 @@
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { PDFExport } from '@progress/kendo-react-pdf';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from 'docx';
+import { saveAs } from 'file-saver';
+const HtmlDocx = require('html-docx-js');
+
 /*
  * Action types
  */
@@ -79,6 +86,10 @@ export const REMOVE_RECENT_SUCCESS = "REMOVE_RECENT_SUCCESS";
 export const REMOVE_RECENT_FAILED = "REMOVE_RECENT_FAILED";
 
 export const CHANGE_URL = 'CHANGE_URL';
+
+export const EXPORT_PDF_START = "EXPORT_PDF_START";
+export const EXPORT_PDF_SUCCESS = "EXPORT_PDF_SUCCESS";
+export const EXPORT_PDF_FAILURE = "EXPORT_PDF_FAILURE";
 
 function guid() {
     function s4() {
@@ -213,7 +224,10 @@ export const getRecents = () => dispatch => {
         const project = {
             title: rec.title,
             location: rec.location,
-            content: rec.content
+            content: rec.content,
+            author: rec.author,
+            created: rec.created,
+            modifed: rec.modified
         };
         recents.push(project);
     });
@@ -633,4 +647,133 @@ export function changeUrl(value) {
         dispatch({ type: CHANGE_URL, payload: value});
     }
 
+}
+
+export function exportToPDF( value ) {
+    return (dispatch, getState) => {
+        dispatch({ type: EXPORT_PDF_START });
+        
+        const state = getState().rootReducer;
+
+        const doc = new Document();
+        const input = document.getElementsByClassName("ql-editor");
+
+        const paragraphs = input[0].innerHTML.split('<br>');
+        // console.log(state.project.title);
+        // console.log(paragraphs);
+
+        // console.log(state.project.author);
+
+        let pgs = [];
+
+        doc.addSection({
+            children: [
+                new Paragraph({
+                    text: state.project.title,
+                    heading: HeadingLevel.TITLE,
+                    allignment: AlignmentType.CENTER,
+                }),
+                new Paragraph({
+                    children: [new TextRun({
+                        text: `By: ${state.project.author}`,
+                        bold: true,
+                    })],
+                })
+            ],
+        });
+
+        paragraphs.forEach( pg => {
+            const paragraph = new Paragraph({
+                text: pg.replace('<p>', "     ").replace('</p>', " "),
+                spacing: {
+                    before: 200,
+                },
+            });
+
+            pgs.push(paragraph);
+        })
+
+        doc.addSection({
+            properties: {},
+            children: pgs,
+        });
+
+
+        Packer.toBlob(doc).then(blob => {
+            console.log(blob);
+            saveAs(blob, `${state.project.title}.docx`);
+            console.log("Document created successfully");
+          });
+
+        dispatch({ type: EXPORT_PDF_SUCCESS });
+
+        
+        
+
+
+        // const pxToMm = (px) => {
+        //     return Math.floor(px/document.getElementById('myMm').offsetHeight);
+        //   };
+          
+        //   const mmToPx = (mm) => {
+        //     return document.getElementById('myMm').offsetHeight*mm;
+        //   };
+          
+        //   const range = (start, end) => {
+        //       return Array(end-start).join(0).split(0).map(function(val, id) {return id+start});
+        //   };
+
+        // const input = document.getElementsByClassName("ql-editor");
+        // const inputHeightMm = pxToMm(input[0].offsetHeight);
+        // const a4WidthMm = 210;
+        // const a4HeightMm = 297; 
+        // const a4HeightPx = mmToPx(a4HeightMm); 
+        // const numPages = inputHeightMm <= a4HeightMm ? 1 : Math.floor(inputHeightMm/a4HeightMm) + 1;
+        // console.log({
+        //     input, inputHeightMm, a4HeightMm, a4HeightPx, numPages, range: range(0, numPages), 
+        //     comp: inputHeightMm <= a4HeightMm, inputHeightPx: input[0].offsetHeight
+        // });
+
+
+
+
+        // html2canvas(input[0]).then(( canvas ) => {
+        //     console.log(canvas.innerHTML);
+        //     const imgData = canvas.toDataURL('image/png');
+
+        //     // Conver tthe PNG to PDF
+        //     const pdf = new jsPDF();
+        //     pdf.addImage(imgData, 'PNG', 0, 0);
+        //     pdf.save("download.pdf");
+        //     console.log("DONE")
+        //     dispatch({ type: EXPORT_PDF_SUCCESS });
+
+            // console.log(canvas.innerHTML);
+            // const imgData = canvas.toDataURL('image/png');
+          
+            // // Document of a4WidthMm wide and inputHeightMm high
+            // if (inputHeightMm > a4HeightMm) {
+            //     // elongated a4 (system print dialog will handle page breaks)
+            //     var pdf = new jsPDF('p', 'mm', [inputHeightMm+16, a4WidthMm]);
+            // } else {
+            //     // standard a4
+            //     var pdf = new jsPDF();
+            // }
+            
+            // pdf.addImage(imgData, 'PNG', 0, 0);
+            // pdf.save(`download.pdf`);
+        // });
+
+        
+
+        
+
+        // const didSave = window.IpcRenderer.sendSync("save-project", state.project);
+
+        // if (didSave) {
+        //     dispatch({ type: SAVE_PROJECT_SUCCESS });
+        // } else {
+        //     dispatch({ type: SAVE_PROJECT_FAILED });
+        // }
+    }
 }

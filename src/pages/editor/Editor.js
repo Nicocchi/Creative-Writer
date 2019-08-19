@@ -28,6 +28,7 @@ import {
   updateNote,
   saveProject,
   saveProjectAs,
+  exportToPDF,
 } from "../../store/actions";
 import { withSnackbar } from 'notistack';
 
@@ -663,6 +664,13 @@ class Editor extends React.Component {
     this.props.saveProjectAs();
   }
 
+  /**
+   * Export the project to PDF
+   */
+  exportToPDF = () => {
+    this.props.exportToPDF();
+  }
+
   openSnack = () => {
     this.props.enqueueSnackbar("Saved", {variant: 'success'});
   }
@@ -720,6 +728,7 @@ class Editor extends React.Component {
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
+          <div id="myMm" style={{height: "1mm"}} />
           <nav className={classes.drawer}>
             <Hidden smUp implementation="js">
               <Navigator
@@ -783,6 +792,7 @@ class Editor extends React.Component {
               lineCount={this.state.lineCount}
               saveProject={this.saveProject}
               saveProjectAs={this.saveProjectAs}
+              exportToPDF={this.exportToPDF}
               openSnack={this.openSnack}
             />
             <main className={classes.mainContent}>
@@ -835,6 +845,7 @@ export default connect(
     changeCurrentNote,
     updateNote,
     saveProject,
-    saveProjectAs
+    saveProjectAs,
+    exportToPDF
   }
 )(withStyles(styles)(withSnackbar(Editor)));

@@ -17,7 +17,7 @@ const Gallery = props => {
           <Card style={{width: "20%", maxWidth: "300px", margin: "2%", cursor: "pointer"}}>
             <CardContent onClick={props.clickHandler ? () => props.clickHandler(itm) : null}>
               <Typography color="textSecondary" gutterBottom>
-                Jane Doe
+                {itm.author}
               </Typography>
               <Typography variant="h5" component="h2">
               {itm.title}
@@ -25,12 +25,12 @@ const Gallery = props => {
               <Typography color="textSecondary">
                 Novel
               </Typography>
-              <Typography variant="body2" component="p">
+              <Typography variant="body2" component="p" style={{color: "black"}}>
                 {itm.content}
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small">11/7/2019</Button>
+              <Button size="small">{itm.modified}</Button>
             </CardActions>
             <DeleteIcon style={{cursor: "pointer"}} onClick={props.removeHandler ? () => props.removeHandler(itm) : null} />
           </Card>

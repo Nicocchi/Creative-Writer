@@ -296,7 +296,7 @@ function Header(props) {
                                                   </ListItemIcon>
                                                 <ListItemText primary="Save As" />
                                               </MenuItem>
-                                              <MenuItem >
+                                              <MenuItem onClick={props.exportToPDF}>
                                                 <ListItemIcon>
                                                   <SendIcon />
                                                   </ListItemIcon>

@@ -45,7 +45,7 @@
     "file-saver": "^2.0.2",
     "html-docx-js": "^0.3.1",
     "html2canvas": "^1.0.0-rc.3",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "notistack": "^0.8.9",
     "puppeteer": "^1.19.0",
     "react": "^16.8.6",
